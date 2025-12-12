@@ -3,178 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flying Butterfly Website</title>
+    <title>High Quality Butterfly Website</title>
+    <link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
+
     <style>
-        /* --- CSS STYLES --- */
+        /* --- CSS START --- */
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth; /* Smooth scrolling for links */
-            overflow-x: hidden; /* Prevent horizontal scroll */
-        }
-
-        /* Navigation Bar */
-        nav {
-            position: fixed;
-            top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            z-index: 1000;
-            text-align: center;
+            height: 100%;
+            font-family: "Montserrat", sans-serif;
+            overflow-x: hidden; /* Horizontal scroll band */
+            background-color: #ffffff; /* Fallback color */
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 20px;
-            font-size: 18px;
-            font-weight: bold;
+        /* 3D Canvas (Butterflies) Background settings */
+        #app {
+            position: fixed; /* Fixed taaki scroll karne par bhi background wahi rahe */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1; /* Text ke piche rahe */
+            overflow: hidden;
         }
 
-        nav a:hover {
-            color: #ffd700;
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
-        /* Page Sections Styling */
+        /* --- CONTENT STYLING --- */
+        .content-container {
+            position: relative;
+            z-index: 10; /* Canvas ke upar dikhe */
+        }
+
         section {
-            height: 100vh; /* Full viewport height */
+            height: 100vh; /* Har page full screen hoga */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
+            padding: 0 5%;
         }
 
-        /* Colors for different pages */
-        #home { background: linear-gradient(to bottom, #87CEEB, #E0F7FA); }
-        #page2 { background: linear-gradient(to bottom, #E0F7FA, #98FB98); }
-        #page3 { background: linear-gradient(to bottom, #98FB98, #FFE4B5); }
-        #page4 { background: linear-gradient(to bottom, #FFE4B5, #FF7F50); }
-
-        h1 { font-size: 3rem; color: #333; }
-        p { font-size: 1.2rem; color: #555; max-width: 600px; }
-
-        /* --- BUTTERFLY CONTAINER CSS --- */
-        #butterfly-group {
-            position: fixed; /* Fixed so they stay on screen while scrolling */
-            width: 200px;
-            height: auto;
-            z-index: 999; /* On top of everything */
-            
-            /* Initial Position: Home Page (Top Right) */
-            top: 20%;
-            right: 10%; 
-            left: auto; 
-            
-            /* Smooth transition for movement */
-            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        /* Styling text boxes */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.1); /* Halka transparent background */
+            backdrop-filter: blur(5px); /* Text ke piche thoda dhundhla taaki padha jaye */
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
 
-        /* Styling individual butterflies */
-        .butterfly {
-            width: 80px; /* Size of butterfly */
-            height: auto;
-            display: block;
-            margin-bottom: -20px;
-            filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+        .glass-box:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Small floating animation to make them look alive */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+        h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 800;
         }
 
-        .butterfly {
-            animation: float 3s ease-in-out infinite;
+        h2 {
+            font-size: 2rem;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        strong { color: #000; }
+
+        /* Alignment Logic (Left/Right) */
+        .align-left {
+            align-items: flex-start; /* Left side */
+            text-align: left;
+        }
+
+        .align-right {
+            align-items: flex-end; /* Right side */
+            text-align: right;
         }
         
-        /* Make the second butterfly move slightly differently */
-        .butterfly:nth-child(2) {
-            margin-left: 50px;
-            width: 60px;
-            animation-duration: 4s;
+        /* Mobile ke liye bhi text readable rahe */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            section { padding: 0 20px; }
+            .glass-box { width: 100%; }
         }
-
+        /* --- CSS END --- */
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#page2">Details</a>
-        <a href="#page3">Services</a>
-        <a href="#page4">Contact</a>
-    </nav>
+    <div id="app"></div>
 
-    <div id="butterfly-group">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcW12bWx4eXF4eXF4eXF4eXF4eXF4eXF4eXF4eXF4eXF4/L0q1vW0gqW0g/giphy.gif" class="butterfly" alt="Butterfly 1">
-        <img src="https://i.gifer.com/origin/f0/f06871a8f949c2980662d5964a7c858c_w200.gif" class="butterfly" alt="Butterfly 2">
+    <div class="content-container">
+        
+        <section class="align-left">
+            <div class="glass-box">
+                <h1>Hello, I am [Your Name]</h1>
+                <p>Welcome to my digital space. Scroll down to explore my premium automation services.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;"><i>Background mein jo aap dekh rahe hain, wo real-time 3D simulation hai.</i></p>
+            </div>
+        </section>
+
+        <section class="align-right">
+            <div class="glass-box">
+                <h2>Automation & Ad Bots</h2>
+                <p>Humare advanced bots aapke business ko next level par le jayenge.</p>
+                <ul style="margin-top: 15px;">
+                    <li>✅ <strong>Advertisement Bot:</strong> Auto-post ads 24/7.</li>
+                    <li>✅ <strong>Lead Generation:</strong> Automatic client interaction.</li>
+                    <li>✅ <strong>Targeting:</strong> Sahi audience tak pahunch.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="align-left">
+            <div class="glass-box">
+                <h2>Instagram Monitor Bot</h2>
+                <p>Apne Instagram account ki health aur status ko track karein.</p>
+                <ul style="margin-top: 15px;">
+                    <li>🚀 <strong>Status Check:</strong> Account ban/shadowban checker.</li>
+                    <li>📈 <strong>Analytics:</strong> Growth tracking automated.</li>
+                    <li>🛡️ <strong>Security:</strong> Real-time alerts.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section style="align-items: center; text-align: center;">
+            <div class="glass-box">
+                <h2>Contact Us</h2>
+                <p>Apne business ko automate karne ke liye aaj hi sampark karein.</p>
+                <br>
+                <a href="#" style="background: #333; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Get Started</a>
+            </div>
+        </section>
+
     </div>
 
-    <section id="home">
-        <h1>Welcome to Nature World</h1>
-        <p>Yeh Home Page hai. Yahan dekhiye right side mein titliyan ud rahi hain.</p>
-        <p><strong>Niche scroll karein jaadu dekhne ke liye!</strong></p>
-    </section>
+    <script type="module">
+        // Tumhare diye gaye code library ko import kar rahe hain
+        import { butterfliesBackground } from 'https://unpkg.com/threejs-toys@0.0.7/build/threejs-toys.module.cdn.min.js'
 
-    <section id="page2">
-        <h1>Page 2: The Forest</h1>
-        <p>Jaise hi aap yahan aaye, titliyan left side mein aa gayin!</p>
-        <p>Yahan hum environment ki baatein karenge.</p>
-    </section>
-
-    <section id="page3">
-        <h1>Page 3: Sunset View</h1>
-        <p>Aur niche scroll karte rahiye.</p>
-    </section>
-
-    <section id="page4">
-        <h1>Page 4: Contact Us</h1>
-        <p>Website ka ant yahan hota hai.</p>
-    </section>
-
-    <script>
-        // HTML elements ko select kar rahe hain
-        const butterflyGroup = document.getElementById('butterfly-group');
-        const homeSection = document.getElementById('home');
-        const page2Section = document.getElementById('page2');
-
-        // Scroll event listener lagayenge
-        window.addEventListener('scroll', () => {
-            
-            // Pata lagayenge ki user ne kitna scroll kiya hai
-            const scrollPosition = window.scrollY;
-            const windowHeight = window.innerHeight;
-
-            // Logic: Agar scroll 50% se zyada niche gaya (Page 2 ki taraf)
-            if (scrollPosition > windowHeight / 3) {
-                // --- STATE: PAGE 2 (Move to Left & Down) ---
-                
-                // CSS properties change kar rahe hain JS se
-                butterflyGroup.style.top = "60%";  // Thoda niche aa jaye
-                butterflyGroup.style.right = "auto"; // Right se hatao
-                butterflyGroup.style.left = "5%";    // Left side mein set karo
-                
-                // Titli ka muh ghumane ke liye (Mirror effect)
-                // Taaki wo left ki taraf udti hui dikhe
-                butterflyGroup.style.transform = "scaleX(-1)"; 
-            } 
-            else {
-                // --- STATE: HOME PAGE (Back to Top Right) ---
-                
-                butterflyGroup.style.top = "20%";    // Wapis upar
-                butterflyGroup.style.left = "auto";  // Left se hatao
-                butterflyGroup.style.right = "10%";  // Right side mein set karo
-                
-                // Normal direction
-                butterflyGroup.style.transform = "scaleX(1)"; 
-            }
+        // Butterflies ko initialize kar rahe hain
+        const pc = butterfliesBackground({
+            el: document.getElementById('app'), // Background div
+            eventsEl: document.body,          // Mouse/Touch events puri body par kaam kare
+            gpgpuSize: 42,                    // Quality/Quantity
+            background: 0xffffff,             // Background Color (White)
+            material: 'basic',
+            materialParams: { transparent: true, alphaTest: 0.5 },
+            texture: 'https://assets.codepen.io/33787/butterflies.png', // Real butterfly texture
+            textureCount: 4,                  // Kitne type ki titliyan
+            wingsScale: [1, 1, 1],
+            wingsWidthSegments: 8,
+            wingsHeightSegments: 8,
+            wingsSpeed: 0.75,                 // Udne ki speed
+            wingsDisplacementScale: 1.25,
+            noiseCoordScale: 0.01,
+            noiseTimeCoef: 0.0005,
+            noiseIntensity: 0.0025,
+            attractionRadius1: 100,           // Mouse ke paas aane ka radius
+            attractionRadius2: 150,
+            maxVelocity: 0.1,
         });
+
+        // Background color transparent rakhne ki koshish (Optional override)
+        // Agar aapko background color change karna ho to 'background: 0xffffff' upar change karein (Example: 0x000000 for black)
     </script>
+
 </body>
 </html>
