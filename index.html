@@ -2,233 +2,252 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200"> <title>Blue Tech Portfolio</title>
+    <meta name="viewport" content="width=1200"> <title>Gamer Dev Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        /* --- CSS VARIABLES --- */
         :root {
-            --bg-blue: #020c1b;
-            --neon-blue: #00f3ff; /* Chamakne wala Blue */
-            --deep-blue: #0a192f;
-            --text-white: #e6f1ff;
-            --font-head: 'Rajdhani', sans-serif;
-            --font-body: 'Montserrat', sans-serif;
+            --bg: #050510;
+            --neon: #00f3ff; /* Cyan Blue */
+            --accent: #7000ff; /* Purple for contrast */
+            --text: #ffffff;
+            --font: 'Outfit', sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--font-body);
+            font-family: var(--font);
         }
 
         body {
-            background-color: var(--bg-blue);
-            color: var(--text-white);
-            min-width: 1200px;
-            overflow: hidden; /* Scroll band taaki effect kharab na ho */
+            background-color: var(--bg);
+            color: var(--text);
             height: 100vh;
+            overflow: hidden; /* Scroll band */
+            position: relative;
         }
 
-        /* --- BACKGROUND CONTAINER (Moving Image) --- */
-        .bg-container {
+        /* --- BACKGROUND GLOWS --- */
+        .glow-spot {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .bg-image {
-            width: 100%;
-            height: 100%;
-            /* High Quality Blue Tech Abstract Image */
-            background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670&auto=format&fit=crop') no-repeat center center/cover;
-            
-            /* Cinematic Zoom Animation */
-            animation: slowZoom 20s infinite alternate linear;
-        }
-
-        @keyframes slowZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); } /* Dheere dheere bada hoga */
-        }
-
-        /* --- BLUE OVERLAY (Gradient) --- */
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Left side dark blue, Right side transparent */
-            background: linear-gradient(90deg, rgba(2, 12, 27, 0.95) 0%, rgba(2, 12, 27, 0.8) 50%, rgba(0, 243, 255, 0.1) 100%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
             z-index: -1;
         }
-
-        /* --- FLOATING PARTICLES (Halka Motion) --- */
-        .particle {
+        .glow-spot-2 {
             position: absolute;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: floatUp 15s infinite linear;
-        }
-        
-        .p1 { width: 10px; height: 10px; left: 20%; bottom: -20px; animation-duration: 12s; }
-        .p2 { width: 6px; height: 6px; left: 50%; bottom: -20px; animation-duration: 18s; animation-delay: 2s; }
-        .p3 { width: 15px; height: 15px; left: 80%; bottom: -20px; animation-duration: 25s; animation-delay: 1s; opacity: 0.1; }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-100vh); opacity: 0; }
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.1) 0%, transparent 70%);
+            bottom: -20%;
+            right: -10%;
+            z-index: -1;
         }
 
         /* --- NAVBAR --- */
         nav {
-            position: absolute;
-            top: 0; width: 100%;
-            padding: 30px 100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 25px 100px;
+            width: 100%;
             z-index: 100;
         }
-
+        
         .logo {
-            font-family: var(--font-head);
-            font-size: 2rem;
-            font-weight: 700;
-            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text);
             text-decoration: none;
-            letter-spacing: 2px;
         }
-        .logo span { color: var(--neon-blue); }
+        .logo span { color: var(--neon); }
 
         .nav-links {
             display: flex;
-            gap: 50px;
+            gap: 40px;
             list-style: none;
         }
-
         .nav-links a {
             text-decoration: none;
-            color: #a8b2d1;
-            font-size: 1.1rem;
+            color: #a0a0a0;
+            font-weight: 500;
             transition: 0.3s;
         }
-        .nav-links a:hover { color: var(--neon-blue); }
+        .nav-links a:hover { color: var(--neon); }
 
-        /* --- HERO CONTENT --- */
+        /* --- HERO SECTION --- */
         .hero {
-            height: 100vh;
             display: flex;
+            height: calc(100vh - 80px); /* Full height minus navbar */
+            padding: 0 100px;
             align-items: center;
-            padding-left: 100px; /* Text left mein rahega */
+            justify-content: space-between;
             position: relative;
         }
 
-        .content-box {
-            width: 75%; /* Screen ka 75% cover karega */
+        /* LEFT SIDE: TEXT */
+        .hero-text {
+            width: 45%;
             z-index: 10;
         }
 
-        .content-box h3 {
-            font-family: var(--font-head);
-            color: var(--neon-blue);
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            letter-spacing: 3px;
+        .hero-text h4 {
+            font-size: 1.5rem;
+            color: var(--neon);
+            margin-bottom: 10px;
         }
 
-        .content-box h1 {
-            font-size: 6rem; /* Bada Text */
-            font-weight: 900;
+        .hero-text h1 {
+            font-size: 5rem;
             line-height: 1.1;
-            margin-bottom: 25px;
-            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: capitalize;
         }
 
-        .content-box h1 span {
-            color: #8892b0; /* Thoda greyish blue */
-        }
-
-        .content-box p {
-            font-size: 1.3rem;
-            color: #8892b0;
-            max-width: 700px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            border-left: 4px solid var(--neon-blue);
-            padding-left: 20px;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 18px 45px;
+        .hero-text p {
             font-size: 1.1rem;
-            font-weight: 700;
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            max-width: 500px;
+        }
+
+        /* Hire Me Button */
+        .btn-hire {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 40px;
+            background: linear-gradient(90deg, var(--neon), var(--accent));
+            color: #fff;
+            font-weight: 800;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
-            margin-right: 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
             transition: 0.3s;
         }
 
-        .btn-main {
-            background: transparent;
-            border: 2px solid var(--neon-blue);
-            color: var(--neon-blue);
+        .btn-hire i { margin-left: 10px; }
+        .btn-hire:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.5); }
+
+        /* RIGHT SIDE: ANIMATION CONTAINER */
+        .hero-visual {
+            width: 50%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: flex-end; /* Bottom se align */
+            justify-content: center;
         }
 
-        .btn-main:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        /* The Boy & PC Image */
+        .char-img {
+            width: 100%;
+            max-width: 650px;
+            /* Yahan Animation hai: Neeche se upar aayega */
+            transform: translateY(100%); 
+            animation: slideUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            
+            /* Image ke peeche glow */
+            filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.2));
+            position: relative;
+            z-index: 5;
+            bottom: -20px; /* Thoda adjust taaki ekdam bottom se nikle */
         }
 
-        .btn-sec {
-            color: #fff;
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        .btn-sec:hover { text-decoration: underline; }
+
+        /* FLOATING ICONS (Video jaise) */
+        .float-icon {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            z-index: 4; /* Character ke peeche */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .float-icon i { font-size: 2rem; }
+
+        /* Icon Positions */
+        .icon-1 { top: 20%; right: 10%; width: 70px; height: 70px; color: #e34c26; animation-delay: 0s; } /* HTML Color */
+        .icon-2 { top: 40%; left: 10%; width: 60px; height: 60px; color: #264de4; animation-delay: 1s; } /* CSS Color */
+        .icon-3 { top: 10%; left: 40%; width: 50px; height: 50px; color: #f7df1e; animation-delay: 2s; } /* JS Color */
+        .icon-4 { bottom: 30%; right: 0%; width: 80px; height: 80px; color: #61dbfb; animation-delay: 1.5s; z-index: 6; } /* React Color (Front) */
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Lightning Bolt (Video jaisa) */
+        .bolt {
+            position: absolute;
+            top: 15%;
+            right: 5%;
+            font-size: 8rem;
+            color: rgba(255, 255, 0, 0.1);
+            transform: rotate(20deg);
+            z-index: 1;
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-container">
-        <div class="bg-image"></div> </div>
-    
-    <div class="particle p1"></div>
-    <div class="particle p2"></div>
-    <div class="particle p3"></div>
+    <div class="glow-spot"></div>
+    <div class="glow-spot-2"></div>
 
-    <div class="overlay"></div>
+    <i class="fas fa-bolt bolt"></i>
 
     <nav>
-        <a href="#" class="logo">PORT<span>FOLIO</span></a>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Work</a>
-            <a href="#">Contact</a>
-        </div>
+        <a href="#" class="logo">noah<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#home" style="color:var(--text)">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#connect">Connect</a></li>
+        </ul>
+        <a href="#" style="text-decoration:none; color:white; border:1px solid #333; padding:8px 20px; border-radius:20px; font-size:0.9rem;">Download Resume</a>
     </nav>
 
     <section class="hero">
-        <div class="content-box">
-            <h3>HELLO, I AM</h3>
-            <h1>[YOUR NAME]<br><span>WEB DEVELOPER</span></h1>
+        
+        <div class="hero-text">
+            <h4>Hey, I am [Name]</h4>
+            <h1>web <br> developer</h1>
             <p>
-                Crafting digital experiences with precision and code. 
-                Focusing on clean design, performance, and scalability.
+                I create stunning websites with modern animations and high performance. Let's build something unique together.
             </p>
-            <div>
-                <a href="#" class="btn btn-main">View Projects</a>
-                <a href="#" class="btn btn-sec">Contact Me</a>
-            </div>
+            <a href="#" class="btn-hire">
+                Hire me <i class="fas fa-envelope"></i>
+            </a>
         </div>
+
+        <div class="hero-visual">
+            
+            <div class="float-icon icon-1"><i class="fab fa-html5"></i></div>
+            <div class="float-icon icon-2"><i class="fab fa-css3-alt"></i></div>
+            <div class="float-icon icon-3"><i class="fab fa-js"></i></div>
+            <div class="float-icon icon-4"><i class="fab fa-react"></i></div> <img src="https://cdni.iconscout.com/illustration/premium/thumb/gamer-playing-online-video-game-5139423-4305739.png" 
+                 alt="Gamer Developer" class="char-img">
+        </div>
+
     </section>
 
 </body>
