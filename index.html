@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1200">
     <title>My Portfolio</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS VARIABLES (Colors control karna easy hoga) --- */
+        /* --- CSS VARIABLES --- */
         :root {
-            --bg-color: #0a0a0a; /* Almost Black */
+            --bg-color: #0a0a0a;
             --text-color: #ffffff;
-            --accent-color: #00f260; /* Bright Green/Cyan gradient start */
-            --accent-color-2: #0575e6; /* Blue gradient end */
-            --glass-bg: rgba(255, 255, 255, 0.05);
+            --accent-color: #00f260;
+            --accent-color-2: #0575e6;
             --font-main: 'Poppins', sans-serif;
         }
 
@@ -28,47 +28,50 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            overflow-x: hidden; /* Side scroll rokne ke liye */
+            /* Min-width set kar diya taaki content shrink na ho */
+            min-width: 1200px; 
+            overflow-x: hidden;
         }
 
-        /* --- BACKGROUND GLOW EFFECT (Pro Touch) --- */
+        /* --- BACKGROUND GLOW --- */
         .background-glow {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             background: linear-gradient(180deg, var(--accent-color), var(--accent-color-2));
-            filter: blur(150px); /* Bahut dhundhla glow */
+            filter: blur(180px);
             border-radius: 50%;
-            top: 20%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 0.2;
+            opacity: 0.15;
             z-index: -1;
-            animation: moveGlow 10s infinite alternate;
+            animation: moveGlow 15s infinite alternate;
         }
 
         @keyframes moveGlow {
             0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-30%, -30%) scale(1.2); }
+            100% { transform: translate(-40%, -40%) scale(1.2); }
         }
 
-        /* --- NAVBAR (Glass Effect) --- */
+        /* --- NAVBAR --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
+            padding: 25px 100px; /* Thoda padding badhaya desktop feel ke liye */
             position: fixed;
             width: 100%;
+            min-width: 1200px; /* Nav bhi shrink nahi hoga */
             top: 0;
-            background: rgba(10, 10, 10, 0.8); /* See-through dark */
-            backdrop-filter: blur(10px); /* Blur effect */
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: #fff;
@@ -76,19 +79,19 @@
         }
         
         .logo span {
-            color: var(--accent-color); /* Dot ko green karna */
+            color: var(--accent-color);
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 40px;
+            gap: 50px;
         }
 
         .nav-links a {
             text-decoration: none;
             color: #ccc;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 500;
             transition: 0.3s;
         }
@@ -101,29 +104,32 @@
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
+            min-height: 700px; /* Height fix ki taaki content kate na */
             display: flex;
             align-items: center;
-            justify-content: center; /* Center me content */
+            justify-content: center;
             text-align: center;
-            padding: 0 20px;
-            position: relative;
+            padding-top: 80px; /* Navbar ke liye jagah */
+        }
+
+        .hero-content {
+            max-width: 900px; /* Content chouda kiya */
         }
 
         .hero-content h3 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 400;
             color: var(--accent-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .hero-content h1 {
-            font-size: 4.5rem;
+            font-size: 5.5rem; /* Font size badhaya desktop look ke liye */
             font-weight: 700;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        /* Gradient Text Name */
         .gradient-text {
             background: linear-gradient(to right, var(--accent-color), var(--accent-color-2));
             -webkit-background-clip: text;
@@ -131,14 +137,13 @@
         }
 
         .hero-content h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 600;
             color: #e0e0e0;
             margin-bottom: 30px;
-            min-height: 40px; /* Text jump na kare */
+            min-height: 50px;
         }
 
-        /* Typing cursor */
         .typing-text::after {
             content: '|';
             animation: blink 0.7s infinite;
@@ -150,25 +155,26 @@
         }
 
         .hero-content p {
-            max-width: 600px;
-            margin: 0 auto 40px auto;
+            max-width: 700px;
+            margin: 0 auto 50px auto;
             color: #8892b0;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 1.3rem; /* Text thoda bada kiya taaki phone pe zoom out hone par bhi dikhe */
+            line-height: 1.8;
         }
 
         /* Buttons */
         .btn-box {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .btn {
-            padding: 14px 35px;
-            border-radius: 30px;
+            padding: 16px 40px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: 0.3s ease;
         }
 
@@ -180,7 +186,7 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 30px rgba(0, 242, 96, 0.6);
+            box-shadow: 0 0 40px rgba(0, 242, 96, 0.6);
         }
 
         .btn-secondary {
@@ -205,8 +211,7 @@
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Work</a></li>
+            <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -217,7 +222,8 @@
             <h1>I'm <span class="gradient-text">[Aapka Naam]</span></h1>
             <h2>I am a <span class="typing-text"></span></h2>
             <p>
-                [Yahan ek strong line likhein. Jaise: Building digital experiences with clean code and creative design. Let's create something amazing together.]
+                [Yahan par apna intro likhiye. Yeh text ab mobile par bhi Desktop jaisa faila hua dikhega, 
+                aur aapko zoom-in/pinch karke dekhna pad sakta hai agar screen chhoti hai.]
             </p>
             <div class="btn-box">
                 <a href="#projects" class="btn btn-primary">View My Work</a>
@@ -228,8 +234,7 @@
 
     <script>
         const typingText = document.querySelector(".typing-text");
-        // Neeche diye gaye words ko change kar sakte hain
-        const words = ["Web Developer", "UI/UX Designer", "Freelancer", "Coder"]; 
+        const words = ["Web Developer", "Programmer", "UI/UX Designer", "Freelancer"];
         
         let wordIndex = 0;
         let charIndex = 0;
@@ -238,25 +243,20 @@
         const typeEffect = () => {
             const currentWord = words[wordIndex];
             const currentChar = currentWord.substring(0, charIndex);
-            
             typingText.textContent = currentChar;
 
             if (!isDeleting && charIndex < currentWord.length) {
-                // Likh raha hai
                 charIndex++;
                 setTimeout(typeEffect, 100);
             } else if (isDeleting && charIndex > 0) {
-                // Mita raha hai
                 charIndex--;
                 setTimeout(typeEffect, 50);
             } else {
-                // Word complete ho gaya
                 isDeleting = !isDeleting;
                 wordIndex = !isDeleting ? (wordIndex + 1) % words.length : wordIndex;
-                setTimeout(typeEffect, 1200); // Rukne ka time
+                setTimeout(typeEffect, 1500);
             }
         }
-
         typeEffect();
     </script>
 
