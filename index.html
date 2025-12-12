@@ -12,9 +12,9 @@
         :root {
             --bg-dark: #050505;
             --text-color: #ffffff;
-            --primary: #00f260; /* Green */
-            --secondary: #0575e6; /* Blue */
-            --accent: #f70fff; /* Purple/Pink Pop */
+            --primary: #00f260; 
+            --secondary: #0575e6; 
+            --neon-blue: #00ffff; /* Globe ka colour */
             --font-main: 'Outfit', sans-serif;
         }
 
@@ -31,64 +31,16 @@
             min-width: 1200px;
             overflow-x: hidden;
             height: 100vh;
-            position: relative;
         }
 
-        /* --- ADVANCED ANIMATED BACKGROUND (Liquid Blobs) --- */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-            background: #080808;
-        }
-
-        /* Yeh wo ghumne wale gole (blobs) hain */
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: floatBlob 10s infinite alternate;
-        }
-
-        .blob-1 {
-            width: 500px; height: 500px;
-            background: var(--secondary);
-            top: -10%; left: -10%;
-        }
-
-        .blob-2 {
-            width: 400px; height: 400px;
-            background: var(--accent);
-            bottom: -10%; right: -10%;
-            animation-duration: 15s;
-        }
-
-        .blob-3 {
-            width: 300px; height: 300px;
-            background: var(--primary);
-            top: 40%; left: 40%;
-            opacity: 0.4;
-            animation: floatBlob 12s infinite alternate-reverse;
-        }
-
-        @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.1); }
-        }
-
-        /* Grid Pattern Overlay for Tech Feel */
+        /* --- BACKGROUND --- */
         .grid-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background-size: 60px 60px;
             z-index: -1;
         }
 
@@ -97,211 +49,199 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 100px;
-            position: absolute; /* Fixed nahi, taaki scroll smoothly ho */
+            padding: 20px 80px; /* Padding kam ki */
             width: 100%;
-            top: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(5,5,5,0.9);
             z-index: 100;
         }
 
         .logo {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #fff;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 60px;
+            gap: 50px;
         }
 
         .nav-links a {
             text-decoration: none;
             color: rgba(255,255,255,0.7);
-            font-size: 1.1rem;
             font-weight: 500;
             transition: 0.3s;
-            position: relative;
         }
 
-        .nav-links a:hover {
-            color: #fff;
-        }
+        .nav-links a:hover { color: var(--neon-blue); }
 
-        /* Link ke neeche line aane wala effect */
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0; height: 2px;
-            bottom: -5px; left: 0;
-            background: var(--primary);
-            transition: 0.3s;
-        }
-        .nav-links a:hover::after { width: 100%; }
-
-        /* --- HERO SECTION (Split Layout) --- */
+        /* --- HERO SECTION --- */
         .hero {
-            height: 100vh;
-            min-height: 800px;
+            /* Height adjust ki taaki jyada gap na ho */
+            height: calc(100vh - 80px); 
             display: flex;
-            align-items: center;
-            justify-content: space-between; /* Alag-alag ends par */
-            padding: 0 100px;
-            position: relative;
+            align-items: center; /* Vertically center */
+            justify-content: space-between; 
+            padding: 0 120px; /* Side padding */
         }
 
         /* LEFT SIDE: TEXT */
         .hero-text {
-            width: 50%;
+            width: 45%; /* Width fix ki */
             z-index: 2;
         }
 
         .hero-text h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
             font-weight: 600;
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .hero-text h1 {
-            font-size: 5rem;
+            font-size: 4.5rem;
             font-weight: 800;
             line-height: 1.1;
-            margin-bottom: 20px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(120deg, #fff, var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
         }
 
         .hero-text h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: #cbd5e1;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .hero-text p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #94a3b8;
-            line-height: 1.8;
-            max-width: 90%;
-            margin-bottom: 40px;
-            border-left: 3px solid var(--primary);
-            padding-left: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            border-left: 2px solid var(--neon-blue);
+            padding-left: 15px;
         }
 
         /* Buttons */
-        .btn-group {
-            display: flex;
-            gap: 20px;
-        }
-
         .btn {
-            padding: 18px 45px;
-            border-radius: 5px; /* Thoda boxy look pro lagta hai */
+            padding: 15px 40px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            display: inline-block;
+            margin-right: 15px;
+            transition: 0.3s;
         }
 
         .btn-fill {
-            background: #fff;
+            background: var(--neon-blue);
             color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
-        
+
         .btn-fill:hover {
-            background: var(--primary);
-            box-shadow: 0 0 30px var(--primary);
-            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+            transform: translateY(-3px);
         }
 
         .btn-outline {
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             color: #fff;
         }
 
-        .btn-outline:hover {
-            border-color: #fff;
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* RIGHT SIDE: IMAGE / VISUAL */
+        /* --- RIGHT SIDE: MORPHING ANIMATION --- */
         .hero-img {
-            width: 45%;
-            height: 100%;
+            width: 45%; /* Text aur image ke beech 10% gap rahega */
+            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
         }
 
-        /* Image Container for Effects */
-        .img-box {
-            position: relative;
+        /* Container jisme dono images rahengi */
+        .morph-container {
             width: 450px;
             height: 450px;
-            /* Floating Animation */
-            animation: floatImage 6s ease-in-out infinite;
-        }
-
-        @keyframes floatImage {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-        }
-
-        .img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 30px rgba(5, 117, 230, 0.5));
-            z-index: 2;
             position: relative;
         }
 
-        /* Peeche ka ghoomta hua circle */
-        .circle-spin {
+        /* Common styles for both images */
+        .morph-item {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px; height: 500px;
-            border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 50%;
-            z-index: 1;
-            animation: spin 20s linear infinite;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            object-fit: contain;
+            transition: opacity 1.5s ease-in-out; /* Smooth transition */
         }
 
-        @keyframes spin {
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        /* 1. GLOBE (Neon Blue) */
+        .globe-icon {
+            /* Neon Filter */
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            animation: spinGlobe 20s linear infinite, fadeSequence 8s infinite;
+            opacity: 1;
+        }
+
+        /* 2. CHARACTER (3D Guy) */
+        .char-img {
+            /* Character start mein chipa rahega */
+            opacity: 0; 
+            animation: floatChar 4s ease-in-out infinite, showSequence 8s infinite;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
+
+        /* --- ANIMATIONS --- */
+
+        /* Globe Rotate */
+        @keyframes spinGlobe {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Character Float */
+        @keyframes floatChar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* FADE LOGIC (Timing match hona chahiye) 
+           Total Time: 8s
+           0-4s: Globe dikhega
+           4-8s: Character dikhega
+        */
+
+        @keyframes fadeSequence {
+            0%, 45% { opacity: 1; }  /* Globe Visible */
+            50%, 95% { opacity: 0; } /* Globe Hidden */
+            100% { opacity: 1; }     /* Globe Back */
+        }
+
+        @keyframes showSequence {
+            0%, 45% { opacity: 0; }  /* Character Hidden */
+            50%, 95% { opacity: 1; } /* Character Visible */
+            100% { opacity: 0; }     /* Character Hidden */
         }
 
     </style>
 </head>
 <body>
 
-    <div class="background-container">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
     <div class="grid-overlay"></div>
 
     <nav>
-        <a href="#" class="logo">PORTFOLIO<span style="color:var(--primary)">.</span></a>
+        <a href="#" class="logo">PORTFOLIO.</a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">Details</a></li>
+            <li><a href="#about">About</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -310,23 +250,28 @@
     <section class="hero">
         
         <div class="hero-text">
-            <h3>HELLO, I AM</h3>
-            <h1><span class="gradient-text">[Aapka Naam]</span></h1>
+            <h3>Welcome To My World</h3>
+            <h1>I'm [Aapka Naam]</h1>
             <h2>Creative Developer</h2>
             <p>
-                Transforming ideas into digital reality. I build interactive websites 
-                with high-end designs and smooth animations.
+                Building digital products, brands, and experiences. 
+                I turn complex problems into simple, beautiful designs.
             </p>
             <div class="btn-group">
-                <a href="#work" class="btn btn-fill">My Portfolio</a>
-                <a href="#contact" class="btn btn-outline">Contact Me</a>
+                <a href="#work" class="btn btn-fill">My Work</a>
+                <a href="#contact" class="btn btn-outline">Contact</a>
             </div>
         </div>
 
         <div class="hero-img">
-            <div class="img-box">
-                <div class="circle-spin"></div>
-                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-3454628-2918517.png" alt="Hero Image">
+            <div class="morph-container">
+                
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Globe_wireframe_blue.svg/1024px-Globe_wireframe_blue.svg.png" 
+                     class="morph-item globe-icon" alt="Globe">
+
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-3454628-2918517.png" 
+                     class="morph-item char-img" alt="Me">
+                     
             </div>
         </div>
 
