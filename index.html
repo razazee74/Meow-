@@ -2,253 +2,179 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200"> <title>Gamer Dev Portfolio</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flying Butterfly Website</title>
     <style>
-        :root {
-            --bg: #050510;
-            --neon: #00f3ff; /* Cyan Blue */
-            --accent: #7000ff; /* Purple for contrast */
-            --text: #ffffff;
-            --font: 'Outfit', sans-serif;
-        }
-
-        * {
+        /* --- CSS STYLES --- */
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for links */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            overflow: hidden; /* Scroll band */
-            position: relative;
-        }
-
-        /* --- BACKGROUND GLOWS --- */
-        .glow-spot {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
-            top: -10%;
-            left: -10%;
-            z-index: -1;
-        }
-        .glow-spot-2 {
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(112, 0, 255, 0.1) 0%, transparent 70%);
-            bottom: -20%;
-            right: -10%;
-            z-index: -1;
-        }
-
-        /* --- NAVBAR --- */
+        /* Navigation Bar */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 100px;
+            position: fixed;
+            top: 0;
             width: 100%;
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Page Sections Styling */
+        section {
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Colors for different pages */
+        #home { background: linear-gradient(to bottom, #87CEEB, #E0F7FA); }
+        #page2 { background: linear-gradient(to bottom, #E0F7FA, #98FB98); }
+        #page3 { background: linear-gradient(to bottom, #98FB98, #FFE4B5); }
+        #page4 { background: linear-gradient(to bottom, #FFE4B5, #FF7F50); }
+
+        h1 { font-size: 3rem; color: #333; }
+        p { font-size: 1.2rem; color: #555; max-width: 600px; }
+
+        /* --- BUTTERFLY CONTAINER CSS --- */
+        #butterfly-group {
+            position: fixed; /* Fixed so they stay on screen while scrolling */
+            width: 200px;
+            height: auto;
+            z-index: 999; /* On top of everything */
+            
+            /* Initial Position: Home Page (Top Right) */
+            top: 20%;
+            right: 10%; 
+            left: auto; 
+            
+            /* Smooth transition for movement */
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        /* Styling individual butterflies */
+        .butterfly {
+            width: 80px; /* Size of butterfly */
+            height: auto;
+            display: block;
+            margin-bottom: -20px;
+            filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+        }
+
+        /* Small floating animation to make them look alive */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .butterfly {
+            animation: float 3s ease-in-out infinite;
         }
         
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--text);
-            text-decoration: none;
-        }
-        .logo span { color: var(--neon); }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #a0a0a0;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--neon); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            display: flex;
-            height: calc(100vh - 80px); /* Full height minus navbar */
-            padding: 0 100px;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        /* LEFT SIDE: TEXT */
-        .hero-text {
-            width: 45%;
-            z-index: 10;
-        }
-
-        .hero-text h4 {
-            font-size: 1.5rem;
-            color: var(--neon);
-            margin-bottom: 10px;
-        }
-
-        .hero-text h1 {
-            font-size: 5rem;
-            line-height: 1.1;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-transform: capitalize;
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            color: #b0b0b0;
-            line-height: 1.6;
-            margin-bottom: 35px;
-            max-width: 500px;
-        }
-
-        /* Hire Me Button */
-        .btn-hire {
-            display: inline-flex;
-            align-items: center;
-            padding: 15px 40px;
-            background: linear-gradient(90deg, var(--neon), var(--accent));
-            color: #fff;
-            font-weight: 800;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
-            transition: 0.3s;
-        }
-
-        .btn-hire i { margin-left: 10px; }
-        .btn-hire:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.5); }
-
-        /* RIGHT SIDE: ANIMATION CONTAINER */
-        .hero-visual {
-            width: 50%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            align-items: flex-end; /* Bottom se align */
-            justify-content: center;
-        }
-
-        /* The Boy & PC Image */
-        .char-img {
-            width: 100%;
-            max-width: 650px;
-            /* Yahan Animation hai: Neeche se upar aayega */
-            transform: translateY(100%); 
-            animation: slideUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            
-            /* Image ke peeche glow */
-            filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.2));
-            position: relative;
-            z-index: 5;
-            bottom: -20px; /* Thoda adjust taaki ekdam bottom se nikle */
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* FLOATING ICONS (Video jaise) */
-        .float-icon {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            z-index: 4; /* Character ke peeche */
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .float-icon i { font-size: 2rem; }
-
-        /* Icon Positions */
-        .icon-1 { top: 20%; right: 10%; width: 70px; height: 70px; color: #e34c26; animation-delay: 0s; } /* HTML Color */
-        .icon-2 { top: 40%; left: 10%; width: 60px; height: 60px; color: #264de4; animation-delay: 1s; } /* CSS Color */
-        .icon-3 { top: 10%; left: 40%; width: 50px; height: 50px; color: #f7df1e; animation-delay: 2s; } /* JS Color */
-        .icon-4 { bottom: 30%; right: 0%; width: 80px; height: 80px; color: #61dbfb; animation-delay: 1.5s; z-index: 6; } /* React Color (Front) */
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Lightning Bolt (Video jaisa) */
-        .bolt {
-            position: absolute;
-            top: 15%;
-            right: 5%;
-            font-size: 8rem;
-            color: rgba(255, 255, 0, 0.1);
-            transform: rotate(20deg);
-            z-index: 1;
+        /* Make the second butterfly move slightly differently */
+        .butterfly:nth-child(2) {
+            margin-left: 50px;
+            width: 60px;
+            animation-duration: 4s;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="glow-spot"></div>
-    <div class="glow-spot-2"></div>
-
-    <i class="fas fa-bolt bolt"></i>
-
     <nav>
-        <a href="#" class="logo">noah<span>.</span></a>
-        <ul class="nav-links">
-            <li><a href="#home" style="color:var(--text)">Home</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#connect">Connect</a></li>
-        </ul>
-        <a href="#" style="text-decoration:none; color:white; border:1px solid #333; padding:8px 20px; border-radius:20px; font-size:0.9rem;">Download Resume</a>
+        <a href="#home">Home</a>
+        <a href="#page2">Details</a>
+        <a href="#page3">Services</a>
+        <a href="#page4">Contact</a>
     </nav>
 
-    <section class="hero">
-        
-        <div class="hero-text">
-            <h4>Hey, I am [Name]</h4>
-            <h1>web <br> developer</h1>
-            <p>
-                I create stunning websites with modern animations and high performance. Let's build something unique together.
-            </p>
-            <a href="#" class="btn-hire">
-                Hire me <i class="fas fa-envelope"></i>
-            </a>
-        </div>
+    <div id="butterfly-group">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcW12bWx4eXF4eXF4eXF4eXF4eXF4eXF4eXF4eXF4eXF4/L0q1vW0gqW0g/giphy.gif" class="butterfly" alt="Butterfly 1">
+        <img src="https://i.gifer.com/origin/f0/f06871a8f949c2980662d5964a7c858c_w200.gif" class="butterfly" alt="Butterfly 2">
+    </div>
 
-        <div class="hero-visual">
-            
-            <div class="float-icon icon-1"><i class="fab fa-html5"></i></div>
-            <div class="float-icon icon-2"><i class="fab fa-css3-alt"></i></div>
-            <div class="float-icon icon-3"><i class="fab fa-js"></i></div>
-            <div class="float-icon icon-4"><i class="fab fa-react"></i></div> <img src="https://cdni.iconscout.com/illustration/premium/thumb/gamer-playing-online-video-game-5139423-4305739.png" 
-                 alt="Gamer Developer" class="char-img">
-        </div>
-
+    <section id="home">
+        <h1>Welcome to Nature World</h1>
+        <p>Yeh Home Page hai. Yahan dekhiye right side mein titliyan ud rahi hain.</p>
+        <p><strong>Niche scroll karein jaadu dekhne ke liye!</strong></p>
     </section>
 
+    <section id="page2">
+        <h1>Page 2: The Forest</h1>
+        <p>Jaise hi aap yahan aaye, titliyan left side mein aa gayin!</p>
+        <p>Yahan hum environment ki baatein karenge.</p>
+    </section>
+
+    <section id="page3">
+        <h1>Page 3: Sunset View</h1>
+        <p>Aur niche scroll karte rahiye.</p>
+    </section>
+
+    <section id="page4">
+        <h1>Page 4: Contact Us</h1>
+        <p>Website ka ant yahan hota hai.</p>
+    </section>
+
+    <script>
+        // HTML elements ko select kar rahe hain
+        const butterflyGroup = document.getElementById('butterfly-group');
+        const homeSection = document.getElementById('home');
+        const page2Section = document.getElementById('page2');
+
+        // Scroll event listener lagayenge
+        window.addEventListener('scroll', () => {
+            
+            // Pata lagayenge ki user ne kitna scroll kiya hai
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            // Logic: Agar scroll 50% se zyada niche gaya (Page 2 ki taraf)
+            if (scrollPosition > windowHeight / 3) {
+                // --- STATE: PAGE 2 (Move to Left & Down) ---
+                
+                // CSS properties change kar rahe hain JS se
+                butterflyGroup.style.top = "60%";  // Thoda niche aa jaye
+                butterflyGroup.style.right = "auto"; // Right se hatao
+                butterflyGroup.style.left = "5%";    // Left side mein set karo
+                
+                // Titli ka muh ghumane ke liye (Mirror effect)
+                // Taaki wo left ki taraf udti hui dikhe
+                butterflyGroup.style.transform = "scaleX(-1)"; 
+            } 
+            else {
+                // --- STATE: HOME PAGE (Back to Top Right) ---
+                
+                butterflyGroup.style.top = "20%";    // Wapis upar
+                butterflyGroup.style.left = "auto";  // Left se hatao
+                butterflyGroup.style.right = "10%";  // Right side mein set karo
+                
+                // Normal direction
+                butterflyGroup.style.transform = "scaleX(1)"; 
+            }
+        });
+    </script>
 </body>
 </html>
