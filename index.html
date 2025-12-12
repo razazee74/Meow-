@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=1200">
     <title>Pro Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- CSS VARIABLES --- */
         :root {
-            --bg-dark: #050505;
+            --bg-color: #0b0d15;
             --text-color: #ffffff;
-            --primary: #00f260; 
-            --secondary: #0575e6; 
-            --neon-blue: #00ffff; /* Globe ka colour */
-            --font-main: 'Outfit', sans-serif;
+            --primary: #00f260; /* Neon Green */
+            --cyan: #00e5ff;    /* Cyan */
+            --glass: rgba(255, 255, 255, 0.05);
+            --font-main: 'Rajdhani', sans-serif; /* Tech Font */
         }
 
         * {
@@ -26,22 +26,48 @@
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-color);
             color: var(--text-color);
             min-width: 1200px;
-            overflow-x: hidden;
+            overflow: hidden; /* Scroll band kiya taaki background effect mast dikhe */
             height: 100vh;
+            position: relative;
         }
 
-        /* --- BACKGROUND --- */
-        .grid-overlay {
-            position: fixed;
+        /* --- BACKGROUND ANIMATION (Floating Cyber Squares) --- */
+        .background-anim {
+            position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            overflow: hidden;
             z-index: -1;
+        }
+
+        .cube {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.1); /* Transparent White */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            bottom: -150px;
+            animation: floatUp 25s infinite linear;
+        }
+
+        /* Alag alag size aur speed wale squares */
+        .cube:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .cube:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .cube:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .cube:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; background: rgba(0, 242, 96, 0.1); }
+        .cube:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .cube:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; background: rgba(0, 229, 255, 0.1); }
+        .cube:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .cube:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .cube:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+        .cube:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
 
         /* --- NAVBAR --- */
@@ -49,19 +75,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 80px; /* Padding kam ki */
+            padding: 25px 100px;
             width: 100%;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(5,5,5,0.9);
             z-index: 100;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 2rem;
+            font-weight: 700;
             color: #fff;
             text-decoration: none;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--cyan);
         }
 
         .nav-links {
@@ -73,91 +98,99 @@
         .nav-links a {
             text-decoration: none;
             color: rgba(255,255,255,0.7);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.1rem;
             transition: 0.3s;
+            text-transform: uppercase;
         }
 
-        .nav-links a:hover { color: var(--neon-blue); }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         /* --- HERO SECTION --- */
         .hero {
-            /* Height adjust ki taaki jyada gap na ho */
-            height: calc(100vh - 80px); 
+            height: calc(100vh - 100px);
             display: flex;
-            align-items: center; /* Vertically center */
-            justify-content: space-between; 
-            padding: 0 120px; /* Side padding */
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 120px;
+            position: relative;
         }
 
-        /* LEFT SIDE: TEXT */
+        /* LEFT TEXT */
         .hero-text {
-            width: 45%; /* Width fix ki */
+            width: 50%;
             z-index: 2;
         }
 
         .hero-text h3 {
-            font-size: 1.4rem;
-            color: var(--neon-blue);
-            margin-bottom: 5px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
         }
 
         .hero-text h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 15px;
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
-        .hero-text h2 {
-            font-size: 2.2rem;
-            color: #cbd5e1;
-            margin-bottom: 25px;
+        .hero-text h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px #fff; /* Outline text effect */
         }
 
         .hero-text p {
-            font-size: 1.1rem;
-            color: #94a3b8;
+            font-size: 1.2rem;
+            color: #b0b0b0;
             line-height: 1.6;
-            margin-bottom: 30px;
-            border-left: 2px solid var(--neon-blue);
-            padding-left: 15px;
+            margin-bottom: 40px;
+            max-width: 500px;
+            border-left: 4px solid var(--cyan);
+            padding-left: 20px;
         }
 
-        /* Buttons */
+        /* Cyber Buttons */
         .btn {
-            padding: 15px 40px;
-            border-radius: 5px;
+            padding: 15px 45px;
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             display: inline-block;
-            margin-right: 15px;
+            margin-right: 20px;
+            position: relative;
+            overflow: hidden;
             transition: 0.3s;
         }
 
-        .btn-fill {
-            background: var(--neon-blue);
+        .btn-main {
+            background: var(--cyan);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%); /* Cut corners */
         }
 
-        .btn-fill:hover {
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
-            transform: translateY(-3px);
+        .btn-main:hover {
+            box-shadow: 0 0 30px var(--cyan);
+            transform: scale(1.05);
         }
 
-        .btn-outline {
-            border: 1px solid rgba(255,255,255,0.3);
+        .btn-sec {
+            background: transparent;
             color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-sec:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #fff;
         }
 
-        /* --- RIGHT SIDE: MORPHING ANIMATION --- */
-        .hero-img {
-            width: 45%; /* Text aur image ke beech 10% gap rahega */
+        /* --- RIGHT SIDE: TECH CORE ANIMATION (No Image) --- */
+        .hero-visual {
+            width: 45%;
             height: 500px;
             display: flex;
             justify-content: center;
@@ -165,83 +198,103 @@
             position: relative;
         }
 
-        /* Container jisme dono images rahengi */
-        .morph-container {
-            width: 450px;
-            height: 450px;
+        /* Core Structure */
+        .tech-core {
             position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Common styles for both images */
-        .morph-item {
+        /* Center Glowing Orb */
+        .core-center {
+            width: 100px;
+            height: 100px;
+            background: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 50px var(--cyan), inset 0 0 20px #fff;
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        /* Rotating Rings */
+        .ring {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            object-fit: contain;
-            transition: opacity 1.5s ease-in-out; /* Smooth transition */
+            border-radius: 50%;
+            border: 2px solid transparent;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
         }
 
-        /* 1. GLOBE (Neon Blue) */
-        .globe-icon {
-            /* Neon Filter */
-            filter: drop-shadow(0 0 10px var(--neon-blue));
-            animation: spinGlobe 20s linear infinite, fadeSequence 8s infinite;
-            opacity: 1;
+        /* Ring 1 - Outer */
+        .ring-1 {
+            width: 300px; height: 300px;
+            border-top: 4px solid var(--primary);
+            border-bottom: 4px solid var(--primary);
+            animation: spin 10s linear infinite;
         }
 
-        /* 2. CHARACTER (3D Guy) */
-        .char-img {
-            /* Character start mein chipa rahega */
-            opacity: 0; 
-            animation: floatChar 4s ease-in-out infinite, showSequence 8s infinite;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        /* Ring 2 - Middle */
+        .ring-2 {
+            width: 220px; height: 220px;
+            border-left: 4px solid var(--cyan);
+            border-right: 4px solid var(--cyan);
+            animation: spinReverse 6s linear infinite;
         }
 
-        /* --- ANIMATIONS --- */
-
-        /* Globe Rotate */
-        @keyframes spinGlobe {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        /* Ring 3 - Inner */
+        .ring-3 {
+            width: 160px; height: 160px;
+            border-top: 2px dashed #fff;
+            border-bottom: 2px dashed #fff;
+            animation: spin 3s linear infinite;
         }
 
-        /* Character Float */
-        @keyframes floatChar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        /* Floating Cards around Core */
+        .tech-card {
+            position: absolute;
+            background: rgba(11, 13, 21, 0.8);
+            border: 1px solid var(--cyan);
+            padding: 10px 20px;
+            color: var(--cyan);
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+            animation: floatCard 4s infinite ease-in-out;
         }
 
-        /* FADE LOGIC (Timing match hona chahiye) 
-           Total Time: 8s
-           0-4s: Globe dikhega
-           4-8s: Character dikhega
-        */
+        .card-1 { top: 20px; right: -20px; animation-delay: 0s; }
+        .card-2 { bottom: 40px; left: -40px; animation-delay: 2s; border-color: var(--primary); color: var(--primary); }
 
-        @keyframes fadeSequence {
-            0%, 45% { opacity: 1; }  /* Globe Visible */
-            50%, 95% { opacity: 0; } /* Globe Hidden */
-            100% { opacity: 1; }     /* Globe Back */
-        }
-
-        @keyframes showSequence {
-            0%, 45% { opacity: 0; }  /* Character Hidden */
-            50%, 95% { opacity: 1; } /* Character Visible */
-            100% { opacity: 0; }     /* Character Hidden */
-        }
+        /* Animations */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.8; } }
+        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     </style>
 </head>
 <body>
 
-    <div class="grid-overlay"></div>
+    <ul class="background-anim">
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+        <li class="cube"></li>
+    </ul>
 
     <nav>
-        <a href="#" class="logo">PORTFOLIO.</a>
+        <a href="#" class="logo">DEV<span style="color:var(--primary)">.PORTFOLIO</span></a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -250,28 +303,21 @@
     <section class="hero">
         
         <div class="hero-text">
-            <h3>Welcome To My World</h3>
-            <h1>I'm [Aapka Naam]</h1>
-            <h2>Creative Developer</h2>
+            <h3>HELLO, I AM</h3>
+            <h1>[YOUR NAME] <br> <span>DEVELOPER</span></h1>
             <p>
-                Building digital products, brands, and experiences. 
-                I turn complex problems into simple, beautiful designs.
+                Building futuristic web experiences. I specialize in backend architecture and high-performance UI design.
             </p>
-            <div class="btn-group">
-                <a href="#work" class="btn btn-fill">My Work</a>
-                <a href="#contact" class="btn btn-outline">Contact</a>
+            <div class="btn-box">
+                <a href="#work" class="btn btn-main">View Projects</a>
+                <a href="#contact" class="btn btn-sec">Contact Me</a>
             </div>
         </div>
 
-        <div class="hero-img">
-            <div class="morph-container">
-                
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Globe_wireframe_blue.svg/1024px-Globe_wireframe_blue.svg.png" 
-                     class="morph-item globe-icon" alt="Globe">
-
-                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-3454628-2918517.png" 
-                     class="morph-item char-img" alt="Me">
-                     
+        <div class="hero-visual">
+            <div class="tech-core">
+                <div class="core-center"></div> <div class="ring ring-1"></div> <div class="ring ring-2"></div> <div class="ring ring-3"></div> <div class="tech-card card-1">SYSTEM: ONLINE</div>
+                <div class="tech-card card-2">DESIGN: ACTIVE</div>
             </div>
         </div>
 
