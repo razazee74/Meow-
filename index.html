@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200"> <title>Gamer Portfolio</title>
+    <meta name="viewport" content="width=1200"> <title>Blue Tech Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- CSS VARIABLES --- */
         :root {
-            --primary: #00f2ff; /* Cyber Cyan */
-            --accent: #ff0055;  /* Neon Pink */
-            --text: #ffffff;
-            --font-head: 'Orbitron', sans-serif; /* Sci-fi Font */
-            --font-body: 'Montserrat', sans-serif; /* Bold Readable Font */
+            --bg-blue: #020c1b;
+            --neon-blue: #00f3ff; /* Chamakne wala Blue */
+            --deep-blue: #0a192f;
+            --text-white: #e6f1ff;
+            --font-head: 'Rajdhani', sans-serif;
+            --font-body: 'Montserrat', sans-serif;
         }
 
         * {
@@ -24,206 +25,210 @@
         }
 
         body {
-            background-color: #000;
-            color: var(--text);
+            background-color: var(--bg-blue);
+            color: var(--text-white);
             min-width: 1200px;
-            overflow-x: hidden;
-        }
-
-        /* --- HERO SECTION WITH GAMING BACKGROUND --- */
-        .hero {
+            overflow: hidden; /* Scroll band taaki effect kharab na ho */
             height: 100vh;
-            width: 100%;
-            position: relative;
-            display: flex;
-            align-items: center; /* Vertically center */
-            padding-left: 100px; /* Left se gap */
-            
-            /* BACKGROUND IMAGE (Real PC Setup) */
-            /* Aap is link ko change karke apni pasand ki photo laga sakte ho */
-            background: url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=2600&auto=format&fit=crop') no-repeat center center/cover;
-            
-            /* Smooth Scroll Fix */
-            background-attachment: fixed;
         }
 
-        /* Dark Overlay (Taaki text photo ke upar saaf dikhe) */
-        .hero-overlay {
+        /* --- BACKGROUND CONTAINER (Moving Image) --- */
+        .bg-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            /* High Quality Blue Tech Abstract Image */
+            background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670&auto=format&fit=crop') no-repeat center center/cover;
+            
+            /* Cinematic Zoom Animation */
+            animation: slowZoom 20s infinite alternate linear;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); } /* Dheere dheere bada hoga */
+        }
+
+        /* --- BLUE OVERLAY (Gradient) --- */
+        .overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Left side dark hogi (Text ke liye), Right side transparent (PC dikhane ke liye) */
-            background: linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.2) 100%);
-            z-index: 1;
+            /* Left side dark blue, Right side transparent */
+            background: linear-gradient(90deg, rgba(2, 12, 27, 0.95) 0%, rgba(2, 12, 27, 0.8) 50%, rgba(0, 243, 255, 0.1) 100%);
+            z-index: -1;
+        }
+
+        /* --- FLOATING PARTICLES (Halka Motion) --- */
+        .particle {
+            position: absolute;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatUp 15s infinite linear;
+        }
+        
+        .p1 { width: 10px; height: 10px; left: 20%; bottom: -20px; animation-duration: 12s; }
+        .p2 { width: 6px; height: 6px; left: 50%; bottom: -20px; animation-duration: 18s; animation-delay: 2s; }
+        .p3 { width: 15px; height: 15px; left: 80%; bottom: -20px; animation-duration: 25s; animation-delay: 1s; opacity: 0.1; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100vh); opacity: 0; }
         }
 
         /* --- NAVBAR --- */
         nav {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%;
+            top: 0; width: 100%;
             padding: 30px 100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10; /* Overlay ke upar */
+            z-index: 100;
         }
 
         .logo {
             font-family: var(--font-head);
-            font-size: 2.2rem;
-            font-weight: 900;
+            font-size: 2rem;
+            font-weight: 700;
             color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--primary);
+            text-decoration: none;
+            letter-spacing: 2px;
         }
+        .logo span { color: var(--neon-blue); }
 
         .nav-links {
-            list-style: none;
             display: flex;
-            gap: 40px;
+            gap: 50px;
+            list-style: none;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: rgba(255,255,255,0.8);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 1rem;
-            letter-spacing: 1px;
+            color: #a8b2d1;
+            font-size: 1.1rem;
             transition: 0.3s;
         }
+        .nav-links a:hover { color: var(--neon-blue); }
 
-        .nav-links a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        /* --- MAIN TEXT CONTENT (Bold & Wide) --- */
-        .hero-content {
+        /* --- HERO CONTENT --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-left: 100px; /* Text left mein rahega */
             position: relative;
+        }
+
+        .content-box {
+            width: 75%; /* Screen ka 75% cover karega */
             z-index: 10;
-            width: 70%; /* Screen ka 70% hissa lega (Half se jyada) */
         }
 
-        .hero-content h3 {
+        .content-box h3 {
             font-family: var(--font-head);
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            color: var(--neon-blue);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
         }
 
-        /* Bada aur Bold Text */
-        .hero-content h1 {
-            font-family: var(--font-body);
-            font-size: 6.5rem; /* Bahut bada size */
-            font-weight: 900; /* Extra Bold */
+        .content-box h1 {
+            font-size: 6rem; /* Bada Text */
+            font-weight: 900;
             line-height: 1.1;
             margin-bottom: 25px;
             text-transform: uppercase;
         }
 
-        .text-outline {
-            -webkit-text-stroke: 2px #fff;
-            color: transparent;
+        .content-box h1 span {
+            color: #8892b0; /* Thoda greyish blue */
         }
 
-        .text-glow {
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-
-        .hero-content p {
-            font-size: 1.4rem;
-            color: #ccc;
-            max-width: 800px; /* Paragraph ki choudai */
+        .content-box p {
+            font-size: 1.3rem;
+            color: #8892b0;
+            max-width: 700px;
             line-height: 1.6;
             margin-bottom: 40px;
-            font-weight: 600;
-            border-left: 5px solid var(--accent);
-            padding-left: 25px;
+            border-left: 4px solid var(--neon-blue);
+            padding-left: 20px;
         }
 
         /* Buttons */
-        .btn-box {
-            display: flex;
-            gap: 20px;
-        }
-
         .btn {
-            padding: 20px 50px;
-            font-size: 1.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
+            padding: 18px 45px;
+            font-size: 1.1rem;
+            font-weight: 700;
             text-decoration: none;
-            font-family: var(--font-head);
-            letter-spacing: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            margin-right: 20px;
             transition: 0.3s;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%); /* Cut Design */
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.7);
-        }
-
-        .btn-outline {
+        .btn-main {
             background: transparent;
-            border: 2px solid #fff;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        .btn-main:hover {
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn-sec {
             color: #fff;
         }
-
-        .btn-outline:hover {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 0 30px rgba(255,255,255,0.5);
-        }
+        .btn-sec:hover { text-decoration: underline; }
 
     </style>
 </head>
 <body>
 
-    <section class="hero" id="home">
-        
-        <div class="hero-overlay"></div>
+    <div class="bg-container">
+        <div class="bg-image"></div> </div>
+    
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
 
-        <nav>
-            <a href="#" class="logo">PORTFOLIO<span style="color:var(--accent)">.</span></a>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#work">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+    <div class="overlay"></div>
 
-        <div class="hero-content">
-            <h3>Hello, I am</h3>
-            
-            <h1>
-                <span class="text-outline">[YOUR NAME]</span><br>
-                <span class="text-glow">DEVELOPER</span>
-            </h1>
+    <nav>
+        <a href="#" class="logo">PORT<span>FOLIO</span></a>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Work</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
 
+    <section class="hero">
+        <div class="content-box">
+            <h3>HELLO, I AM</h3>
+            <h1>[YOUR NAME]<br><span>WEB DEVELOPER</span></h1>
             <p>
-                I create high-performance websites with stunning designs. 
-                Passionate about code, gaming, and building the future of the web.
+                Crafting digital experiences with precision and code. 
+                Focusing on clean design, performance, and scalability.
             </p>
-
-            <div class="btn-box">
-                <a href="#work" class="btn btn-primary">My Work</a>
-                <a href="#contact" class="btn btn-outline">Contact</a>
+            <div>
+                <a href="#" class="btn btn-main">View Projects</a>
+                <a href="#" class="btn btn-sec">Contact Me</a>
             </div>
         </div>
-
     </section>
 
 </body>
