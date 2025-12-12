@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1200">
-    <title>My Portfolio</title>
+    <title>Pro Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         /* --- CSS VARIABLES --- */
         :root {
-            --bg-color: #0a0a0a;
+            --bg-dark: #050505;
             --text-color: #ffffff;
-            --accent-color: #00f260;
-            --accent-color-2: #0575e6;
-            --font-main: 'Poppins', sans-serif;
+            --primary: #00f260; /* Green */
+            --secondary: #0575e6; /* Blue */
+            --accent: #f70fff; /* Purple/Pink Pop */
+            --font-main: 'Outfit', sans-serif;
         }
 
         * {
@@ -22,36 +23,73 @@
             padding: 0;
             box-sizing: border-box;
             font-family: var(--font-main);
-            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
             color: var(--text-color);
-            /* Min-width set kar diya taaki content shrink na ho */
-            min-width: 1200px; 
+            min-width: 1200px;
             overflow-x: hidden;
+            height: 100vh;
+            position: relative;
         }
 
-        /* --- BACKGROUND GLOW --- */
-        .background-glow {
+        /* --- ADVANCED ANIMATED BACKGROUND (Liquid Blobs) --- */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: #080808;
+        }
+
+        /* Yeh wo ghumne wale gole (blobs) hain */
+        .blob {
             position: absolute;
-            width: 600px;
-            height: 600px;
-            background: linear-gradient(180deg, var(--accent-color), var(--accent-color-2));
-            filter: blur(180px);
             border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.15;
-            z-index: -1;
-            animation: moveGlow 15s infinite alternate;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatBlob 10s infinite alternate;
         }
 
-        @keyframes moveGlow {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-40%, -40%) scale(1.2); }
+        .blob-1 {
+            width: 500px; height: 500px;
+            background: var(--secondary);
+            top: -10%; left: -10%;
+        }
+
+        .blob-2 {
+            width: 400px; height: 400px;
+            background: var(--accent);
+            bottom: -10%; right: -10%;
+            animation-duration: 15s;
+        }
+
+        .blob-3 {
+            width: 300px; height: 300px;
+            background: var(--primary);
+            top: 40%; left: 40%;
+            opacity: 0.4;
+            animation: floatBlob 12s infinite alternate-reverse;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* Grid Pattern Overlay for Tech Feel */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
         }
 
         /* --- NAVBAR --- */
@@ -59,206 +97,240 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px 100px; /* Thoda padding badhaya desktop feel ke liye */
-            position: fixed;
+            padding: 30px 100px;
+            position: absolute; /* Fixed nahi, taaki scroll smoothly ho */
             width: 100%;
-            min-width: 1200px; /* Nav bhi shrink nahi hoga */
             top: 0;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
+            z-index: 100;
         }
 
         .logo {
             font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-weight: 800;
             color: #fff;
             text-decoration: none;
-        }
-        
-        .logo span {
-            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 50px;
+            gap: 60px;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #ccc;
+            color: rgba(255,255,255,0.7);
             font-size: 1.1rem;
             font-weight: 500;
             transition: 0.3s;
+            position: relative;
         }
 
         .nav-links a:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(0, 242, 96, 0.5);
+            color: #fff;
         }
 
-        /* --- HERO SECTION --- */
+        /* Link ke neeche line aane wala effect */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -5px; left: 0;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- HERO SECTION (Split Layout) --- */
         .hero {
             height: 100vh;
-            min-height: 700px; /* Height fix ki taaki content kate na */
+            min-height: 800px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: 80px; /* Navbar ke liye jagah */
+            justify-content: space-between; /* Alag-alag ends par */
+            padding: 0 100px;
+            position: relative;
         }
 
-        .hero-content {
-            max-width: 900px; /* Content chouda kiya */
+        /* LEFT SIDE: TEXT */
+        .hero-text {
+            width: 50%;
+            z-index: 2;
         }
 
-        .hero-content h3 {
-            font-size: 1.8rem;
-            font-weight: 400;
-            color: var(--accent-color);
-            margin-bottom: 15px;
+        .hero-text h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
-        .hero-content h1 {
-            font-size: 5.5rem; /* Font size badhaya desktop look ke liye */
-            font-weight: 700;
+        .hero-text h1 {
+            font-size: 5rem;
+            font-weight: 800;
             line-height: 1.1;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .gradient-text {
-            background: linear-gradient(to right, var(--accent-color), var(--accent-color-2));
+            background: linear-gradient(120deg, #fff, var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-content h2 {
+        .hero-text h2 {
             font-size: 2.5rem;
-            font-weight: 600;
-            color: #e0e0e0;
+            color: #cbd5e1;
             margin-bottom: 30px;
-            min-height: 50px;
         }
 
-        .typing-text::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .hero-content p {
-            max-width: 700px;
-            margin: 0 auto 50px auto;
-            color: #8892b0;
-            font-size: 1.3rem; /* Text thoda bada kiya taaki phone pe zoom out hone par bhi dikhe */
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #94a3b8;
             line-height: 1.8;
+            max-width: 90%;
+            margin-bottom: 40px;
+            border-left: 3px solid var(--primary);
+            padding-left: 20px;
         }
 
         /* Buttons */
-        .btn-box {
+        .btn-group {
             display: flex;
-            justify-content: center;
-            gap: 25px;
+            gap: 20px;
         }
 
         .btn {
-            padding: 16px 40px;
-            border-radius: 50px;
+            padding: 18px 45px;
+            border-radius: 5px; /* Thoda boxy look pro lagta hai */
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: 0.3s ease;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+        .btn-fill {
+            background: #fff;
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 242, 96, 0.4);
+        }
+        
+        .btn-fill:hover {
+            background: var(--primary);
+            box-shadow: 0 0 30px var(--primary);
+            transform: translateY(-5px);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 40px rgba(0, 242, 96, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--accent-color-2);
+        .btn-outline {
+            border: 2px solid rgba(255,255,255,0.3);
             color: #fff;
         }
 
-        .btn-secondary:hover {
-            background: rgba(5, 117, 230, 0.1);
-            transform: translateY(-3px);
+        .btn-outline:hover {
+            border-color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* RIGHT SIDE: IMAGE / VISUAL */
+        .hero-img {
+            width: 45%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Image Container for Effects */
+        .img-box {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            /* Floating Animation */
+            animation: floatImage 6s ease-in-out infinite;
+        }
+
+        @keyframes floatImage {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(5, 117, 230, 0.5));
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Peeche ka ghoomta hua circle */
+        .circle-spin {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 50%;
+            z-index: 1;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="background-glow"></div>
+    <div class="background-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
 
     <nav>
-        <a href="#" class="logo">Portfo<span>lio.</span></a>
+        <a href="#" class="logo">PORTFOLIO<span style="color:var(--primary)">.</span></a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">Details</a></li>
+            <li><a href="#work">Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h3>Hello, Welcome</h3>
-            <h1>I'm <span class="gradient-text">[Aapka Naam]</span></h1>
-            <h2>I am a <span class="typing-text"></span></h2>
+    <section class="hero">
+        
+        <div class="hero-text">
+            <h3>HELLO, I AM</h3>
+            <h1><span class="gradient-text">[Aapka Naam]</span></h1>
+            <h2>Creative Developer</h2>
             <p>
-                [Yahan par apna intro likhiye. Yeh text ab mobile par bhi Desktop jaisa faila hua dikhega, 
-                aur aapko zoom-in/pinch karke dekhna pad sakta hai agar screen chhoti hai.]
+                Transforming ideas into digital reality. I build interactive websites 
+                with high-end designs and smooth animations.
             </p>
-            <div class="btn-box">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            <div class="btn-group">
+                <a href="#work" class="btn btn-fill">My Portfolio</a>
+                <a href="#contact" class="btn btn-outline">Contact Me</a>
             </div>
         </div>
+
+        <div class="hero-img">
+            <div class="img-box">
+                <div class="circle-spin"></div>
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-3454628-2918517.png" alt="Hero Image">
+            </div>
+        </div>
+
     </section>
-
-    <script>
-        const typingText = document.querySelector(".typing-text");
-        const words = ["Web Developer", "Programmer", "UI/UX Designer", "Freelancer"];
-        
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        const typeEffect = () => {
-            const currentWord = words[wordIndex];
-            const currentChar = currentWord.substring(0, charIndex);
-            typingText.textContent = currentChar;
-
-            if (!isDeleting && charIndex < currentWord.length) {
-                charIndex++;
-                setTimeout(typeEffect, 100);
-            } else if (isDeleting && charIndex > 0) {
-                charIndex--;
-                setTimeout(typeEffect, 50);
-            } else {
-                isDeleting = !isDeleting;
-                wordIndex = !isDeleting ? (wordIndex + 1) % words.length : wordIndex;
-                setTimeout(typeEffect, 1500);
-            }
-        }
-        typeEffect();
-    </script>
 
 </body>
 </html>
