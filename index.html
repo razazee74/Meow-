@@ -4,137 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* General Reset */
+        /* --- CSS VARIABLES (Colors control karna easy hoga) --- */
+        :root {
+            --bg-color: #0a0a0a; /* Almost Black */
+            --text-color: #ffffff;
+            --accent-color: #00f260; /* Bright Green/Cyan gradient start */
+            --accent-color-2: #0575e6; /* Blue gradient end */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --font-main: 'Poppins', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-main);
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #0f172a; /* Dark Blue Background */
-            color: #e2e8f0; /* Light Text Color */
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden; /* Side scroll rokne ke liye */
         }
 
-        /* Navigation Bar */
+        /* --- BACKGROUND GLOW EFFECT (Pro Touch) --- */
+        .background-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(180deg, var(--accent-color), var(--accent-color-2));
+            filter: blur(150px); /* Bahut dhundhla glow */
+            border-radius: 50%;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            z-index: -1;
+            animation: moveGlow 10s infinite alternate;
+        }
+
+        @keyframes moveGlow {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-30%, -30%) scale(1.2); }
+        }
+
+        /* --- NAVBAR (Glass Effect) --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 20px 8%;
             position: fixed;
             width: 100%;
             top: 0;
-            background: rgba(15, 23, 42, 0.9); /* Thoda transparent */
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.8); /* See-through dark */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #38bdf8; /* Light Blue Accent */
-            cursor: pointer;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent-color); /* Dot ko green karna */
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 30px;
+            gap: 40px;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #e2e8f0;
+            color: #ccc;
+            font-size: 0.95rem;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: 0.3s;
         }
 
         .nav-links a:hover {
-            color: #38bdf8;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 242, 96, 0.5);
         }
 
-        /* Hero Section (Main Start) */
+        /* --- HERO SECTION --- */
         .hero {
-            height: 100vh; /* Puri screen cover karega */
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center; /* Center me content */
             text-align: center;
             padding: 0 20px;
+            position: relative;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
+        .hero-content h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--accent-color);
             margin-bottom: 10px;
         }
 
-        .hero h1 span {
-            color: #38bdf8; /* Naam ko highlight karne ke liye */
-        }
-
-        .hero h2 {
-            font-size: 2rem;
-            font-weight: 400;
-            color: #94a3b8;
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
             margin-bottom: 20px;
         }
 
-        .hero p {
-            max-width: 600px;
-            font-size: 1.1rem;
-            color: #cbd5e1;
+        /* Gradient Text Name */
+        .gradient-text {
+            background: linear-gradient(to right, var(--accent-color), var(--accent-color-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #e0e0e0;
             margin-bottom: 30px;
+            min-height: 40px; /* Text jump na kare */
+        }
+
+        /* Typing cursor */
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-content p {
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            color: #8892b0;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Buttons */
+        .btn-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
 
         .btn {
-            padding: 12px 30px;
-            background-color: #38bdf8;
-            color: #0f172a;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
+            padding: 14px 35px;
+            border-radius: 30px;
             text-decoration: none;
-            transition: background 0.3s;
+            font-weight: 600;
+            transition: 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #0ea5e9;
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 242, 96, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 242, 96, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-color-2);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(5, 117, 230, 0.1);
+            transform: translateY(-3px);
         }
 
     </style>
 </head>
 <body>
 
+    <div class="background-glow"></div>
+
     <nav>
-        <div class="logo">Portfolio.</div>
+        <a href="#" class="logo">Portfo<span>lio.</span></a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li> <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
     <section class="hero" id="home">
-        <h1>Hi, I'm <span>[Aapka Naam]</span></h1>
-        <h2>[Web Developer / Designer]</h2>
-        <p>
-            [Yahan aapka chhota sa intro aayega. Jaise: I create clean and modern websites keeping user experience in mind.]
-        </p>
-        <a href="#contact" class="btn">Get in Touch</a>
+        <div class="hero-content">
+            <h3>Hello, Welcome</h3>
+            <h1>I'm <span class="gradient-text">[Aapka Naam]</span></h1>
+            <h2>I am a <span class="typing-text"></span></h2>
+            <p>
+                [Yahan ek strong line likhein. Jaise: Building digital experiences with clean code and creative design. Let's create something amazing together.]
+            </p>
+            <div class="btn-box">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
     </section>
 
     <script>
-        // Filhal Hero section ke liye JS ki jarurat nahi hai, 
-        // lekin aage jab hum 'Scroll' effect dalenge to yahan code likhenge.
-        console.log("Portfolio loaded successfully!"); 
+        const typingText = document.querySelector(".typing-text");
+        // Neeche diye gaye words ko change kar sakte hain
+        const words = ["Web Developer", "UI/UX Designer", "Freelancer", "Coder"]; 
+        
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        const typeEffect = () => {
+            const currentWord = words[wordIndex];
+            const currentChar = currentWord.substring(0, charIndex);
+            
+            typingText.textContent = currentChar;
+
+            if (!isDeleting && charIndex < currentWord.length) {
+                // Likh raha hai
+                charIndex++;
+                setTimeout(typeEffect, 100);
+            } else if (isDeleting && charIndex > 0) {
+                // Mita raha hai
+                charIndex--;
+                setTimeout(typeEffect, 50);
+            } else {
+                // Word complete ho gaya
+                isDeleting = !isDeleting;
+                wordIndex = !isDeleting ? (wordIndex + 1) % words.length : wordIndex;
+                setTimeout(typeEffect, 1200); // Rukne ka time
+            }
+        }
+
+        typeEffect();
     </script>
 
 </body>
