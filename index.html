@@ -2,191 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High Quality Butterfly Website</title>
-    <link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
-
+    <meta name="viewport" content="width=1200, initial-scale=0.5, maximum-scale=3.0, user-scalable=yes">
+    <title>Safe Portal</title>
+    
     <style>
-        /* --- CSS START --- */
-        body, html {
+        /* --- CSS STYLES --- */
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: "Montserrat", sans-serif;
-            overflow-x: hidden; /* Horizontal scroll band */
-            background-color: #ffffff; /* Fallback color */
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* 3D Canvas (Butterflies) Background settings */
-        #app {
-            position: fixed; /* Fixed taaki scroll karne par bhi background wahi rahe */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1; /* Text ke piche rahe */
-            overflow: hidden;
+        body {
+            /* Ocean Flow Background Animation */
+            background: linear-gradient(-45deg, #001e3b, #004d7a, #006994, #0096c7);
+            background-size: 400% 400%;
+            animation: oceanFlow 15s ease infinite;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden; /* Horizontal scroll rokne ke liye */
         }
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
+        /* Background animation keyframes */
+        @keyframes oceanFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* --- CONTENT STYLING --- */
-        .content-container {
-            position: relative;
-            z-index: 10; /* Canvas ke upar dikhe */
-        }
-
-        section {
-            height: 100vh; /* Har page full screen hoga */
+        /* Navigation Bar */
+        header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 5%;
+            justify-content: space-between; /* Space between Logo and Links */
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(255, 255, 255, 0.1); /* Glass effect */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* Styling text boxes */
-        .glass-box {
-            background: rgba(255, 255, 255, 0.1); /* Halka transparent background */
-            backdrop-filter: blur(5px); /* Text ke piche thoda dhundhla taaki padha jaye */
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+        /* Safe Portal (Home Button) - Left Side */
+        .logo a {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        .glass-box:hover {
-            transform: scale(1.02);
+        .logo a:hover {
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        /* Right Side Navigation Links */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
             background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Main Content Area (Just for demo) */
+        .container {
+            width: 1000px; /* Fixed width for desktop feel */
+            margin: 100px auto;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         h1 {
-            font-size: 3rem;
-            color: #333;
+            font-size: 48px;
             margin-bottom: 20px;
-            font-weight: 800;
         }
 
-        h2 {
-            font-size: 2rem;
-            color: #444;
-            margin-bottom: 15px;
-        }
-
-        p, li {
-            font-size: 1.1rem;
-            color: #555;
+        p {
+            font-size: 20px;
             line-height: 1.6;
-            list-style: none;
+            margin-bottom: 30px;
         }
 
-        strong { color: #000; }
-
-        /* Alignment Logic (Left/Right) */
-        .align-left {
-            align-items: flex-start; /* Left side */
-            text-align: left;
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #00b4d8;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
         }
 
-        .align-right {
-            align-items: flex-end; /* Right side */
-            text-align: right;
+        .btn:hover {
+            background-color: #90e0ef;
+            color: #001e3b;
+            transform: scale(1.05);
         }
-        
-        /* Mobile ke liye bhi text readable rahe */
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            section { padding: 0 20px; }
-            .glass-box { width: 100%; }
-        }
-        /* --- CSS END --- */
+
     </style>
 </head>
 <body>
 
-    <div id="app"></div>
-
-    <div class="content-container">
+    <header>
+        <div class="logo">
+            <a href="index.html">Safe Portal</a>
+        </div>
         
-        <section class="align-left">
-            <div class="glass-box">
-                <h1>Hello, I am [Your Name]</h1>
-                <p>Welcome to my digital space. Scroll down to explore my premium automation services.</p>
-                <p style="margin-top: 10px; font-size: 0.9rem;"><i>Background mein jo aap dekh rahe hain, wo real-time 3D simulation hai.</i></p>
-            </div>
-        </section>
+        <nav>
+            <ul>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Vouchers</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <section class="align-right">
-            <div class="glass-box">
-                <h2>Automation & Ad Bots</h2>
-                <p>Humare advanced bots aapke business ko next level par le jayenge.</p>
-                <ul style="margin-top: 15px;">
-                    <li>✅ <strong>Advertisement Bot:</strong> Auto-post ads 24/7.</li>
-                    <li>✅ <strong>Lead Generation:</strong> Automatic client interaction.</li>
-                    <li>✅ <strong>Targeting:</strong> Sahi audience tak pahunch.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="align-left">
-            <div class="glass-box">
-                <h2>Instagram Monitor Bot</h2>
-                <p>Apne Instagram account ki health aur status ko track karein.</p>
-                <ul style="margin-top: 15px;">
-                    <li>🚀 <strong>Status Check:</strong> Account ban/shadowban checker.</li>
-                    <li>📈 <strong>Analytics:</strong> Growth tracking automated.</li>
-                    <li>🛡️ <strong>Security:</strong> Real-time alerts.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section style="align-items: center; text-align: center;">
-            <div class="glass-box">
-                <h2>Contact Us</h2>
-                <p>Apne business ko automate karne ke liye aaj hi sampark karein.</p>
-                <br>
-                <a href="#" style="background: #333; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Get Started</a>
-            </div>
-        </section>
-
+    <div class="container">
+        <h1 id="welcome-text">Welcome to the Deep Blue</h1>
+        <p>
+            Yeh website mobile par bhi desktop jaisi dikhegi.<br>
+            Aap screen ko zoom karke details padh sakte hain.<br>
+            Background mein ocean flow animation chal raha hai.
+        </p>
+        <a href="#" class="btn" onclick="showAlert()">Get Started</a>
     </div>
 
-    <script type="module">
-        // Tumhare diye gaye code library ko import kar rahe hain
-        import { butterfliesBackground } from 'https://unpkg.com/threejs-toys@0.0.7/build/threejs-toys.module.cdn.min.js'
+    <script>
+        // --- JAVASCRIPT ---
+        
+        // Simple function to demonstrate JS is working
+        function showAlert() {
+            alert("Safe Portal: Aapne Get Started par click kiya hai!");
+        }
 
-        // Butterflies ko initialize kar rahe hain
-        const pc = butterfliesBackground({
-            el: document.getElementById('app'), // Background div
-            eventsEl: document.body,          // Mouse/Touch events puri body par kaam kare
-            gpgpuSize: 42,                    // Quality/Quantity
-            background: 0xffffff,             // Background Color (White)
-            material: 'basic',
-            materialParams: { transparent: true, alphaTest: 0.5 },
-            texture: 'https://assets.codepen.io/33787/butterflies.png', // Real butterfly texture
-            textureCount: 4,                  // Kitne type ki titliyan
-            wingsScale: [1, 1, 1],
-            wingsWidthSegments: 8,
-            wingsHeightSegments: 8,
-            wingsSpeed: 0.75,                 // Udne ki speed
-            wingsDisplacementScale: 1.25,
-            noiseCoordScale: 0.01,
-            noiseTimeCoef: 0.0005,
-            noiseIntensity: 0.0025,
-            attractionRadius1: 100,           // Mouse ke paas aane ka radius
-            attractionRadius2: 150,
-            maxVelocity: 0.1,
+        // Console mein message check karne ke liye
+        console.log("Website Loaded Successfully in Desktop Mode");
+
+        // Optional: Header ka style change karna jab scroll karein
+        window.addEventListener("scroll", function() {
+            var header = document.querySelector("header");
+            if (window.scrollY > 0) {
+                header.style.background = "rgba(0, 30, 59, 0.9)";
+            } else {
+                header.style.background = "rgba(255, 255, 255, 0.1)";
+            }
         });
-
-        // Background color transparent rakhne ki koshish (Optional override)
-        // Agar aapko background color change karna ho to 'background: 0xffffff' upar change karein (Example: 0x000000 for black)
     </script>
 
 </body>
 </html>
+
