@@ -2,204 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200, initial-scale=1.0, user-scalable=yes">
-    <title>Safe Portal | Premium Ocean View</title>
+    
+    <meta name="viewport" content="width=1200, user-scalable=yes">
+    
+    <title>Safe Portal | Desktop View</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ADVANCED CSS STYLES --- */
+        /* --- GLOBAL STYLES --- */
         :root {
-            --primary-color: #00d2ff;
-            --secondary-color: #3a7bd5;
-            --text-light: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-glow: #00d2ff;
+            --deep-blue: #04091e;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif; /* Modern Font applied */
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
+            /* Desktop feel ke liye min-width set kiya hai */
+            min-width: 1200px; 
             min-height: 100vh;
             background: linear-gradient(180deg, #020024 0%, #090979 35%, #00d4ff 100%);
-            color: var(--text-light);
-            overflow-x: hidden;
+            color: white;
             position: relative;
+            overflow-x: hidden; /* Sirf horizontal scroll rokne ke liye agar zaroorat na ho */
         }
 
-        /* --- ADVANCED OCEAN WAVE BACKGROUND --- */
-        .ocean-container {
+        /* --- BACKGROUND ANIMATION (Waves) --- */
+        .ocean-wrapper {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 40vh; /* Covers bottom 40% of screen */
-            z-index: -1; /* Send behind content */
+            height: 45vh;
+            z-index: -1;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .wave {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 200%; /* Wider for smooth animation loop */
+            width: 200%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.2)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.15)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
             background-size: 50% 100%;
-            animation: waveMove 20s linear infinite;
+            animation: moveWave 25s linear infinite;
         }
 
-        /* Layering waves for depth */
         .wave:nth-child(2) {
-            bottom: 10px;
-            opacity: 0.5;
-            animation: waveMove 15s linear infinite reverse;
-        }
-        .wave:nth-child(3) {
-            bottom: 20px;
-            opacity: 0.3;
-            animation: waveMove 30s linear infinite;
+            bottom: 15px;
+            opacity: 0.6;
+            animation: moveWave 15s linear infinite reverse;
         }
 
-        @keyframes waveMove {
+        @keyframes moveWave {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        /* --- PREMIUM NAVIGATION BAR --- */
+        /* --- HEADER / NAVBAR --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 60px;
-            /* Advanced Glassmorphism */
-            background: rgba(4, 9, 30, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
+            width: 100%;
+            padding: 25px 80px; /* Thoda padding badhaya hai desktop look ke liye */
+            background: rgba(4, 9, 30, 0.6); /* Semi-transparent */
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-light);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         .logo a {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-light);
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
             text-decoration: none;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #fff, #00d2ff);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, var(--primary-glow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            transition: 0.3s;
+            text-shadow: 0px 0px 20px rgba(0, 210, 255, 0.5);
         }
 
         nav ul {
             display: flex;
+            gap: 50px;
             list-style: none;
-            gap: 40px;
         }
 
         nav ul li a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
             font-size: 18px;
             font-weight: 500;
-            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding-bottom: 5px;
             position: relative;
             transition: 0.3s;
         }
 
-        /* Advanced Hover underline effect */
         nav ul li a::after {
             content: '';
             position: absolute;
-            width: 0;
+            width: 0%;
             height: 2px;
             bottom: 0;
             left: 0;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
+            background: var(--primary-glow);
+            transition: 0.3s;
         }
 
         nav ul li a:hover {
-            color: var(--primary-color);
+            color: var(--primary-glow);
         }
-
+        
         nav ul li a:hover::after {
             width: 100%;
         }
 
-        /* --- MAIN CONTENT AREA --- */
+        /* --- HERO SECTION --- */
         .container {
-            width: 1100px; /* Fixed desktop width */
-            margin: 120px auto;
-            padding: 60px;
-            /* Premium Glass Card */
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            width: 1000px; /* Fixed container width */
+            margin: 100px auto;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 80px 50px;
+            
+            /* Advance Glassmorphism Card */
+            background: var(--glass-bg);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
         h1 {
-            font-size: 64px;
+            font-size: 72px; /* Bada text taki zoom-out hone par bhi dikhe */
             font-weight: 700;
-            margin-bottom: 25px;
-            letter-spacing: -1px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        p.hero-text {
-            font-size: 22px;
-            line-height: 1.8;
-            margin-bottom: 50px;
-            color: rgba(255,255,255,0.9);
+        p.subtitle {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #dbe4ff;
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 50px auto;
         }
 
-        /* Premium Gradient Button */
-        .btn-grad {
-            background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%);
-            margin: 10px;
-            padding: 20px 55px;
-            text-align: center;
-            text-transform: uppercase;
-            transition: 0.5s;
-            background-size: 200% auto;
-            color: white;            
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
-            border-radius: 50px;
+        /* Pro Button Styling */
+        .cta-btn {
             display: inline-block;
-            text-decoration: none;
+            padding: 22px 60px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 2px;
-            border: none;
-            cursor: pointer;
+            color: #04091e;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
         }
 
-        .btn-grad:hover {
-            background-position: right center; /* change the direction of the change here */
-            color: #fff;
-            box-shadow: 0 5px 30px rgba(0, 210, 255, 0.8);
-            transform: translateY(-3px);
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 210, 255, 0.9);
+            color: white;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="ocean-container">
-        <div class="wave"></div>
+    <div class="ocean-wrapper">
         <div class="wave"></div>
         <div class="wave"></div>
     </div>
@@ -208,51 +197,44 @@
         <div class="logo">
             <a href="index.html">Safe Portal</a>
         </div>
-        
         <nav>
             <ul>
-                <li><a href="#">Contact</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Vouchers</a></li>
-                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">About</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="container">
-        <h1>Experience the Deep Blue</h1>
-        <p class="hero-text">
-            Yeh design ab professional standard ka hai. Mobile par kholne par yeh poora zoomed-out view dega, jaisa aapne manga tha. Background mein layered waves ka advance animation hai.
+        <h1>Welcome to the Future</h1>
+        <p class="subtitle">
+            This layout is now locked to Desktop View. <br>
+            It will open fully zoomed out on mobile, showing the complete ocean background and navigation bar at once.
         </p>
-        <button class="btn-grad" onclick="advancedAction()">Explore System</button>
+        <a href="#" class="cta-btn" onclick="testAction()">Get Started</a>
     </div>
 
     <script>
         // --- JAVASCRIPT ---
         
-        // Simple function to demonstrate JS is working
-        function advancedAction() {
-            console.log("Button Clicked");
-            // Aap yahan koi bhi redirect ya action laga sakte hain
-            alert("Redirecting to secure dashboard...");
+        function testAction() {
+            alert("System Ready: Desktop view active on mobile.");
         }
 
-        // Console check
-        console.log("Advanced Desktop-Mode Website Loaded Successfully");
+        console.log("Full Desktop Width Enforced");
 
-        // Header appearance on scroll (optional advanced touch)
-        window.addEventListener("scroll", function() {
-            var header = document.querySelector("header");
+        // Scroll Effect for Header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
             if (window.scrollY > 50) {
-                header.style.background = "rgba(4, 9, 30, 0.85)";
-                header.style.padding = "15px 60px"; // Thoda sleek ho jayega scroll par
+                header.style.background = "rgba(4, 9, 30, 0.9)";
             } else {
-                header.style.background = "rgba(4, 9, 30, 0.5)";
-                header.style.padding = "20px 60px";
+                header.style.background = "rgba(4, 9, 30, 0.6)";
             }
         });
     </script>
-
 </body>
 </html>
 
