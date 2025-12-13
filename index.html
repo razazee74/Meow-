@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1400, user-scalable=yes">
-    <title>Safe Portal | Cinematic Profile</title>
+    <title>Safe Portal | Avatar Edition</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- RESET & CORE --- */
+        /* --- CORE SETTINGS --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #050505;
+            background-color: #02020a;
+            /* Background mein halka sa ocean flow effect */
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(76, 0, 255, 0.15), transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(0, 247, 255, 0.15), transparent 50%);
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
+                radial-gradient(circle at 20% 100%, #1a0b40 0%, transparent 50%),
+                radial-gradient(circle at 80% 0%, #004e92 0%, transparent 50%);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            min-width: 1400px;
             min-height: 100vh;
-            min-width: 1400px; /* Desktop Width */
-            overflow-x: hidden;
+            overflow: hidden; /* Scroll band taaki animation smooth dikhe */
             position: relative;
         }
 
@@ -31,254 +31,156 @@
             justify-content: space-between;
             align-items: center;
             padding: 40px 100px;
-            position: absolute;
-            top: 0;
+            position: fixed;
             width: 100%;
+            top: 0;
             z-index: 100;
-            opacity: 0; /* Hidden initially */
-            animation: fadeInHeader 1s ease forwards;
-            animation-delay: 2.5s; /* Wait for PC intro */
+            opacity: 0;
+            animation: fadeInSimple 1s ease forwards 4.5s; /* Wait for avatar */
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(0, 247, 255, 0.8);
-        }
-
-        nav ul { display: flex; gap: 50px; list-style: none; }
-        nav ul li a {
-            color: #aaa; text-decoration: none; font-size: 16px; font-weight: 500;
-            transition: 0.3s;
-        }
-        nav ul li a:hover { color: #00f7ff; text-shadow: 0 0 10px #00f7ff; }
-
-        /* --- MAIN LAYOUT --- */
-        .main-stage {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 100vh;
-            padding: 0 100px;
-            position: relative;
-        }
-
-        /* --- LEFT SIDE: TEXT CONTENT --- */
-        .text-content {
-            width: 50%;
-            z-index: 10;
-        }
-
-        .text-line {
-            opacity: 0;
-            transform: translateY(50px); /* Start slightly down */
-        }
-
-        /* Animations for text */
-        .anim-delay-1 { animation: slideUpReveal 0.8s ease-out forwards 2s; }
-        .anim-delay-2 { animation: slideUpReveal 0.8s ease-out forwards 2.3s; }
-        .anim-delay-3 { animation: slideUpReveal 0.8s ease-out forwards 2.6s; }
-        .anim-delay-4 { animation: slideUpReveal 0.8s ease-out forwards 2.9s; }
-
-        .super-title {
-            font-size: 18px;
-            color: #00f7ff;
-            font-family: 'Orbitron', sans-serif;
             letter-spacing: 2px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        h1 {
-            font-size: 80px;
-            line-height: 1.1;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #ffffff, #a5a5a5);
+            background: linear-gradient(90deg, #00f2ff, #00c3ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        p {
-            font-size: 20px;
-            color: #ccc;
-            line-height: 1.6;
-            max-width: 600px;
-            margin-bottom: 40px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-
-        .action-area {
-            display: flex;
-            gap: 20px;
-        }
-
-        .neon-btn {
-            padding: 15px 40px;
-            border: 1px solid #00f7ff;
-            background: rgba(0, 247, 255, 0.1);
-            color: #00f7ff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            text-decoration: none;
-            letter-spacing: 1px;
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a {
+            color: #ccc; text-decoration: none; font-size: 18px; font-weight: 500;
             transition: 0.3s;
+        }
+        nav ul li a:hover { color: #00f2ff; }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
             position: relative;
-            overflow: hidden;
-        }
-
-        .neon-btn:hover {
-            background: #00f7ff;
-            color: #000;
-            box-shadow: 0 0 30px rgba(0, 247, 255, 0.6);
-        }
-
-        /* --- RIGHT SIDE: PC AVATAR SETUP (PURE CSS) --- */
-        .pc-container {
-            position: absolute;
-            left: -50%; /* Start off-screen left */
-            top: 50%;
-            transform: translateY(-50%) scale(0.5);
-            width: 600px;
-            height: 400px;
-            /* Animation: Fly in from left, rotate, land on right */
-            animation: pcEntrance 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-
-        /* The illustration grouping */
-        .pc-setup {
-            position: relative;
+            height: 100vh;
             width: 100%;
-            height: 100%;
-        }
-
-        /* MONITOR */
-        .monitor-frame {
-            position: absolute;
-            top: 20px; left: 50px;
-            width: 320px; height: 200px;
-            background: #0a0a0a;
-            border: 3px solid #333;
-            border-radius: 10px;
-            box-shadow: 0 0 40px rgba(0, 247, 255, 0.15);
-            z-index: 5;
-        }
-        .monitor-screen {
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            background: #000;
-            overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-        .code-anim {
-            color: #00f7ff; font-family: monospace; font-size: 10px;
-            opacity: 0.7;
-        }
-        .monitor-stand {
-            position: absolute;
-            top: 220px; left: 180px;
-            width: 60px; height: 40px;
-            background: #222;
-        }
-        .monitor-base {
-            position: absolute;
-            top: 260px; left: 150px;
-            width: 120px; height: 10px;
-            background: #333;
-            border-bottom: 2px solid #00f7ff; /* Glow strip */
         }
 
-        /* CPU TOWER */
-        .cpu-tower {
+        /* --- TEXT SECTION (Left) --- */
+        .text-section {
             position: absolute;
-            top: 0px; right: 80px;
-            width: 100px; height: 280px;
-            background: #111;
-            border: 2px solid #333;
-            border-radius: 5px;
-            z-index: 4;
-            box-shadow: -10px 10px 30px rgba(0,0,0,0.5);
-        }
-        .cpu-glass {
-            position: absolute;
-            top: 20px; left: 10px; width: 80px; height: 180px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .rgb-fan {
-            position: absolute;
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ff0055, transparent);
-            opacity: 0.6;
-            animation: spinFan 2s linear infinite;
-        }
-        .fan-1 { top: 30px; left: 20px; }
-        .fan-2 { top: 100px; left: 20px; background: radial-gradient(circle, #00f7ff, transparent); }
-
-        /* KEYBOARD */
-        .keyboard {
-            position: absolute;
-            bottom: 60px; left: 60px;
-            width: 280px; height: 10px;
-            background: #222;
-            border-bottom: 3px solid #bc13fe; /* RGB strip */
-            transform: skewX(-20deg);
-            z-index: 6;
+            left: 100px;
+            top: 30%;
+            z-index: 10;
+            width: 45%;
         }
 
-        /* SPEAKERS */
-        .speaker {
+        .hidden-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Animation delays for text lines */
+        .delay-1 { animation: slideUpText 0.8s ease forwards 4.0s; }
+        .delay-2 { animation: slideUpText 0.8s ease forwards 4.2s; }
+        .delay-3 { animation: slideUpText 0.8s ease forwards 4.5s; }
+        .delay-4 { animation: slideUpText 0.8s ease forwards 4.8s; }
+
+        h1 {
+            font-size: 75px;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .highlight { color: #00f2ff; }
+
+        p {
+            font-size: 22px;
+            color: #aeb4be;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-btn {
+            padding: 18px 50px;
+            background: linear-gradient(90deg, #00f2ff, #0061ff);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            font-size: 20px;
+            box-shadow: 0 10px 30px rgba(0, 110, 255, 0.4);
+            transition: 0.3s;
+        }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 10px 50px rgba(0, 110, 255, 0.7); }
+
+        /* --- AVATAR ANIMATION WRAPPER --- */
+        .avatar-wrapper {
             position: absolute;
-            width: 40px; height: 100px;
-            background: #1a1a1a;
-            border: 1px solid #333;
+            width: 600px; /* Base size */
+            height: 600px;
+            /* Yahan animation magic hoga */
+            animation: complexJourney 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
             z-index: 5;
-        }
-        .speaker-circle {
-            width: 20px; height: 20px; background: #333; border-radius: 50%;
-            margin: 10px auto; border: 1px solid #555;
-        }
-        .speaker-left { top: 120px; left: 0; }
-        .speaker-right { top: 120px; left: 380px; }
-
-        /* --- ANIMATIONS KEYFRAMES --- */
-
-        /* 1. Header Fade In */
-        @keyframes fadeInHeader { to { opacity: 1; } }
-
-        /* 2. Text Slide Up (Popup effect) */
-        @keyframes slideUpReveal {
-            0% { opacity: 0; transform: translateY(60px); }
-            100% { opacity: 1; transform: translateY(0); }
+            /* Initial centering manually handled in keyframes */
         }
 
-        /* 3. PC Setup Entrance (The "Swipe" Effect) */
-        @keyframes pcEntrance {
+        /* --- SVG STYLES (Illustration) --- */
+        svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.2));
+        }
+
+        /* Elements inside SVG for subtle movement */
+        .boy-head { animation: bobHead 3s infinite ease-in-out; transform-origin: center; }
+        .boy-arm { animation: typeFast 0.5s infinite alternate; transform-origin: bottom right; }
+        .screen-code { animation: scrollCode 2s linear infinite; }
+        
+        /* --- KEYFRAMES --- */
+
+        /* 1. THE MAIN JOURNEY (Center -> Left Back -> Right Front) */
+        @keyframes complexJourney {
             0% {
-                left: -600px; /* Start outside left */
-                transform: translateY(-50%) rotate(-15deg) scale(0.8);
+                /* Start: Center, Small, Invisible */
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
                 opacity: 0;
             }
-            50% {
-                /* Mid-way flying */
+            20% {
+                /* Appear in Center, Spinning slightly */
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%) scale(0.6) rotate(10deg);
                 opacity: 1;
-                transform: translateY(-50%) rotate(5deg) scale(0.9);
+            }
+            45% {
+                /* Go to Background Left */
+                top: 20%; left: 20%;
+                transform: translate(-50%, -50%) scale(0.3) rotate(-5deg);
+                opacity: 0.8;
+                filter: blur(2px); /* Blur effect for distance */
             }
             100% {
-                /* Land position on right */
-                left: 55%; 
-                transform: translateY(-50%) rotate(0deg) scale(1);
+                /* Final Position: Right Side, Big */
+                top: 50%; left: 75%;
+                transform: translate(-50%, -50%) scale(1.4);
+                opacity: 1;
+                filter: blur(0px);
             }
         }
 
-        @keyframes spinFan { 100% { transform: rotate(360deg); } }
+        /* Text Slide Up */
+        @keyframes slideUpText {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Header Fade In */
+        @keyframes fadeInSimple { to { opacity: 1; } }
+
+        /* SVG Internal Animations */
+        @keyframes bobHead { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+        @keyframes typeFast { 0% { transform: rotate(0deg); } 100% { transform: rotate(2deg); } }
+        @keyframes scrollCode { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
 
     </style>
 </head>
@@ -288,65 +190,78 @@
         <div class="logo">Safe Portal</div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
                 <li><a href="#">Projects</a></li>
-                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="main-stage">
+    <div class="container">
         
-        <div class="text-content">
-            <span class="super-title text-line anim-delay-1">SYSTEM ONLINE //</span>
-            <h1 class="text-line anim-delay-2">
-                Hello, I'm Raza.<br>
-                Creative Developer.
-            </h1>
-            <p class="text-line anim-delay-3">
-                Main ek Full Stack Developer hoon jo next-level websites aur secure portals banata hai. Clean code, high performance, aur unique visual styles meri pehchan hai.
+        <div class="text-section">
+            <h1 class="hidden-text delay-1">Coding the <br><span class="highlight">Future</span></h1>
+            <h2 class="hidden-text delay-2" style="font-size: 30px; margin-bottom: 20px; color: #fff;">Raza Zee | Full Stack Developer</h2>
+            <p class="hidden-text delay-3">
+                Experience a desktop-class interface on any device.
+                Building secure, fast, and beautiful digital experiences.
             </p>
-            <div class="action-area text-line anim-delay-4">
-                <a href="#" class="neon-btn">View Projects</a>
-                <a href="#" class="neon-btn" style="margin-left: 20px; filter: hue-rotate(90deg);">Contact Me</a>
+            <div class="hidden-text delay-4">
+                <a href="#" class="cta-btn">Explore Work</a>
             </div>
         </div>
 
-        <div class="pc-container">
-            <div class="pc-setup">
-                <div class="speaker speaker-left">
-                    <div class="speaker-circle"></div><div class="speaker-circle" style="width:25px; height:25px; margin-top:20px;"></div>
-                </div>
-                <div class="speaker speaker-right">
-                    <div class="speaker-circle"></div><div class="speaker-circle" style="width:25px; height:25px; margin-top:20px;"></div>
-                </div>
+        <div class="avatar-wrapper">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <rect x="50" y="350" width="400" height="20" rx="10" fill="#2c3e50" />
+                <rect x="80" y="370" width="20" height="100" fill="#34495e" />
+                <rect x="400" y="370" width="20" height="100" fill="#34495e" />
 
-                <div class="monitor-frame">
-                    <div class="monitor-screen">
-                        <div class="code-anim">
-                            &lt;Dev&gt;<br>Init_Setup()..<br>Loading Assets...<br>Safe_Portal: Ready
-                        </div>
-                    </div>
-                </div>
-                <div class="monitor-stand"></div>
-                <div class="monitor-base"></div>
+                <path d="M180,350 L180,250 Q180,220 210,220 L290,220 Q320,220 320,250 L320,350" fill="#1a1a1a" />
+                <rect x="240" y="350" width="20" height="100" fill="#333" />
+                <rect x="200" y="440" width="100" height="10" rx="5" fill="#333" />
 
-                <div class="cpu-tower">
-                    <div class="cpu-glass">
-                        <div class="rgb-fan fan-1"></div>
-                        <div class="rgb-fan fan-2"></div>
-                    </div>
-                </div>
+                <g class="boy-body">
+                    <path d="M220,350 L220,280 Q220,260 250,260 L280,260 Q310,260 310,280 L310,350" fill="#0061ff" /> </g>
 
-                <div class="keyboard"></div>
-            </div>
+                <g class="boy-head">
+                    <circle cx="265" cy="230" r="35" fill="#f1c27d" /> <path d="M230,220 Q265,180 300,220 Q300,240 290,250 L240,250 Q230,240 230,220" fill="#2d3436" /> </g>
+
+                <g class="boy-arm">
+                    <path d="M220,290 L180,330" stroke="#f1c27d" stroke-width="12" stroke-linecap="round" />
+                    <path d="M310,290 L350,330" stroke="#f1c27d" stroke-width="12" stroke-linecap="round" />
+                </g>
+
+                <rect x="150" y="150" width="200" height="140" rx="10" fill="#000" stroke="#333" stroke-width="5" />
+                <rect x="230" y="290" width="40" height="60" fill="#222" /> <rect x="200" y="340" width="100" height="10" rx="2" fill="#222" /> <g clip-path="url(#screenClip)">
+                    <rect x="160" y="160" width="180" height="120" fill="#0a0a0a" />
+                    <g class="screen-code">
+                        <rect x="170" y="170" width="100" height="5" rx="2" fill="#00f2ff" opacity="0.7" />
+                        <rect x="170" y="180" width="80" height="5" rx="2" fill="#555" />
+                        <rect x="170" y="190" width="120" height="5" rx="2" fill="#555" />
+                        <rect x="170" y="200" width="60" height="5" rx="2" fill="#bc13fe" opacity="0.7" />
+                        <rect x="170" y="220" width="90" height="5" rx="2" fill="#555" />
+                        <rect x="170" y="230" width="110" height="5" rx="2" fill="#00f2ff" opacity="0.5" />
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="screenClip">
+                        <rect x="160" y="160" width="180" height="120" />
+                    </clipPath>
+                </defs>
+
+                <circle cx="250" cy="220" r="100" fill="url(#monitorGlow)" opacity="0.3" z-index="-1" />
+                <radialGradient id="monitorGlow">
+                    <stop offset="0%" stop-color="#00f2ff" />
+                    <stop offset="100%" stop-color="transparent" />
+                </radialGradient>
+            </svg>
         </div>
 
     </div>
 
     <script>
-        console.log("Safe Portal: Cinematic Mode Loaded.");
+        console.log("Avatar Animation Loaded Successfully");
     </script>
 </body>
 </html>
