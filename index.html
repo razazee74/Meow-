@@ -3,266 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1400, user-scalable=yes">
-    <title>Safe Portal | Avatar Edition</title>
+    <title>Safe Portal | Cinematic Experience</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Exo+2:wght@300;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* --- CORE SETTINGS --- */
+        /* --- CORE UNIVERSE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #02020a;
-            /* Background mein halka sa ocean flow effect */
-            background-image: 
-                radial-gradient(circle at 20% 100%, #1a0b40 0%, transparent 50%),
-                radial-gradient(circle at 80% 0%, #004e92 0%, transparent 50%);
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            min-width: 1400px;
-            min-height: 100vh;
-            overflow: hidden; /* Scroll band taaki animation smooth dikhe */
-            position: relative;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Exo 2', sans-serif;
+            overflow: hidden; /* Scroll locked initially */
+            height: 100vh;
+            width: 100vw;
+            perspective: 1000px; /* For 3D effects */
         }
 
-        /* --- HEADER --- */
+        /* --- 1. THE CINEMATIC INTRO OVERLAY --- */
+        .cinematic-intro {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: curtainFall 1s ease-in-out forwards 4.5s;
+            pointer-events: none; /* Click through after anime */
+        }
+
+        /* The Energy Core */
+        .core-loader {
+            position: relative;
+            width: 100px; height: 100px;
+        }
+        
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #00f3ff;
+            border-bottom-color: #bc13fe;
+            animation: spin 1.5s linear infinite;
+        }
+        .r1 { width: 100%; height: 100%; animation-duration: 3s; }
+        .r2 { width: 80%; height: 80%; top: 10%; left: 10%; animation-duration: 1.5s; border-top-color: #bc13fe; border-bottom-color: #00f3ff; direction: reverse; }
+        .r3 { width: 60%; height: 60%; top: 20%; left: 20%; animation-duration: 1s; border-left-color: #fff; }
+
+        /* Text Effect during Intro */
+        .intro-text {
+            margin-top: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            animation: textGlitch 0.3s infinite;
+        }
+
+        /* The "Blast" Flash */
+        .flash-bang {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            opacity: 0;
+            animation: flash 0.2s linear forwards 4.0s;
+        }
+
+        /* --- 2. MAIN WEBSITE CONTENT --- */
+        .main-stage {
+            opacity: 0;
+            transform: scale(1.1);
+            animation: siteReveal 1.5s ease-out forwards 4.2s;
+            position: relative;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #0a1128 0%, #000000 100%);
+            overflow-y: auto;
+        }
+
+        /* Animated Background Grid */
+        .cyber-grid {
+            position: absolute;
+            width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            top: 0; left: -50%;
+            z-index: 0;
+        }
+
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 40px 100px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            opacity: 0;
-            animation: fadeInSimple 1s ease forwards 4.5s; /* Wait for avatar */
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #00f2ff, #00c3ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav ul li a {
-            color: #ccc; text-decoration: none; font-size: 18px; font-weight: 500;
-            transition: 0.3s;
-        }
-        nav ul li a:hover { color: #00f2ff; }
-
-        /* --- MAIN CONTAINER --- */
-        .container {
+            padding: 30px 80px;
             position: relative;
-            height: 100vh;
-            width: 100%;
+            z-index: 10;
+        }
+        .logo { font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; color: #fff; text-shadow: 0 0 10px #00f3ff; }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a { color: #ccc; text-decoration: none; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        nav ul li a:hover { color: #00f3ff; text-shadow: 0 0 20px #00f3ff; }
+
+        /* Hero Layout */
+        .hero {
             display: flex;
             align-items: center;
-        }
-
-        /* --- TEXT SECTION (Left) --- */
-        .text-section {
-            position: absolute;
-            left: 100px;
-            top: 30%;
-            z-index: 10;
-            width: 45%;
-        }
-
-        .hidden-text {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        /* Animation delays for text lines */
-        .delay-1 { animation: slideUpText 0.8s ease forwards 4.0s; }
-        .delay-2 { animation: slideUpText 0.8s ease forwards 4.2s; }
-        .delay-3 { animation: slideUpText 0.8s ease forwards 4.5s; }
-        .delay-4 { animation: slideUpText 0.8s ease forwards 4.8s; }
-
-        h1 {
-            font-size: 75px;
-            line-height: 1.1;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .highlight { color: #00f2ff; }
-
-        p {
-            font-size: 22px;
-            color: #aeb4be;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        .cta-btn {
-            padding: 18px 50px;
-            background: linear-gradient(90deg, #00f2ff, #0061ff);
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 50px;
-            font-size: 20px;
-            box-shadow: 0 10px 30px rgba(0, 110, 255, 0.4);
-            transition: 0.3s;
-        }
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 10px 50px rgba(0, 110, 255, 0.7); }
-
-        /* --- AVATAR ANIMATION WRAPPER --- */
-        .avatar-wrapper {
-            position: absolute;
-            width: 600px; /* Base size */
-            height: 600px;
-            /* Yahan animation magic hoga */
-            animation: complexJourney 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            justify-content: space-between;
+            padding: 50px 100px;
+            height: 80vh;
+            position: relative;
             z-index: 5;
-            /* Initial centering manually handled in keyframes */
         }
 
-        /* --- SVG STYLES (Illustration) --- */
-        svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.2));
+        /* Text Styling */
+        .hero-text { flex: 1; }
+        .hero-text h1 {
+            font-size: 80px;
+            line-height: 1;
+            margin-bottom: 20px;
+            font-weight: 900;
+            background: -webkit-linear-gradient(#eee, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+        .hero-text h2 { color: #00f3ff; font-size: 30px; margin-bottom: 30px; letter-spacing: 2px; }
+        .hero-text p { font-size: 18px; color: #888; max-width: 500px; line-height: 1.6; margin-bottom: 40px; }
+
+        .btn-cyber {
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid #00f3ff;
+            color: #00f3ff;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-cyber:hover { background: #00f3ff; color: #000; box-shadow: 0 0 50px #00f3ff; }
+
+        /* 3D PC MODEL (CSS ONLY) */
+        .model-stage {
+            flex: 1;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
         }
 
-        /* Elements inside SVG for subtle movement */
-        .boy-head { animation: bobHead 3s infinite ease-in-out; transform-origin: center; }
-        .boy-arm { animation: typeFast 0.5s infinite alternate; transform-origin: bottom right; }
-        .screen-code { animation: scrollCode 2s linear infinite; }
+        .pc-wrapper {
+            position: relative;
+            width: 400px; height: 300px;
+            transform-style: preserve-3d;
+            animation: float3D 6s ease-in-out infinite;
+        }
+
+        /* Monitor */
+        .monitor {
+            position: absolute;
+            width: 400px; height: 250px;
+            background: #0f0f0f;
+            border: 2px solid #333;
+            border-radius: 10px;
+            transform: translateZ(20px);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+        }
+        .screen {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            background: #000;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+        /* Matrix Rain Effect inside Monitor */
+        .matrix-code {
+            color: #0f0;
+            font-family: monospace;
+            font-size: 12px;
+            opacity: 0.7;
+            padding: 10px;
+            animation: scrollMatrix 2s linear infinite;
+        }
+
+        /* Keyboard */
+        .keyboard {
+            position: absolute;
+            bottom: -80px; left: 20px;
+            width: 360px; height: 120px;
+            background: #111;
+            transform: rotateX(60deg);
+            border-bottom: 5px solid #00f3ff; /* RGB Underglow */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
         
-        /* --- KEYFRAMES --- */
-
-        /* 1. THE MAIN JOURNEY (Center -> Left Back -> Right Front) */
-        @keyframes complexJourney {
-            0% {
-                /* Start: Center, Small, Invisible */
-                top: 50%; left: 50%;
-                transform: translate(-50%, -50%) scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                /* Appear in Center, Spinning slightly */
-                top: 50%; left: 50%;
-                transform: translate(-50%, -50%) scale(0.6) rotate(10deg);
-                opacity: 1;
-            }
-            45% {
-                /* Go to Background Left */
-                top: 20%; left: 20%;
-                transform: translate(-50%, -50%) scale(0.3) rotate(-5deg);
-                opacity: 0.8;
-                filter: blur(2px); /* Blur effect for distance */
-            }
-            100% {
-                /* Final Position: Right Side, Big */
-                top: 50%; left: 75%;
-                transform: translate(-50%, -50%) scale(1.4);
-                opacity: 1;
-                filter: blur(0px);
-            }
+        /* Hologram Projector base */
+        .holo-base {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 60%);
+            transform: rotateX(90deg) translateZ(-150px);
+            top: 50%; left: -50px;
         }
 
-        /* Text Slide Up */
-        @keyframes slideUpText {
-            to { opacity: 1; transform: translateY(0); }
+        /* --- ANIMATION KEYFRAMES --- */
+        
+        /* 1. Loading Spin */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* 2. Text Glitch */
+        @keyframes textGlitch {
+            0% { opacity: 1; transform: translateX(0); }
+            20% { opacity: 0.8; transform: translateX(-2px); }
+            40% { opacity: 1; transform: translateX(2px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 3. The Big Flash (Blast) */
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* 4. Remove Intro Overlay */
+        @keyframes curtainFall {
+            0% { opacity: 1; display: flex; }
+            100% { opacity: 0; display: none; visibility: hidden; }
+        }
+
+        /* 5. Reveal Site */
+        @keyframes siteReveal {
+            0% { opacity: 0; transform: scale(1.2); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+        }
+
+        /* 6. Background Grid Move */
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); }
+        }
+
+        /* 7. Floating PC */
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateY(5deg); }
         }
         
-        /* Header Fade In */
-        @keyframes fadeInSimple { to { opacity: 1; } }
-
-        /* SVG Internal Animations */
-        @keyframes bobHead { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-        @keyframes typeFast { 0% { transform: rotate(0deg); } 100% { transform: rotate(2deg); } }
-        @keyframes scrollCode { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+        @keyframes scrollMatrix { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Safe Portal</div>
-        <nav>
-            <ul>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="cinematic-intro">
+        <div class="core-loader">
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="ring r3"></div>
+        </div>
+        <div class="intro-text">Initializing Safe Portal...</div>
+        <div class="flash-bang"></div>
+    </div>
 
-    <div class="container">
+    <div class="main-stage">
         
-        <div class="text-section">
-            <h1 class="hidden-text delay-1">Coding the <br><span class="highlight">Future</span></h1>
-            <h2 class="hidden-text delay-2" style="font-size: 30px; margin-bottom: 20px; color: #fff;">Raza Zee | Full Stack Developer</h2>
-            <p class="hidden-text delay-3">
-                Experience a desktop-class interface on any device.
-                Building secure, fast, and beautiful digital experiences.
-            </p>
-            <div class="hidden-text delay-4">
-                <a href="#" class="cta-btn">Explore Work</a>
+        <div class="cyber-grid"></div>
+
+        <header>
+            <div class="logo">Safe Portal</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="hero-text">
+                <h2>// SYSTEM ONLINE</h2>
+                <h1>RAZA ZEE</h1>
+                <p>Architect of the Digital Realm. Creating immersive, secure, and high-performance web experiences.</p>
+                <a href="#" class="btn-cyber">Access Protocol</a>
             </div>
-        </div>
 
-        <div class="avatar-wrapper">
-            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                <rect x="50" y="350" width="400" height="20" rx="10" fill="#2c3e50" />
-                <rect x="80" y="370" width="20" height="100" fill="#34495e" />
-                <rect x="400" y="370" width="20" height="100" fill="#34495e" />
-
-                <path d="M180,350 L180,250 Q180,220 210,220 L290,220 Q320,220 320,250 L320,350" fill="#1a1a1a" />
-                <rect x="240" y="350" width="20" height="100" fill="#333" />
-                <rect x="200" y="440" width="100" height="10" rx="5" fill="#333" />
-
-                <g class="boy-body">
-                    <path d="M220,350 L220,280 Q220,260 250,260 L280,260 Q310,260 310,280 L310,350" fill="#0061ff" /> </g>
-
-                <g class="boy-head">
-                    <circle cx="265" cy="230" r="35" fill="#f1c27d" /> <path d="M230,220 Q265,180 300,220 Q300,240 290,250 L240,250 Q230,240 230,220" fill="#2d3436" /> </g>
-
-                <g class="boy-arm">
-                    <path d="M220,290 L180,330" stroke="#f1c27d" stroke-width="12" stroke-linecap="round" />
-                    <path d="M310,290 L350,330" stroke="#f1c27d" stroke-width="12" stroke-linecap="round" />
-                </g>
-
-                <rect x="150" y="150" width="200" height="140" rx="10" fill="#000" stroke="#333" stroke-width="5" />
-                <rect x="230" y="290" width="40" height="60" fill="#222" /> <rect x="200" y="340" width="100" height="10" rx="2" fill="#222" /> <g clip-path="url(#screenClip)">
-                    <rect x="160" y="160" width="180" height="120" fill="#0a0a0a" />
-                    <g class="screen-code">
-                        <rect x="170" y="170" width="100" height="5" rx="2" fill="#00f2ff" opacity="0.7" />
-                        <rect x="170" y="180" width="80" height="5" rx="2" fill="#555" />
-                        <rect x="170" y="190" width="120" height="5" rx="2" fill="#555" />
-                        <rect x="170" y="200" width="60" height="5" rx="2" fill="#bc13fe" opacity="0.7" />
-                        <rect x="170" y="220" width="90" height="5" rx="2" fill="#555" />
-                        <rect x="170" y="230" width="110" height="5" rx="2" fill="#00f2ff" opacity="0.5" />
-                    </g>
-                </g>
-                <defs>
-                    <clipPath id="screenClip">
-                        <rect x="160" y="160" width="180" height="120" />
-                    </clipPath>
-                </defs>
-
-                <circle cx="250" cy="220" r="100" fill="url(#monitorGlow)" opacity="0.3" z-index="-1" />
-                <radialGradient id="monitorGlow">
-                    <stop offset="0%" stop-color="#00f2ff" />
-                    <stop offset="100%" stop-color="transparent" />
-                </radialGradient>
-            </svg>
-        </div>
+            <div class="model-stage">
+                <div class="pc-wrapper">
+                    <div class="monitor">
+                        <div class="screen">
+                            <div class="matrix-code">
+                                01010101 SYSTEM BREACH DETECTED<br>
+                                SECURE CONNECTION ESTABLISHED...<br>
+                                WELCOME USER: RAZA<br>
+                                LOADING ASSETS... 100%<br>
+                                > RUNNING PORTFOLIO.EXE<br>
+                                0010101100101...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="keyboard"></div>
+                    <div class="holo-base"></div>
+                </div>
+            </div>
+        </section>
 
     </div>
 
     <script>
-        console.log("Avatar Animation Loaded Successfully");
+        console.log("Cinematic Intro Sequence: Active.");
+        
+        // Optional: Intro khatam hone ke baad scroll enable karna
+        setTimeout(() => {
+            document.body.style.overflow = "auto";
+        }, 5000);
     </script>
+
 </body>
 </html>
 
