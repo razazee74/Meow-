@@ -2,295 +2,287 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=1400, user-scalable=yes">
+    <title>Safe Portal | Cinematic Profile</title>
     
-    <title>Safe Portal | Pro Developer</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* --- CORE SETTINGS --- */
-        :root {
-            --neon-blue: #00f3ff;
-            --neon-purple: #bc13fe;
-            --deep-bg: #050a18;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
+        /* --- RESET & CORE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--deep-bg);
-            color: white;
+            background-color: #050505;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(76, 0, 255, 0.15), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 247, 255, 0.15), transparent 50%);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            min-width: 1400px; /* Force Desktop Width */
+            min-width: 1400px; /* Desktop Width */
             overflow-x: hidden;
             position: relative;
         }
 
-        /* --- ADVANCED BACKGROUND (Motion) --- */
-        .background-fx {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: radial-gradient(circle at 10% 20%, #1a0b2e 0%, #000000 90%);
-            overflow: hidden;
-        }
-
-        /* Floating Orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: floatOrb 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { width: 400px; height: 400px; background: #4c00ff; top: -100px; left: -100px; }
-        .orb-2 { width: 500px; height: 500px; background: #00d2ff; bottom: -150px; right: -100px; animation-delay: -5s; }
-        .orb-3 { width: 300px; height: 300px; background: #ff0055; top: 40%; left: 40%; animation-duration: 30s; opacity: 0.3; }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 100px) scale(1.2); }
-        }
-
-        /* --- NAVBAR --- */
+        /* --- HEADER --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 100px;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
+            padding: 40px 100px;
+            position: absolute;
             top: 0;
-            z-index: 1000;
+            width: 100%;
+            z-index: 100;
+            opacity: 0; /* Hidden initially */
+            animation: fadeInHeader 1s ease forwards;
+            animation-delay: 2.5s; /* Wait for PC intro */
         }
 
         .logo {
+            font-family: 'Orbitron', sans-serif;
             font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(to right, #fff, var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(0, 247, 255, 0.8);
         }
 
-        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul { display: flex; gap: 50px; list-style: none; }
         nav ul li a {
-            color: #ccc; text-decoration: none; font-size: 16px; font-weight: 500;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            color: #aaa; text-decoration: none; font-size: 16px; font-weight: 500;
+            transition: 0.3s;
         }
-        nav ul li a:hover { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        nav ul li a:hover { color: #00f7ff; text-shadow: 0 0 10px #00f7ff; }
 
-        /* --- HERO SECTION (Left & Right) --- */
-        .hero-container {
+        /* --- MAIN LAYOUT --- */
+        .main-stage {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 80px 150px;
-            height: 80vh;
+            height: 100vh;
+            padding: 0 100px;
             position: relative;
         }
 
-        /* LEFT SIDE: INFO */
-        .left-content {
-            width: 45%;
-            padding: 40px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            /* Entry Animation */
-            animation: slideInLeft 1s ease-out forwards;
+        /* --- LEFT SIDE: TEXT CONTENT --- */
+        .text-content {
+            width: 50%;
+            z-index: 10;
+        }
+
+        .text-line {
             opacity: 0;
-            transform: translateX(-50px);
+            transform: translateY(50px); /* Start slightly down */
         }
 
-        @keyframes slideInLeft {
-            to { opacity: 1; transform: translateX(0); }
-        }
+        /* Animations for text */
+        .anim-delay-1 { animation: slideUpReveal 0.8s ease-out forwards 2s; }
+        .anim-delay-2 { animation: slideUpReveal 0.8s ease-out forwards 2.3s; }
+        .anim-delay-3 { animation: slideUpReveal 0.8s ease-out forwards 2.6s; }
+        .anim-delay-4 { animation: slideUpReveal 0.8s ease-out forwards 2.9s; }
 
-        .badge {
-            display: inline-block;
-            padding: 8px 15px;
-            background: rgba(0, 243, 255, 0.1);
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .left-content h1 {
-            font-size: 60px;
-            font-weight: 900;
-            line-height: 1.1;
+        .super-title {
+            font-size: 18px;
+            color: #00f7ff;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
             margin-bottom: 10px;
+            display: block;
         }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+
+        h1 {
+            font-size: 80px;
+            line-height: 1.1;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, #a5a5a5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .role-text {
-            font-family: 'Fira Code', monospace;
+        p {
             font-size: 20px;
-            color: #aaa;
-            margin-bottom: 30px;
-            display: block;
-            border-right: 2px solid var(--neon-blue);
-            width: fit-content;
-            animation: blink 0.7s infinite;
-        }
-
-        @keyframes blink { 50% { border-color: transparent; } }
-
-        .left-content p {
-            font-size: 18px;
+            color: #ccc;
             line-height: 1.6;
-            color: #ddd;
+            max-width: 600px;
             margin-bottom: 40px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        .social-btn {
-            padding: 15px 35px;
-            background: linear-gradient(90deg, var(--neon-blue), #2e5cff);
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 5px;
-            font-size: 18px;
-            transition: 0.3s;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
-        }
-        .social-btn:hover { transform: translateY(-5px); box-shadow: 0 0 40px rgba(0, 243, 255, 0.7); color: white; }
-
-        /* RIGHT SIDE: PC SETUP ANIMATION */
-        .right-content {
-            width: 50%;
-            height: 500px;
-            position: relative;
+        .action-area {
             display: flex;
-            justify-content: center;
+            gap: 20px;
+        }
+
+        .neon-btn {
+            padding: 15px 40px;
+            border: 1px solid #00f7ff;
+            background: rgba(0, 247, 255, 0.1);
+            color: #00f7ff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-btn:hover {
+            background: #00f7ff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.6);
+        }
+
+        /* --- RIGHT SIDE: PC AVATAR SETUP (PURE CSS) --- */
+        .pc-container {
+            position: absolute;
+            left: -50%; /* Start off-screen left */
+            top: 50%;
+            transform: translateY(-50%) scale(0.5);
+            width: 600px;
+            height: 400px;
+            /* Animation: Fly in from left, rotate, land on right */
+            animation: pcEntrance 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        /* The illustration grouping */
+        .pc-setup {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* MONITOR */
+        .monitor-frame {
+            position: absolute;
+            top: 20px; left: 50px;
+            width: 320px; height: 200px;
+            background: #0a0a0a;
+            border: 3px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.15);
+            z-index: 5;
+        }
+        .monitor-screen {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            background: #000;
+            overflow: hidden;
+            display: flex;
             align-items: center;
-            /* Floating Animation */
-            animation: floatPC 4s ease-in-out infinite;
+            justify-content: center;
+        }
+        .code-anim {
+            color: #00f7ff; font-family: monospace; font-size: 10px;
+            opacity: 0.7;
+        }
+        .monitor-stand {
+            position: absolute;
+            top: 220px; left: 180px;
+            width: 60px; height: 40px;
+            background: #222;
+        }
+        .monitor-base {
+            position: absolute;
+            top: 260px; left: 150px;
+            width: 120px; height: 10px;
+            background: #333;
+            border-bottom: 2px solid #00f7ff; /* Glow strip */
         }
 
-        @keyframes floatPC {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
-        }
-
-        /* CSS DRAWN MONITOR */
-        .monitor {
-            width: 450px;
-            height: 300px;
+        /* CPU TOWER */
+        .cpu-tower {
+            position: absolute;
+            top: 0px; right: 80px;
+            width: 100px; height: 280px;
             background: #111;
             border: 2px solid #333;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            border-radius: 5px;
+            z-index: 4;
+            box-shadow: -10px 10px 30px rgba(0,0,0,0.5);
         }
-
-        .screen {
+        .cpu-glass {
             position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 30px;
-            background: #0d0d0d;
-            border-radius: 4px;
-            overflow: hidden;
-            padding: 20px;
-            font-family: 'Fira Code', monospace;
-            color: var(--neon-blue);
-            font-size: 14px;
+            top: 20px; left: 10px; width: 80px; height: 180px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        .rgb-fan {
+            position: absolute;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff0055, transparent);
+            opacity: 0.6;
+            animation: spinFan 2s linear infinite;
+        }
+        .fan-1 { top: 30px; left: 20px; }
+        .fan-2 { top: 100px; left: 20px; background: radial-gradient(circle, #00f7ff, transparent); }
 
-        .monitor-stand {
-            width: 120px;
-            height: 60px;
+        /* KEYBOARD */
+        .keyboard {
+            position: absolute;
+            bottom: 60px; left: 60px;
+            width: 280px; height: 10px;
             background: #222;
-            margin: 0 auto;
+            border-bottom: 3px solid #bc13fe; /* RGB strip */
+            transform: skewX(-20deg);
+            z-index: 6;
+        }
+
+        /* SPEAKERS */
+        .speaker {
             position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+            width: 40px; height: 100px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            z-index: 5;
+        }
+        .speaker-circle {
+            width: 20px; height: 20px; background: #333; border-radius: 50%;
+            margin: 10px auto; border: 1px solid #555;
+        }
+        .speaker-left { top: 120px; left: 0; }
+        .speaker-right { top: 120px; left: 380px; }
+
+        /* --- ANIMATIONS KEYFRAMES --- */
+
+        /* 1. Header Fade In */
+        @keyframes fadeInHeader { to { opacity: 1; } }
+
+        /* 2. Text Slide Up (Popup effect) */
+        @keyframes slideUpReveal {
+            0% { opacity: 0; transform: translateY(60px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .monitor-base {
-            width: 200px;
-            height: 15px;
-            background: #222;
-            position: absolute;
-            bottom: -75px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 4px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        /* 3. PC Setup Entrance (The "Swipe" Effect) */
+        @keyframes pcEntrance {
+            0% {
+                left: -600px; /* Start outside left */
+                transform: translateY(-50%) rotate(-15deg) scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                /* Mid-way flying */
+                opacity: 1;
+                transform: translateY(-50%) rotate(5deg) scale(0.9);
+            }
+            100% {
+                /* Land position on right */
+                left: 55%; 
+                transform: translateY(-50%) rotate(0deg) scale(1);
+            }
         }
 
-        /* Fake Code Typing */
-        .code-line { margin-bottom: 5px; display: block; }
-        .c-purple { color: #bc13fe; }
-        .c-white { color: white; }
-        .c-green { color: #0f0; }
-
-        /* --- TEDHA MEDHA LINE (Divider) --- */
-        .curved-line-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            line-height: 0;
-            z-index: -1;
-        }
-        
-        .curved-line-svg {
-            display: block;
-            width: 100%;
-            height: 150px;
-        }
-
-        .path-style {
-            fill: none;
-            stroke: var(--neon-blue);
-            stroke-width: 3;
-            stroke-dasharray: 10 10;
-            animation: dashMove 2s linear infinite;
-            filter: drop-shadow(0 0 10px var(--neon-blue));
-        }
-
-        @keyframes dashMove {
-            to { stroke-dashoffset: -20; }
-        }
+        @keyframes spinFan { 100% { transform: rotate(360deg); } }
 
     </style>
 </head>
 <body>
-
-    <div class="background-fx">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
 
     <header>
         <div class="logo">Safe Portal</div>
@@ -298,100 +290,64 @@
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Projects</a></li>
-                <li><a href="#">Vouchers</a></li>
+                <li><a href="#">Services</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="hero-container">
+    <div class="main-stage">
         
-        <div class="left-content">
-            <span class="badge">AVAILABLE FOR WORK</span>
-            <h1>Hi, I'm <br><span class="gradient-text">Raza Zee</span></h1>
-            <span class="role-text" id="typewriter">Full Stack Developer_</span>
-            
-            <p>
-                Building secure, high-performance web systems with next-level aesthetics. 
-                Focusing on clean code and premium user experiences.
+        <div class="text-content">
+            <span class="super-title text-line anim-delay-1">SYSTEM ONLINE //</span>
+            <h1 class="text-line anim-delay-2">
+                Hello, I'm Raza.<br>
+                Creative Developer.
+            </h1>
+            <p class="text-line anim-delay-3">
+                Main ek Full Stack Developer hoon jo next-level websites aur secure portals banata hai. Clean code, high performance, aur unique visual styles meri pehchan hai.
             </p>
-
-            <a href="#" class="social-btn">View My Work</a>
-            
-            <div style="margin-top: 30px; font-size: 24px;">
-                <i class="fab fa-github" style="margin-right: 15px; cursor: pointer;"></i>
-                <i class="fab fa-linkedin" style="margin-right: 15px; cursor: pointer;"></i>
-                <i class="fab fa-instagram" style="cursor: pointer;"></i>
+            <div class="action-area text-line anim-delay-4">
+                <a href="#" class="neon-btn">View Projects</a>
+                <a href="#" class="neon-btn" style="margin-left: 20px; filter: hue-rotate(90deg);">Contact Me</a>
             </div>
         </div>
 
-        <div class="right-content">
-            <div class="monitor">
-                <div class="screen">
-                    <span class="code-line"><span class="c-purple">const</span> developer = {</span>
-                    <span class="code-line">&nbsp;&nbsp;name: <span class="c-green">'Raza'</span>,</span>
-                    <span class="code-line">&nbsp;&nbsp;skills: [<span class="c-green">'HTML'</span>, <span class="c-green">'JS'</span>, <span class="c-green">'CSS'</span>],</span>
-                    <span class="code-line">&nbsp;&nbsp;hardWorker: <span class="c-purple">true</span>,</span>
-                    <span class="code-line">&nbsp;&nbsp;status: <span class="c-green">'Coding...'</span></span>
-                    <span class="code-line">};</span>
-                    <br>
-                    <span class="code-line c-white">// System initialized...</span>
-                    <span class="code-line c-white">// Safe Portal Active</span>
-                    <div style="margin-top:20px; width: 50%; height: 2px; background: var(--neon-blue); animation: loadBar 2s infinite;"></div>
+        <div class="pc-container">
+            <div class="pc-setup">
+                <div class="speaker speaker-left">
+                    <div class="speaker-circle"></div><div class="speaker-circle" style="width:25px; height:25px; margin-top:20px;"></div>
+                </div>
+                <div class="speaker speaker-right">
+                    <div class="speaker-circle"></div><div class="speaker-circle" style="width:25px; height:25px; margin-top:20px;"></div>
+                </div>
+
+                <div class="monitor-frame">
+                    <div class="monitor-screen">
+                        <div class="code-anim">
+                            &lt;Dev&gt;<br>Init_Setup()..<br>Loading Assets...<br>Safe_Portal: Ready
+                        </div>
+                    </div>
                 </div>
                 <div class="monitor-stand"></div>
                 <div class="monitor-base"></div>
-            </div>
-        </div>
 
-        <div class="curved-line-container">
-            <svg class="curved-line-svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
-                <path class="path-style" d="M0,50 Q360,100 720,50 T1440,50" />
-            </svg>
+                <div class="cpu-tower">
+                    <div class="cpu-glass">
+                        <div class="rgb-fan fan-1"></div>
+                        <div class="rgb-fan fan-2"></div>
+                    </div>
+                </div>
+
+                <div class="keyboard"></div>
+            </div>
         </div>
 
     </div>
 
     <script>
-        // Console Signature
-        console.log("%c Safe Portal Loaded ", "background: #00f3ff; color: #000; font-size: 20px; border-radius: 5px; padding: 5px;");
-
-        // Typewriter Effect Logic for Left Side
-        const textElement = document.getElementById('typewriter');
-        const roles = ["Full Stack Developer_", "UI/UX Designer_", "System Architect_"];
-        let roleIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function type() {
-            const currentRole = roles[roleIndex];
-            
-            if (isDeleting) {
-                textElement.textContent = currentRole.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                textElement.textContent = currentRole.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = 100;
-            if (isDeleting) typeSpeed = 50;
-
-            if (!isDeleting && charIndex === currentRole.length) {
-                typeSpeed = 2000; // Pause at end
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                roleIndex = (roleIndex + 1) % roles.length;
-            }
-
-            setTimeout(type, typeSpeed);
-        }
-
-        // Start Typing
-        document.addEventListener('DOMContentLoaded', type);
+        console.log("Safe Portal: Cinematic Mode Loaded.");
     </script>
-
 </body>
 </html>
 
