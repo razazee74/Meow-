@@ -3,336 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1400, user-scalable=yes">
-    <title>Safe Portal | Cinematic Experience</title>
+    <title>Safe Portal | The Artifact</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Exo+2:wght@300;600;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* --- CORE UNIVERSE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #000;
+            background-color: #050505;
             color: #fff;
-            font-family: 'Exo 2', sans-serif;
-            overflow: hidden; /* Scroll locked initially */
+            font-family: 'Space Grotesk', sans-serif;
             height: 100vh;
             width: 100vw;
-            perspective: 1000px; /* For 3D effects */
-        }
-
-        /* --- 1. THE CINEMATIC INTRO OVERLAY --- */
-        .cinematic-intro {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            animation: curtainFall 1s ease-in-out forwards 4.5s;
-            pointer-events: none; /* Click through after anime */
-        }
-
-        /* The Energy Core */
-        .core-loader {
+            min-width: 1400px;
+            overflow: hidden;
             position: relative;
-            width: 100px; height: 100px;
-        }
-        
-        .ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: #00f3ff;
-            border-bottom-color: #bc13fe;
-            animation: spin 1.5s linear infinite;
-        }
-        .r1 { width: 100%; height: 100%; animation-duration: 3s; }
-        .r2 { width: 80%; height: 80%; top: 10%; left: 10%; animation-duration: 1.5s; border-top-color: #bc13fe; border-bottom-color: #00f3ff; direction: reverse; }
-        .r3 { width: 60%; height: 60%; top: 20%; left: 20%; animation-duration: 1s; border-left-color: #fff; }
-
-        /* Text Effect during Intro */
-        .intro-text {
-            margin-top: 30px;
-            font-family: 'Cinzel', serif;
-            font-size: 24px;
-            letter-spacing: 5px;
-            color: rgba(255,255,255,0.7);
-            text-transform: uppercase;
-            animation: textGlitch 0.3s infinite;
         }
 
-        /* The "Blast" Flash */
-        .flash-bang {
+        /* --- BACKGROUND TEXTURE & NOISE --- */
+        .ambient-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            opacity: 0;
-            animation: flash 0.2s linear forwards 4.0s;
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 80%);
+            z-index: -2;
         }
 
-        /* --- 2. MAIN WEBSITE CONTENT --- */
-        .main-stage {
-            opacity: 0;
-            transform: scale(1.1);
-            animation: siteReveal 1.5s ease-out forwards 4.2s;
+        /* Noise Overlay (Grain Effect) */
+        .noise {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: absolute;
+            top: 40px; left: 60px;
+            z-index: 100;
+        }
+        .brand {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+        }
+
+        /* --- MAIN STAGE --- */
+        .stage {
             position: relative;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #0a1128 0%, #000000 100%);
-            overflow-y: auto;
-        }
-
-        /* Animated Background Grid */
-        .cyber-grid {
-            position: absolute;
-            width: 200%; height: 200%;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-            animation: gridMove 20s linear infinite;
-            top: 0; left: -50%;
-            z-index: 0;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            padding: 30px 80px;
-            position: relative;
-            z-index: 10;
-        }
-        .logo { font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; color: #fff; text-shadow: 0 0 10px #00f3ff; }
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav ul li a { color: #ccc; text-decoration: none; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        nav ul li a:hover { color: #00f3ff; text-shadow: 0 0 20px #00f3ff; }
-
-        /* Hero Layout */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 50px 100px;
-            height: 80vh;
-            position: relative;
-            z-index: 5;
-        }
-
-        /* Text Styling */
-        .hero-text { flex: 1; }
-        .hero-text h1 {
-            font-size: 80px;
-            line-height: 1;
-            margin-bottom: 20px;
-            font-weight: 900;
-            background: -webkit-linear-gradient(#eee, #333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(255,255,255,0.1);
-        }
-        .hero-text h2 { color: #00f3ff; font-size: 30px; margin-bottom: 30px; letter-spacing: 2px; }
-        .hero-text p { font-size: 18px; color: #888; max-width: 500px; line-height: 1.6; margin-bottom: 40px; }
-
-        .btn-cyber {
-            padding: 15px 40px;
-            background: transparent;
-            border: 1px solid #00f3ff;
-            color: #00f3ff;
-            font-size: 18px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-cyber:hover { background: #00f3ff; color: #000; box-shadow: 0 0 50px #00f3ff; }
-
-        /* 3D PC MODEL (CSS ONLY) */
-        .model-stage {
-            flex: 1;
-            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
+            perspective: 1000px; /* Essential for 3D */
         }
 
-        .pc-wrapper {
-            position: relative;
-            width: 400px; height: 300px;
+        /* --- 1. THE CENTRAL 3D OBJECT (The Spine) --- */
+        /* Note: Since we don't have your local image, I built a 3D Helix using CSS */
+        .central-artifact {
+            position: absolute;
+            width: 200px; height: 600px;
             transform-style: preserve-3d;
-            animation: float3D 6s ease-in-out infinite;
+            animation: spinArtifact 15s linear infinite;
+            z-index: 10;
         }
 
-        /* Monitor */
-        .monitor {
+        .spine-ring {
             position: absolute;
-            width: 400px; height: 250px;
-            background: #0f0f0f;
-            border: 2px solid #333;
-            border-radius: 10px;
-            transform: translateZ(20px);
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
-        }
-        .screen {
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            background: #000;
-            overflow: hidden;
-            border: 1px solid #222;
-        }
-        /* Matrix Rain Effect inside Monitor */
-        .matrix-code {
-            color: #0f0;
-            font-family: monospace;
-            font-size: 12px;
-            opacity: 0.7;
-            padding: 10px;
-            animation: scrollMatrix 2s linear infinite;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2), inset 0 0 20px rgba(188, 19, 254, 0.2);
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        /* Keyboard */
-        .keyboard {
+        /* Stacking rings to create a column */
+        .r1 { top: 0px; transform: translateX(-50%) rotateX(90deg) scale(0.8); }
+        .r2 { top: 50px; transform: translateX(-50%) rotateX(90deg) scale(0.9); border-color: rgba(0, 247, 255, 0.3); }
+        .r3 { top: 100px; transform: translateX(-50%) rotateX(90deg) scale(1.0); }
+        .r4 { top: 150px; transform: translateX(-50%) rotateX(90deg) scale(1.1); border-color: rgba(188, 19, 254, 0.3); }
+        .r5 { top: 200px; transform: translateX(-50%) rotateX(90deg) scale(1.2); }
+        .r6 { top: 250px; transform: translateX(-50%) rotateX(90deg) scale(1.1); border-color: rgba(0, 247, 255, 0.3); }
+        .r7 { top: 300px; transform: translateX(-50%) rotateX(90deg) scale(1.0); }
+        .r8 { top: 350px; transform: translateX(-50%) rotateX(90deg) scale(0.9); border-color: rgba(188, 19, 254, 0.3); }
+        .r9 { top: 400px; transform: translateX(-50%) rotateX(90deg) scale(0.8); }
+
+        /* Glowing Core inside */
+        .core-glow {
             position: absolute;
-            bottom: -80px; left: 20px;
-            width: 360px; height: 120px;
-            background: #111;
-            transform: rotateX(60deg);
-            border-bottom: 5px solid #00f3ff; /* RGB Underglow */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px; height: 500px;
+            background: linear-gradient(to bottom, #00f3ff, #bc13fe);
+            filter: blur(10px);
+            box-shadow: 0 0 50px rgba(255,255,255,0.5);
+        }
+
+        /* --- 2. LEFT FLOATING CARD (Paper Planes Style) --- */
+        .card-left {
+            position: absolute;
+            left: 15%; top: 25%;
+            width: 400px; height: 500px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            z-index: 20;
+            transform: rotateY(10deg) rotateZ(-2deg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
+        }
+
+        .card-left:hover {
+            transform: rotateY(0deg) rotateZ(0deg) scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-title {
+            font-size: 60px;
+            line-height: 0.9;
+            font-weight: 300;
+            color: white;
+            margin-top: 50px;
+            text-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
         }
         
-        /* Hologram Projector base */
-        .holo-base {
+        .card-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Abstract scribbles inside card */
+        .scribble {
             position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 60%);
-            transform: rotateX(90deg) translateZ(-150px);
-            top: 50%; left: -50px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="rgba(0,247,255,0.2)" stroke-width="1" d="M10,10 Q50,100 90,50 T180,100" /></svg>');
+            background-size: cover;
+            opacity: 0.5;
+            pointer-events: none;
         }
 
-        /* --- ANIMATION KEYFRAMES --- */
-        
-        /* 1. Loading Spin */
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* 2. Text Glitch */
-        @keyframes textGlitch {
-            0% { opacity: 1; transform: translateX(0); }
-            20% { opacity: 0.8; transform: translateX(-2px); }
-            40% { opacity: 1; transform: translateX(2px); }
-            100% { opacity: 1; transform: translateX(0); }
+        /* --- 3. RIGHT FLOATING CARD (Navigation) --- */
+        .card-right {
+            position: absolute;
+            right: 15%; bottom: 20%;
+            width: 350px; height: 400px;
+            background: rgba(20, 20, 30, 0.4); /* Darker glass */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 40px;
+            z-index: 25;
+            transform: rotateY(-10deg) translateZ(50px);
+            box-shadow: -20px 30px 60px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* 3. The Big Flash (Blast) */
-        @keyframes flash {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .query-text {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 40px;
         }
 
-        /* 4. Remove Intro Overlay */
-        @keyframes curtainFall {
-            0% { opacity: 1; display: flex; }
-            100% { opacity: 0; display: none; visibility: hidden; }
-        }
-
-        /* 5. Reveal Site */
-        @keyframes siteReveal {
-            0% { opacity: 0; transform: scale(1.2); filter: blur(10px); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0px); }
-        }
-
-        /* 6. Background Grid Move */
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); }
-        }
-
-        /* 7. Floating PC */
-        @keyframes float3D {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            50% { transform: translateY(-20px) rotateY(5deg); }
+        .link-item {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: #bc13fe;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            margin-bottom: 15px;
         }
         
-        @keyframes scrollMatrix { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
+        .link-item:hover {
+            color: #00f3ff;
+            transform: translateX(10px);
+        }
+
+        .arrow { margin-right: 15px; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes spinArtifact {
+            0% { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 10s infinite linear;
+        }
+        .p1 { top: 20%; left: 20%; animation-duration: 8s; background: #00f3ff; }
+        .p2 { top: 80%; left: 80%; animation-duration: 12s; background: #bc13fe; }
+        .p3 { top: 40%; left: 60%; width: 2px; height: 2px; }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="cinematic-intro">
-        <div class="core-loader">
-            <div class="ring r1"></div>
-            <div class="ring r2"></div>
-            <div class="ring r3"></div>
-        </div>
-        <div class="intro-text">Initializing Safe Portal...</div>
-        <div class="flash-bang"></div>
-    </div>
+    <div class="ambient-bg"></div>
+    <div class="noise"></div>
 
-    <div class="main-stage">
+    <header>
+        <div class="brand">Safe Portal</div>
+    </header>
+
+    <div class="stage">
         
-        <div class="cyber-grid"></div>
-
-        <header>
-            <div class="logo">Safe Portal</div>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <section class="hero">
-            <div class="hero-text">
-                <h2>// SYSTEM ONLINE</h2>
-                <h1>RAZA ZEE</h1>
-                <p>Architect of the Digital Realm. Creating immersive, secure, and high-performance web experiences.</p>
-                <a href="#" class="btn-cyber">Access Protocol</a>
+        <div class="card-left">
+            <div class="scribble"></div>
+            <div class="card-subtitle">Google Arts Style</div>
+            <div class="card-title">
+                PAPER<br>
+                PLANES
             </div>
+            <p style="margin-top: 20px; color: #aaa; line-height: 1.6;">
+                Catch and throw paper planes with one another around the world. A simple concept, beautifully executed.
+            </p>
+        </div>
 
-            <div class="model-stage">
-                <div class="pc-wrapper">
-                    <div class="monitor">
-                        <div class="screen">
-                            <div class="matrix-code">
-                                01010101 SYSTEM BREACH DETECTED<br>
-                                SECURE CONNECTION ESTABLISHED...<br>
-                                WELCOME USER: RAZA<br>
-                                LOADING ASSETS... 100%<br>
-                                > RUNNING PORTFOLIO.EXE<br>
-                                0010101100101...
-                            </div>
-                        </div>
-                    </div>
-                    <div class="keyboard"></div>
-                    <div class="holo-base"></div>
-                </div>
+        <div class="central-artifact">
+            <div class="core-glow"></div>
+            <div class="spine-ring r1"></div>
+            <div class="spine-ring r2"></div>
+            <div class="spine-ring r3"></div>
+            <div class="spine-ring r4"></div>
+            <div class="spine-ring r5"></div>
+            <div class="spine-ring r6"></div>
+            <div class="spine-ring r7"></div>
+            <div class="spine-ring r8"></div>
+            <div class="spine-ring r9"></div>
+        </div>
+
+        <div class="card-right">
+            <div class="query-text">
+                WHAT ARE<br>YOU<br>LOOKING FOR?
             </div>
-        </section>
+            
+            <a href="#" class="link-item">
+                <span class="arrow">-></span> WEBSITES
+            </a>
+            <a href="#" class="link-item" style="color: #666;">
+                <span class="arrow">-></span> PROJECTS
+            </a>
+            <a href="#" class="link-item" style="color: #666;">
+                <span class="arrow">-></span> CONTACT
+            </a>
+        </div>
+
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
 
     </div>
 
     <script>
-        console.log("Cinematic Intro Sequence: Active.");
+        console.log("Safe Portal: Artifact Edition Loaded.");
         
-        // Optional: Intro khatam hone ke baad scroll enable karna
-        setTimeout(() => {
-            document.body.style.overflow = "auto";
-        }, 5000);
+        // Mouse Move Parallax Effect (Thoda sa hilaane par cheezein hilengi)
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth - e.pageX) / 50;
+            const y = (window.innerHeight - e.pageY) / 50;
+
+            document.querySelector('.card-left').style.transform = `rotateY(10deg) rotateZ(-2deg) translate(${x}px, ${y}px)`;
+            document.querySelector('.card-right').style.transform = `rotateY(-10deg) translateZ(50px) translate(${-x}px, ${-y}px)`;
+        });
     </script>
 
 </body>
 </html>
-
