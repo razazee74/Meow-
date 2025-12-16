@@ -2,26 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeleTalk - Secure Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TeleTalk - v2</title>
     <style>
         :root {
-            --primary: #0088cc; /* Telegram Blue */
+            --primary: #0088cc;
             --primary-glow: #0088ccaa;
             --bg-dark: #121212;
             --bg-card: #1e1e1e;
+            --bg-input: #2b2b2b;
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
             --danger: #ff4d4d;
+            --success: #00cc66;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
@@ -32,517 +29,417 @@
         }
 
         /* --- Animations --- */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 10px var(--primary-glow); }
-            50% { box-shadow: 0 0 20px var(--primary), 0 0 10px var(--primary); }
-            100% { box-shadow: 0 0 10px var(--primary-glow); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 136, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0); }
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        /* --- Views --- */
+        .view { display: none; flex: 1; height: 100%; flex-direction: column; animation: fadeUp 0.3s ease-out; position: relative; }
+        .view.active { display: flex; }
 
-        /* --- Views Management --- */
-        .view {
-            display: none;
-            flex: 1;
-            height: 100%;
-            flex-direction: column;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .view.active {
-            display: flex;
-        }
-
-        /* --- Login / Registration View --- */
-        #auth-view {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1e2a38 0%, var(--bg-dark) 70%);
-        }
-
-        .logo-container {
-            margin-bottom: 2rem;
-        }
-
+        /* --- Auth Screen --- */
+        #auth-view { justify-content: center; align-items: center; text-align: center; }
         .logo-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: transparent;
-            border: 2px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            animation: pulse-glow 3s infinite;
+            width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+            animation: pulse 2s infinite;
         }
-
-        .logo-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
-
-        h1.brand-name {
-            font-size: 2rem;
-            letter-spacing: 2px;
-            margin-top: 10px;
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        .auth-card {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
+        .logo-icon { font-size: 2.5rem; color: var(--primary); }
+        .auth-card { background: var(--bg-card); padding: 2rem; border-radius: 15px; width: 90%; max-width: 400px; }
         input {
-            width: 100%;
-            padding: 12px;
-            background: #2b2b2b;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: 0.3s;
+            width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid #444;
+            border-radius: 8px; color: white; margin-bottom: 15px; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+        .btn {
+            width: 100%; padding: 12px; background: var(--primary); border: none;
+            border-radius: 8px; color: white; font-weight: bold; cursor: pointer;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 8px var(--primary-glow);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .tg-login-btn {
-            background: #54a9eb; /* Telegram official color */
-            margin-top: 10px;
-        }
-
-        /* --- Main App Navigation --- */
+        /* --- Main App Layout --- */
         .app-header {
-            padding: 15px;
-            background: var(--bg-card);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
+            padding: 15px; background: var(--bg-card); display: flex; 
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
+            height: 60px;
         }
+        .header-title { font-size: 1.2rem; font-weight: 600; }
+        .settings-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
 
+        /* --- Bottom Nav --- */
         .nav-bar {
-            display: flex;
-            justify-content: space-around;
-            background: var(--bg-card);
-            padding: 10px 0;
-            border-top: 1px solid #333;
+            display: flex; justify-content: space-around; background: var(--bg-card);
+            padding: 10px 0; border-top: 1px solid #333; height: 65px;
         }
-
         .nav-item {
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.8rem;
-            cursor: pointer;
+            color: var(--text-muted); display: flex; flex-direction: column;
+            align-items: center; font-size: 0.8rem; cursor: pointer; flex: 1;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
+
+        /* --- Chat Tab --- */
+        .search-container { padding: 10px 15px; background: var(--bg-card); }
+        .search-bar {
+            width: 100%; padding: 10px; border-radius: 20px; border: none;
+            background: #111; color: white; text-align: center; font-size: 0.9rem;
+        }
+        .chat-list { flex: 1; overflow-y: auto; padding: 10px; }
+        .chat-item {
+            display: flex; align-items: center; padding: 10px; border-radius: 10px;
+            margin-bottom: 5px; cursor: pointer; transition: background 0.2s;
+        }
+        .chat-item:hover { background: #252525; }
+        .avatar-small {
+            width: 45px; height: 45px; border-radius: 50%; background: #333;
+            margin-right: 12px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0;
+        }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-info h4 { font-size: 1rem; margin-bottom: 3px; }
+        .chat-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* --- Profile Tab --- */
+        .profile-container { padding: 20px; overflow-y: auto; text-align: center; }
+        
+        .avatar-upload-wrapper {
+            position: relative; width: 110px; height: 110px; margin: 10px auto 20px;
+        }
+        .profile-avatar-large {
+            width: 100%; height: 100%; border-radius: 50%; background: #333;
+            border: 3px solid var(--primary); overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .camera-icon {
+            position: absolute; bottom: 0; right: 0; background: var(--primary);
+            width: 35px; height: 35px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            border: 3px solid var(--bg-dark);
+        }
+        
+        .form-group { text-align: left; margin-bottom: 15px; }
+        .form-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
+        textarea.bio-input {
+            width: 100%; background: var(--bg-input); border: 1px solid #444; color: white;
+            border-radius: 8px; padding: 10px; resize: none; height: 80px;
         }
 
-        .nav-item.active {
-            color: var(--primary);
+        /* --- Settings Overlay --- */
+        #settings-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000;
+            display: none; justify-content: center; align-items: center;
         }
-
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
+        #settings-overlay.open { display: flex; animation: fadeUp 0.2s; }
+        .settings-card {
+            background: var(--bg-card); width: 85%; max-width: 350px;
+            border-radius: 15px; padding: 20px;
         }
-
-        /* --- Chat View --- */
-        #chat-view .chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .setting-row {
+            padding: 15px 0; border-bottom: 1px solid #333;
+            display: flex; justify-content: space-between;
         }
+        .setting-row:last-child { border-bottom: none; }
+        .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; }
 
-        .message {
-            max-width: 80%;
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            position: relative;
-        }
-
-        .msg-received {
-            background: #2b2b2b;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-
-        .msg-sent {
-            background: var(--primary);
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .msg-meta {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 4px;
-            display: block;
-            text-align: right;
-        }
-
-        .chat-input-area {
-            padding: 15px;
-            background: var(--bg-card);
-            display: flex;
-            gap: 10px;
-        }
-
-        /* --- Profile & Settings View --- */
-        .content-container {
-            padding: 20px;
-        }
-
-        .profile-card {
-            text-align: center;
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            background: var(--primary);
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .setting-item {
-            background: var(--bg-card);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-            margin-top: 20px;
-        }
-
-        /* Utility */
+        /* Utilities */
         .hidden { display: none !important; }
-        .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 5px; display: none; }
-
+        input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
     <div id="auth-view" class="view active">
-        <div class="logo-container">
-            <div class="logo-circle">
-                <span class="logo-icon">✈</span>
-            </div>
-            <h1 class="brand-name">TeleTalk</h1>
+        <div class="logo-circle"><span class="logo-icon">✈</span></div>
+        <h1 style="margin-bottom: 30px;">TeleTalk</h1>
+        
+        <div id="step-login" class="auth-card">
+            <button class="btn" style="background:#54a9eb" onclick="app.mockTelegramAuth()">Log in with Telegram</button>
         </div>
 
-        <div id="login-step" class="auth-card">
-            <h2>Welcome</h2>
-            <p style="color:var(--text-muted); margin: 10px 0 20px;">Secure messaging via Telegram</p>
-            <button class="btn-primary tg-login-btn" onclick="app.mockTelegramAuth()">
-                Log in with Telegram
-            </button>
-        </div>
-
-        <div id="register-step" class="auth-card hidden">
-            <h2>Create Account</h2>
-            <p style="color:var(--text-muted); margin-bottom: 20px;">Finish setting up your profile</p>
-            
-            <div class="input-group">
-                <label>Telegram ID (Detected)</label>
-                <input type="text" id="reg-tg-id" disabled style="opacity: 0.6;">
-            </div>
-
-            <div class="input-group">
-                <label>Choose Username</label>
-                <input type="text" id="reg-username" placeholder="@username">
-                <div id="reg-error" class="error-msg">Min 2 chars. No single characters.</div>
-            </div>
-
-            <button class="btn-primary" onclick="app.registerUser()">Start Chatting</button>
+        <div id="step-register" class="auth-card hidden">
+            <h3>Complete Profile</h3>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px">Set up your identity</p>
+            <input type="text" id="reg-username" placeholder="@username">
+            <input type="text" id="reg-name" placeholder="Display Name (e.g. John Doe)">
+            <button class="btn" onclick="app.registerUser()">Start Messaging</button>
         </div>
     </div>
 
     <div id="main-app" class="view">
         
         <div class="app-header">
-            <h3 id="header-title">Chat</h3>
-            <div class="user-status" style="font-size: 0.8rem; color: #0f0;">● Online</div>
+            <span class="header-title" id="page-title">Chats</span>
+            <div id="header-settings-btn" class="settings-icon hidden" onclick="app.toggleSettings(true)">⚙️</div>
         </div>
 
-        <div style="flex: 1; position: relative; overflow: hidden;">
+        <div style="flex:1; overflow:hidden; position:relative">
             
             <div id="tab-chat" class="view active">
-                <div class="chat-container" id="chat-feed">
-                    <div class="message msg-received">
-                        Welcome to TeleTalk! 👋<br>This is a simulated secure channel.
-                        <span class="msg-meta">System • Now</span>
+                <div class="search-container">
+                    <input type="text" class="search-bar" id="user-search" placeholder="🔍 Search users..." onkeyup="app.filterUsers()">
+                </div>
+                <div class="chat-list" id="chat-list">
                     </div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="msg-input" placeholder="Type a message..." onkeypress="app.handleEnter(event)">
-                    <button class="btn-primary" style="width: auto; padding: 0 20px;" onclick="app.sendMessage()">➤</button>
-                </div>
             </div>
 
-            <div id="tab-profile" class="view" style="overflow-y: auto;">
-                <div class="content-container">
-                    <div class="profile-card">
-                        <div class="profile-avatar" id="profile-avatar-display">U</div>
-                        <h2 id="profile-name-display">User</h2>
-                        <p style="color: var(--text-muted);" id="profile-id-display">ID: 123456</p>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Update Username</label>
-                        <input type="text" id="edit-username">
-                    </div>
-                    <button class="btn-primary" onclick="app.updateProfile()">Save Changes</button>
-                </div>
-            </div>
-
-            <div id="tab-settings" class="view">
-                <div class="content-container">
-                    <h3>General</h3>
-                    <div class="setting-item" onclick="alert('Feature coming soon!')">
-                        <span>Notifications</span>
-                        <span style="color:var(--primary)">ON</span>
-                    </div>
-                    <div class="setting-item" onclick="alert('Feature coming soon!')">
-                        <span>Privacy Mode</span>
-                        <span style="color:var(--text-muted)">OFF</span>
-                    </div>
+            <div id="tab-profile" class="view">
+                <div class="profile-container">
                     
-                    <h3>Account</h3>
-                    <button class="btn-primary btn-danger" onclick="app.logout()">Logout</button>
+                    <div class="avatar-upload-wrapper" onclick="document.getElementById('file-input').click()">
+                        <div class="profile-avatar-large">
+                            <img id="profile-img-preview" src="" class="avatar-img hidden">
+                            <span id="profile-initial" style="font-size:2.5rem; font-weight:bold">?</span>
+                        </div>
+                        <div class="camera-icon">📷</div>
+                    </div>
+                    <input type="file" id="file-input" accept="image/*" onchange="app.handleImageUpload(this)">
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="profile-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="profile-username" readonly style="opacity:0.6">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bio</label>
+                        <textarea id="profile-bio" class="bio-input" placeholder="Add a few words about yourself..."></textarea>
+                    </div>
+
+                    <button class="btn" onclick="app.saveProfile()">Save Changes</button>
                 </div>
             </div>
 
         </div>
 
         <div class="nav-bar">
-            <div class="nav-item active" onclick="app.switchTab('chat', this)">
+            <div class="nav-item active" onclick="app.navTo('chat', this)">
                 <span class="nav-icon">💬</span>
-                <span>Chat</span>
+                <span>Chats</span>
             </div>
-            <div class="nav-item" onclick="app.switchTab('profile', this)">
+            <div class="nav-item" onclick="app.navTo('profile', this)">
                 <span class="nav-icon">👤</span>
                 <span>Profile</span>
-            </div>
-            <div class="nav-item" onclick="app.switchTab('settings', this)">
-                <span class="nav-icon">⚙️</span>
-                <span>Settings</span>
             </div>
         </div>
     </div>
 
+    <div id="settings-overlay" onclick="if(event.target === this) app.toggleSettings(false)">
+        <div class="settings-card">
+            <h3 style="margin-bottom:15px">Settings</h3>
+            
+            <div class="setting-row">
+                <span>Notifications</span>
+                <span style="color:var(--primary)">ON</span>
+            </div>
+            <div class="setting-row">
+                <span>Dark Mode</span>
+                <span style="color:var(--primary)">ON</span>
+            </div>
+            <div class="setting-row">
+                <span>Privacy</span>
+                <span>Everyone</span>
+            </div>
+
+            <button class="btn btn-logout" onclick="app.logout()">Logout</button>
+            <button class="btn" style="background:#333; margin-top:10px" onclick="app.toggleSettings(false)">Close</button>
+        </div>
+    </div>
+
     <script>
-        /**
-         * TeleTalk Application Logic
-         * Handles Navigation, State Management, and LocalStorage simulation.
-         */
         const app = {
             currentUser: null,
+            // Mock DB of other users
+            mockUsers: [
+                { id: 1, name: "Alice Wonderland", msg: "See you tomorrow!", time: "10:30 AM", color: "#e91e63" },
+                { id: 2, name: "Bob Builder", msg: "Can we fix it?", time: "Yesterday", color: "#ff9800" },
+                { id: 3, name: "Charlie Dev", msg: "Code is merged.", time: "Mon", color: "#4caf50" },
+                { id: 4, name: "Telegram Support", msg: "Welcome to TeleTalk", time: "Now", color: "#0088cc" }
+            ],
 
-            // --- Initialization ---
             init: function() {
-                // Check if user is logged in
-                const storedUser = localStorage.getItem('teletalk_user');
-                if (storedUser) {
-                    this.currentUser = JSON.parse(storedUser);
-                    this.loadMainApp();
+                const stored = localStorage.getItem('teletalk_v2_user');
+                if (stored) {
+                    this.currentUser = JSON.parse(stored);
+                    this.loadApp();
                 } else {
-                    this.showView('auth-view');
+                    document.getElementById('auth-view').classList.add('active');
                 }
             },
 
-            // --- Authentication ---
+            /* --- Auth Logic --- */
             mockTelegramAuth: function() {
-                // Simulate detecting Telegram ID
-                const mockTgId = Math.floor(100000000 + Math.random() * 900000000);
-                
-                document.getElementById('login-step').classList.add('hidden');
-                document.getElementById('register-step').classList.remove('hidden');
-                
-                // Pre-fill detected ID
-                document.getElementById('reg-tg-id').value = mockTgId;
+                // Simulate extracting ID
+                document.getElementById('step-login').classList.add('hidden');
+                document.getElementById('step-register').classList.remove('hidden');
             },
 
             registerUser: function() {
-                const tgId = document.getElementById('reg-tg-id').value;
                 const username = document.getElementById('reg-username').value.trim();
-                const errorDiv = document.getElementById('reg-error');
+                const name = document.getElementById('reg-name').value.trim();
+                
+                if(username.length < 2 || name.length < 2) return alert("Fields too short!");
 
-                // Validation
-                if (username.length < 2) {
-                    errorDiv.style.display = 'block';
-                    errorDiv.innerText = "Username must be at least 2 characters.";
-                    return;
-                }
-
-                errorDiv.style.display = 'none';
-
-                // Save User
                 this.currentUser = {
-                    id: tgId,
+                    id: Math.floor(Math.random() * 1000000),
                     username: username,
-                    joinedAt: new Date().toISOString()
+                    name: name,
+                    bio: "",
+                    avatar: null // Will store Base64 string
                 };
-
-                localStorage.setItem('teletalk_user', JSON.stringify(this.currentUser));
-                this.loadMainApp();
+                
+                this.saveToDisk();
+                this.loadApp();
             },
 
             logout: function() {
-                if(confirm("Are you sure you want to logout?")) {
-                    localStorage.removeItem('teletalk_user');
+                if(confirm("Log out?")) {
+                    localStorage.removeItem('teletalk_v2_user');
                     location.reload();
                 }
             },
 
-            // --- UI Navigation ---
-            showView: function(viewId) {
-                // Hide top level views
+            /* --- Navigation Logic --- */
+            loadApp: function() {
                 document.getElementById('auth-view').classList.remove('active');
-                document.getElementById('main-app').classList.remove('active');
-                
-                // Show requested
-                document.getElementById(viewId).classList.add('active');
+                document.getElementById('main-app').classList.add('active');
+                this.navTo('chat', document.querySelector('.nav-item')); // Default to chat
+                this.renderChatList();
             },
 
-            loadMainApp: function() {
-                this.showView('main-app');
-                this.updateProfileUI();
-            },
-
-            switchTab: function(tabName, navElement) {
+            navTo: function(tab, navEl) {
                 // Update Nav UI
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                navElement.classList.add('active');
+                if(navEl) navEl.classList.add('active');
 
-                // Update View UI
-                document.querySelectorAll('#main-app > div > .view').forEach(el => el.classList.remove('active'));
-                document.getElementById('tab-' + tabName).classList.add('active');
+                // Update Tab View
+                document.getElementById('tab-chat').classList.remove('active');
+                document.getElementById('tab-profile').classList.remove('active');
+                document.getElementById('tab-' + tab).classList.add('active');
 
                 // Update Header
-                const titles = { 'chat': 'Chat', 'profile': 'My Profile', 'settings': 'Settings' };
-                document.getElementById('header-title').innerText = titles[tabName];
-            },
-
-            // --- Chat Functionality ---
-            handleEnter: function(e) {
-                if (e.key === 'Enter') this.sendMessage();
-            },
-
-            sendMessage: function() {
-                const input = document.getElementById('msg-input');
-                const text = input.value.trim();
-                if (!text) return;
-
-                const chatFeed = document.getElementById('chat-feed');
-                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                // Create User Message Bubble
-                const msgDiv = document.createElement('div');
-                msgDiv.className = 'message msg-sent';
-                msgDiv.innerHTML = `${text} <span class="msg-meta">${time}</span>`;
-                chatFeed.appendChild(msgDiv);
-
-                input.value = '';
-                chatFeed.scrollTop = chatFeed.scrollHeight;
-
-                // Simulate Auto-Reply
-                setTimeout(() => {
-                    const replyDiv = document.createElement('div');
-                    replyDiv.className = 'message msg-received';
-                    replyDiv.innerHTML = `Echo: ${text} <br><span style="font-size:0.8em; color:#aaa">This is a demo reply.</span> <span class="msg-meta">${time}</span>`;
-                    chatFeed.appendChild(replyDiv);
-                    chatFeed.scrollTop = chatFeed.scrollHeight;
-                }, 1000);
-            },
-
-            // --- Profile Management ---
-            updateProfileUI: function() {
-                if(!this.currentUser) return;
+                const title = document.getElementById('page-title');
+                const settingsBtn = document.getElementById('header-settings-btn');
                 
-                document.getElementById('profile-name-display').innerText = "@" + this.currentUser.username;
-                document.getElementById('profile-id-display').innerText = "TG ID: " + this.currentUser.id;
-                document.getElementById('profile-avatar-display').innerText = this.currentUser.username.charAt(0).toUpperCase();
-                document.getElementById('edit-username').value = this.currentUser.username;
+                if (tab === 'chat') {
+                    title.innerText = "Chats";
+                    settingsBtn.classList.add('hidden');
+                } else {
+                    title.innerText = "My Profile";
+                    settingsBtn.classList.remove('hidden');
+                    this.loadProfileData(); // Refresh profile inputs
+                }
             },
 
-            updateProfile: function() {
-                const newName = document.getElementById('edit-username').value.trim();
-                if (newName.length < 2) return alert("Username too short!");
+            toggleSettings: function(show) {
+                const el = document.getElementById('settings-overlay');
+                if(show) el.classList.add('open');
+                else el.classList.remove('open');
+            },
 
-                this.currentUser.username = newName;
-                localStorage.setItem('teletalk_user', JSON.stringify(this.currentUser));
-                this.updateProfileUI();
-                alert("Profile Updated!");
+            /* --- Chat & Search Logic --- */
+            renderChatList: function(filterText = "") {
+                const list = document.getElementById('chat-list');
+                list.innerHTML = "";
+                
+                const filtered = this.mockUsers.filter(u => 
+                    u.name.toLowerCase().includes(filterText.toLowerCase())
+                );
+
+                if(filtered.length === 0) {
+                    list.innerHTML = `<div style="text-align:center; color:#555; margin-top:20px">No users found</div>`;
+                    return;
+                }
+
+                filtered.forEach(u => {
+                    // Generate a colored circle placeholder
+                    const html = `
+                        <div class="chat-item" onclick="alert('Chat with ${u.name} coming soon!')">
+                            <div class="avatar-small" style="background:${u.color}">
+                                <span style="font-weight:bold; font-size:1.1rem">${u.name.charAt(0)}</span>
+                            </div>
+                            <div class="chat-info">
+                                <h4>${u.name}</h4>
+                                <p>${u.msg} • ${u.time}</p>
+                            </div>
+                        </div>
+                    `;
+                    list.innerHTML += html;
+                });
+            },
+
+            filterUsers: function() {
+                const text = document.getElementById('user-search').value;
+                this.renderChatList(text);
+            },
+
+            /* --- Profile Logic --- */
+            loadProfileData: function() {
+                document.getElementById('profile-name').value = this.currentUser.name;
+                document.getElementById('profile-username').value = this.currentUser.username;
+                document.getElementById('profile-bio').value = this.currentUser.bio || "";
+                
+                // Load Avatar
+                this.updateAvatarUI();
+            },
+
+            handleImageUpload: function(input) {
+                const file = input.files[0];
+                if (!file) return;
+
+                // Limit size (approx 1MB) to prevent LocalStorage crash
+                if (file.size > 1024 * 1024) {
+                    alert("Image too large! Please choose an image under 1MB.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.currentUser.avatar = e.target.result; // Base64 string
+                    this.updateAvatarUI();
+                };
+                reader.readAsDataURL(file);
+            },
+
+            updateAvatarUI: function() {
+                const imgEl = document.getElementById('profile-img-preview');
+                const initialEl = document.getElementById('profile-initial');
+
+                if (this.currentUser.avatar) {
+                    imgEl.src = this.currentUser.avatar;
+                    imgEl.classList.remove('hidden');
+                    initialEl.classList.add('hidden');
+                } else {
+                    initialEl.innerText = this.currentUser.name.charAt(0).toUpperCase();
+                    imgEl.classList.add('hidden');
+                    initialEl.classList.remove('hidden');
+                }
+            },
+
+            saveProfile: function() {
+                this.currentUser.name = document.getElementById('profile-name').value;
+                this.currentUser.bio = document.getElementById('profile-bio').value;
+                
+                this.saveToDisk();
+                alert("Profile saved successfully!");
+            },
+
+            saveToDisk: function() {
+                localStorage.setItem('teletalk_v2_user', JSON.stringify(this.currentUser));
             }
         };
 
-        // Start App
+        // Start
         app.init();
-
     </script>
 </body>
 </html>
