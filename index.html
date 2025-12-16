@@ -2,301 +2,548 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1400, user-scalable=yes">
-    <title>Safe Portal | The Artifact</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleTalk - Secure Chat</title>
     <style>
-        /* --- CORE UNIVERSE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0088cc; /* Telegram Blue */
+            --primary-glow: #0088ccaa;
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --danger: #ff4d4d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
         body {
-            background-color: #050505;
-            color: #fff;
-            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             height: 100vh;
-            width: 100vw;
-            min-width: 1400px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* --- BACKGROUND TEXTURE & NOISE --- */
-        .ambient-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 80%);
-            z-index: -2;
-        }
-
-        /* Noise Overlay (Grain Effect) */
-        .noise {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.05;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* --- HEADER --- */
-        header {
-            position: absolute;
-            top: 40px; left: 60px;
-            z-index: 100;
-        }
-        .brand {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 24px;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-        }
-
-        /* --- MAIN STAGE --- */
-        .stage {
-            position: relative;
-            width: 100%; height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px; /* Essential for 3D */
-        }
-
-        /* --- 1. THE CENTRAL 3D OBJECT (The Spine) --- */
-        /* Note: Since we don't have your local image, I built a 3D Helix using CSS */
-        .central-artifact {
-            position: absolute;
-            width: 200px; height: 600px;
-            transform-style: preserve-3d;
-            animation: spinArtifact 15s linear infinite;
-            z-index: 10;
-        }
-
-        .spine-ring {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px; height: 150px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2), inset 0 0 20px rgba(188, 19, 254, 0.2);
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        /* Stacking rings to create a column */
-        .r1 { top: 0px; transform: translateX(-50%) rotateX(90deg) scale(0.8); }
-        .r2 { top: 50px; transform: translateX(-50%) rotateX(90deg) scale(0.9); border-color: rgba(0, 247, 255, 0.3); }
-        .r3 { top: 100px; transform: translateX(-50%) rotateX(90deg) scale(1.0); }
-        .r4 { top: 150px; transform: translateX(-50%) rotateX(90deg) scale(1.1); border-color: rgba(188, 19, 254, 0.3); }
-        .r5 { top: 200px; transform: translateX(-50%) rotateX(90deg) scale(1.2); }
-        .r6 { top: 250px; transform: translateX(-50%) rotateX(90deg) scale(1.1); border-color: rgba(0, 247, 255, 0.3); }
-        .r7 { top: 300px; transform: translateX(-50%) rotateX(90deg) scale(1.0); }
-        .r8 { top: 350px; transform: translateX(-50%) rotateX(90deg) scale(0.9); border-color: rgba(188, 19, 254, 0.3); }
-        .r9 { top: 400px; transform: translateX(-50%) rotateX(90deg) scale(0.8); }
-
-        /* Glowing Core inside */
-        .core-glow {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px; height: 500px;
-            background: linear-gradient(to bottom, #00f3ff, #bc13fe);
-            filter: blur(10px);
-            box-shadow: 0 0 50px rgba(255,255,255,0.5);
-        }
-
-        /* --- 2. LEFT FLOATING CARD (Paper Planes Style) --- */
-        .card-left {
-            position: absolute;
-            left: 15%; top: 25%;
-            width: 400px; height: 500px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            z-index: 20;
-            transform: rotateY(10deg) rotateZ(-2deg);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transition: transform 0.5s ease;
-        }
-
-        .card-left:hover {
-            transform: rotateY(0deg) rotateZ(0deg) scale(1.02);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .card-title {
-            font-size: 60px;
-            line-height: 0.9;
-            font-weight: 300;
-            color: white;
-            margin-top: 50px;
-            text-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
-        }
-        
-        .card-subtitle {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* Abstract scribbles inside card */
-        .scribble {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="rgba(0,247,255,0.2)" stroke-width="1" d="M10,10 Q50,100 90,50 T180,100" /></svg>');
-            background-size: cover;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* --- 3. RIGHT FLOATING CARD (Navigation) --- */
-        .card-right {
-            position: absolute;
-            right: 15%; bottom: 20%;
-            width: 350px; height: 400px;
-            background: rgba(20, 20, 30, 0.4); /* Darker glass */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px;
-            z-index: 25;
-            transform: rotateY(-10deg) translateZ(50px);
-            box-shadow: -20px 30px 60px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Animations --- */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px var(--primary-glow); }
+            50% { box-shadow: 0 0 20px var(--primary), 0 0 10px var(--primary); }
+            100% { box-shadow: 0 0 10px var(--primary-glow); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Views Management --- */
+        .view {
+            display: none;
+            flex: 1;
+            height: 100%;
+            flex-direction: column;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        /* --- Login / Registration View --- */
+        #auth-view {
             justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e2a38 0%, var(--bg-dark) 70%);
         }
 
-        .query-text {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 32px;
-            line-height: 1.2;
-            color: #fff;
-            margin-bottom: 40px;
+        .logo-container {
+            margin-bottom: 2rem;
         }
 
-        .link-item {
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid var(--primary);
             display: flex;
             align-items: center;
-            font-size: 18px;
-            color: #bc13fe;
-            text-decoration: none;
-            letter-spacing: 1px;
+            justify-content: center;
+            margin: 0 auto;
+            animation: pulse-glow 3s infinite;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        h1.brand-name {
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
             transition: 0.3s;
-            margin-bottom: 15px;
-        }
-        
-        .link-item:hover {
-            color: #00f3ff;
-            transform: translateX(10px);
         }
 
-        .arrow { margin-right: 15px; }
-
-        /* --- ANIMATIONS --- */
-        @keyframes spinArtifact {
-            0% { transform: rotateY(0deg) rotateX(10deg); }
-            100% { transform: rotateY(360deg) rotateX(10deg); }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
         }
 
-        /* Floating particles */
-        .particle {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: white;
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .tg-login-btn {
+            background: #54a9eb; /* Telegram official color */
+            margin-top: 10px;
+        }
+
+        /* --- Main App Navigation --- */
+        .app-header {
+            padding: 15px;
+            background: var(--bg-card);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            background: var(--bg-card);
+            padding: 10px 0;
+            border-top: 1px solid #333;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        /* --- Chat View --- */
+        #chat-view .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .msg-received {
+            background: #2b2b2b;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-sent {
+            background: var(--primary);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-meta {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            display: block;
+            text-align: right;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            background: var(--bg-card);
+            display: flex;
+            gap: 10px;
+        }
+
+        /* --- Profile & Settings View --- */
+        .content-container {
+            padding: 20px;
+        }
+
+        .profile-card {
+            text-align: center;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
             border-radius: 50%;
-            opacity: 0.6;
-            animation: floatParticle 10s infinite linear;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
         }
-        .p1 { top: 20%; left: 20%; animation-duration: 8s; background: #00f3ff; }
-        .p2 { top: 80%; left: 80%; animation-duration: 12s; background: #bc13fe; }
-        .p3 { top: 40%; left: 60%; width: 2px; height: 2px; }
 
-        @keyframes floatParticle {
-            0% { transform: translateY(0); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-100px); opacity: 0; }
+        .setting-item {
+            background: var(--bg-card);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
         }
+
+        .btn-danger {
+            background-color: var(--danger);
+            margin-top: 20px;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 5px; display: none; }
 
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg"></div>
-    <div class="noise"></div>
-
-    <header>
-        <div class="brand">Safe Portal</div>
-    </header>
-
-    <div class="stage">
-        
-        <div class="card-left">
-            <div class="scribble"></div>
-            <div class="card-subtitle">Google Arts Style</div>
-            <div class="card-title">
-                PAPER<br>
-                PLANES
+    <div id="auth-view" class="view active">
+        <div class="logo-container">
+            <div class="logo-circle">
+                <span class="logo-icon">✈</span>
             </div>
-            <p style="margin-top: 20px; color: #aaa; line-height: 1.6;">
-                Catch and throw paper planes with one another around the world. A simple concept, beautifully executed.
-            </p>
+            <h1 class="brand-name">TeleTalk</h1>
         </div>
 
-        <div class="central-artifact">
-            <div class="core-glow"></div>
-            <div class="spine-ring r1"></div>
-            <div class="spine-ring r2"></div>
-            <div class="spine-ring r3"></div>
-            <div class="spine-ring r4"></div>
-            <div class="spine-ring r5"></div>
-            <div class="spine-ring r6"></div>
-            <div class="spine-ring r7"></div>
-            <div class="spine-ring r8"></div>
-            <div class="spine-ring r9"></div>
+        <div id="login-step" class="auth-card">
+            <h2>Welcome</h2>
+            <p style="color:var(--text-muted); margin: 10px 0 20px;">Secure messaging via Telegram</p>
+            <button class="btn-primary tg-login-btn" onclick="app.mockTelegramAuth()">
+                Log in with Telegram
+            </button>
         </div>
 
-        <div class="card-right">
-            <div class="query-text">
-                WHAT ARE<br>YOU<br>LOOKING FOR?
-            </div>
+        <div id="register-step" class="auth-card hidden">
+            <h2>Create Account</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px;">Finish setting up your profile</p>
             
-            <a href="#" class="link-item">
-                <span class="arrow">-></span> WEBSITES
-            </a>
-            <a href="#" class="link-item" style="color: #666;">
-                <span class="arrow">-></span> PROJECTS
-            </a>
-            <a href="#" class="link-item" style="color: #666;">
-                <span class="arrow">-></span> CONTACT
-            </a>
+            <div class="input-group">
+                <label>Telegram ID (Detected)</label>
+                <input type="text" id="reg-tg-id" disabled style="opacity: 0.6;">
+            </div>
+
+            <div class="input-group">
+                <label>Choose Username</label>
+                <input type="text" id="reg-username" placeholder="@username">
+                <div id="reg-error" class="error-msg">Min 2 chars. No single characters.</div>
+            </div>
+
+            <button class="btn-primary" onclick="app.registerUser()">Start Chatting</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="view">
+        
+        <div class="app-header">
+            <h3 id="header-title">Chat</h3>
+            <div class="user-status" style="font-size: 0.8rem; color: #0f0;">● Online</div>
         </div>
 
-        <div class="particle p1"></div>
-        <div class="particle p2"></div>
-        <div class="particle p3"></div>
+        <div style="flex: 1; position: relative; overflow: hidden;">
+            
+            <div id="tab-chat" class="view active">
+                <div class="chat-container" id="chat-feed">
+                    <div class="message msg-received">
+                        Welcome to TeleTalk! 👋<br>This is a simulated secure channel.
+                        <span class="msg-meta">System • Now</span>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="msg-input" placeholder="Type a message..." onkeypress="app.handleEnter(event)">
+                    <button class="btn-primary" style="width: auto; padding: 0 20px;" onclick="app.sendMessage()">➤</button>
+                </div>
+            </div>
 
+            <div id="tab-profile" class="view" style="overflow-y: auto;">
+                <div class="content-container">
+                    <div class="profile-card">
+                        <div class="profile-avatar" id="profile-avatar-display">U</div>
+                        <h2 id="profile-name-display">User</h2>
+                        <p style="color: var(--text-muted);" id="profile-id-display">ID: 123456</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Update Username</label>
+                        <input type="text" id="edit-username">
+                    </div>
+                    <button class="btn-primary" onclick="app.updateProfile()">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="tab-settings" class="view">
+                <div class="content-container">
+                    <h3>General</h3>
+                    <div class="setting-item" onclick="alert('Feature coming soon!')">
+                        <span>Notifications</span>
+                        <span style="color:var(--primary)">ON</span>
+                    </div>
+                    <div class="setting-item" onclick="alert('Feature coming soon!')">
+                        <span>Privacy Mode</span>
+                        <span style="color:var(--text-muted)">OFF</span>
+                    </div>
+                    
+                    <h3>Account</h3>
+                    <button class="btn-primary btn-danger" onclick="app.logout()">Logout</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="app.switchTab('chat', this)">
+                <span class="nav-icon">💬</span>
+                <span>Chat</span>
+            </div>
+            <div class="nav-item" onclick="app.switchTab('profile', this)">
+                <span class="nav-icon">👤</span>
+                <span>Profile</span>
+            </div>
+            <div class="nav-item" onclick="app.switchTab('settings', this)">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        console.log("Safe Portal: Artifact Edition Loaded.");
-        
-        // Mouse Move Parallax Effect (Thoda sa hilaane par cheezein hilengi)
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth - e.pageX) / 50;
-            const y = (window.innerHeight - e.pageY) / 50;
+        /**
+         * TeleTalk Application Logic
+         * Handles Navigation, State Management, and LocalStorage simulation.
+         */
+        const app = {
+            currentUser: null,
 
-            document.querySelector('.card-left').style.transform = `rotateY(10deg) rotateZ(-2deg) translate(${x}px, ${y}px)`;
-            document.querySelector('.card-right').style.transform = `rotateY(-10deg) translateZ(50px) translate(${-x}px, ${-y}px)`;
-        });
+            // --- Initialization ---
+            init: function() {
+                // Check if user is logged in
+                const storedUser = localStorage.getItem('teletalk_user');
+                if (storedUser) {
+                    this.currentUser = JSON.parse(storedUser);
+                    this.loadMainApp();
+                } else {
+                    this.showView('auth-view');
+                }
+            },
+
+            // --- Authentication ---
+            mockTelegramAuth: function() {
+                // Simulate detecting Telegram ID
+                const mockTgId = Math.floor(100000000 + Math.random() * 900000000);
+                
+                document.getElementById('login-step').classList.add('hidden');
+                document.getElementById('register-step').classList.remove('hidden');
+                
+                // Pre-fill detected ID
+                document.getElementById('reg-tg-id').value = mockTgId;
+            },
+
+            registerUser: function() {
+                const tgId = document.getElementById('reg-tg-id').value;
+                const username = document.getElementById('reg-username').value.trim();
+                const errorDiv = document.getElementById('reg-error');
+
+                // Validation
+                if (username.length < 2) {
+                    errorDiv.style.display = 'block';
+                    errorDiv.innerText = "Username must be at least 2 characters.";
+                    return;
+                }
+
+                errorDiv.style.display = 'none';
+
+                // Save User
+                this.currentUser = {
+                    id: tgId,
+                    username: username,
+                    joinedAt: new Date().toISOString()
+                };
+
+                localStorage.setItem('teletalk_user', JSON.stringify(this.currentUser));
+                this.loadMainApp();
+            },
+
+            logout: function() {
+                if(confirm("Are you sure you want to logout?")) {
+                    localStorage.removeItem('teletalk_user');
+                    location.reload();
+                }
+            },
+
+            // --- UI Navigation ---
+            showView: function(viewId) {
+                // Hide top level views
+                document.getElementById('auth-view').classList.remove('active');
+                document.getElementById('main-app').classList.remove('active');
+                
+                // Show requested
+                document.getElementById(viewId).classList.add('active');
+            },
+
+            loadMainApp: function() {
+                this.showView('main-app');
+                this.updateProfileUI();
+            },
+
+            switchTab: function(tabName, navElement) {
+                // Update Nav UI
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                navElement.classList.add('active');
+
+                // Update View UI
+                document.querySelectorAll('#main-app > div > .view').forEach(el => el.classList.remove('active'));
+                document.getElementById('tab-' + tabName).classList.add('active');
+
+                // Update Header
+                const titles = { 'chat': 'Chat', 'profile': 'My Profile', 'settings': 'Settings' };
+                document.getElementById('header-title').innerText = titles[tabName];
+            },
+
+            // --- Chat Functionality ---
+            handleEnter: function(e) {
+                if (e.key === 'Enter') this.sendMessage();
+            },
+
+            sendMessage: function() {
+                const input = document.getElementById('msg-input');
+                const text = input.value.trim();
+                if (!text) return;
+
+                const chatFeed = document.getElementById('chat-feed');
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // Create User Message Bubble
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message msg-sent';
+                msgDiv.innerHTML = `${text} <span class="msg-meta">${time}</span>`;
+                chatFeed.appendChild(msgDiv);
+
+                input.value = '';
+                chatFeed.scrollTop = chatFeed.scrollHeight;
+
+                // Simulate Auto-Reply
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message msg-received';
+                    replyDiv.innerHTML = `Echo: ${text} <br><span style="font-size:0.8em; color:#aaa">This is a demo reply.</span> <span class="msg-meta">${time}</span>`;
+                    chatFeed.appendChild(replyDiv);
+                    chatFeed.scrollTop = chatFeed.scrollHeight;
+                }, 1000);
+            },
+
+            // --- Profile Management ---
+            updateProfileUI: function() {
+                if(!this.currentUser) return;
+                
+                document.getElementById('profile-name-display').innerText = "@" + this.currentUser.username;
+                document.getElementById('profile-id-display').innerText = "TG ID: " + this.currentUser.id;
+                document.getElementById('profile-avatar-display').innerText = this.currentUser.username.charAt(0).toUpperCase();
+                document.getElementById('edit-username').value = this.currentUser.username;
+            },
+
+            updateProfile: function() {
+                const newName = document.getElementById('edit-username').value.trim();
+                if (newName.length < 2) return alert("Username too short!");
+
+                this.currentUser.username = newName;
+                localStorage.setItem('teletalk_user', JSON.stringify(this.currentUser));
+                this.updateProfileUI();
+                alert("Profile Updated!");
+            }
+        };
+
+        // Start App
+        app.init();
+
     </script>
-
 </body>
 </html>
+
