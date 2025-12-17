@@ -2,513 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1366, initial-scale=0.1">
-    <title>Elite Developer Portfolio</title>
+    <title>Advanced Portfolio Website</title>
     <style>
-        /* --- CORE VARIABLES & RESET --- */
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap');
-
-        :root {
-            --bg-dark: #050505;
-            --bg-panel: #101010;
-            --primary: #00f2ea; /* Cyber Cyan */
-            --secondary: #ff0055; /* Cyber Pink */
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow: 0 0 20px rgba(0, 242, 234, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* Custom Cursor Logic */
-        }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            width: 100%;
-            min-width: 1366px; /* Enforcing Desktop Width */
-        }
-
-        /* --- CUSTOM CURSOR --- */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: var(--primary);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid var(--primary);
-            transition: all 0.1s ease;
-        }
-
-        /* --- BACKGROUND MESH --- */
-        .bg-mesh {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(0, 242, 234, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.05), transparent 25%);
-            z-index: -1;
-        }
-        
-        .grid-lines {
-            position: fixed;
-            width: 100%; height: 100%;
-            background-image: linear-gradient(var(--glass-border) 1px, transparent 1px),
-            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center;
-            opacity: 0.1;
-            z-index: -1;
-        }
-
-        /* --- SCROLL REVEAL ANIMATION CLASSES --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- HEADER --- */
-        header {
-            padding: 30px 100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .logo span { color: var(--primary); }
-
-        nav ul { display: flex; gap: 50px; list-style: none; }
-        nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            position: relative;
-        }
-        nav a:hover { color: var(--text-main); }
-        nav a::before {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
-            background: var(--primary); transition: 0.3s;
-        }
-        nav a:hover::before { width: 100%; }
-
-        /* --- HERO SECTION --- */
-        .hero {
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 150px;
             position: relative;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #242150, #4895ef);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
 
-        .hero-content {
-            width: 50%;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .background-motion {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1610512339050-9e74655f59d5?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            animation: moveBackground 10s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, 0); }
+        }
+
+        .boy {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            animation: moveBoy 1s ease-out infinite;
+        }
+
+        @keyframes moveBoy {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(1.05) rotate(2deg); }
+        }
+
+        .content {
+            position: relative;
             z-index: 2;
+            padding: 50px 20px;
+            color: white;
+            text-align: center;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 16px;
-            background: rgba(0, 242, 234, 0.1);
-            border: 1px solid rgba(0, 242, 234, 0.3);
-            border-radius: 50px;
-            color: var(--primary);
-            font-size: 12px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .status-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
-
-        h1 {
-            font-size: 80px;
-            line-height: 1;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .content h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
         }
 
-        .glitch-wrapper { position: relative; display: inline-block; }
-        
-        .role-text {
-            font-size: 24px;
-            color: var(--text-muted);
-            margin-bottom: 50px;
-            font-weight: 300;
-        }
-        .role-text span { color: var(--secondary); font-weight: 600; }
-
-        .cta-btn {
-            padding: 18px 40px;
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s;
-            display: inline-block;
-            text-decoration: none;
-        }
-        
-        .cta-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.5s;
-        }
-        .cta-btn:hover { border-color: var(--primary); box-shadow: var(--glow); }
-        .cta-btn:hover::before { left: 100%; }
-
-        /* --- HERO AVATAR (Right Side) --- */
-        .hero-visual {
-            width: 45%;
-            height: 80%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .content p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Cyber Frame around Avatar */
-        .frame {
-            width: 500px;
-            height: 600px;
-            border: 1px solid var(--glass-border);
-            position: relative;
-            background: var(--glass);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px white;
+            animation: pulse 1s infinite;
         }
 
-        .frame::after, .frame::before {
-            content: ''; position: absolute; width: 20px; height: 20px;
-            border: 2px solid var(--primary); transition: 0.3s;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
-        .frame::before { top: -2px; left: -2px; border-bottom: none; border-right: none; }
-        .frame::after { bottom: -2px; right: -2px; border-top: none; border-left: none; }
-        
-        .hero-visual:hover .frame::before, .hero-visual:hover .frame::after {
-            width: 100%; height: 100%; opacity: 0.5;
-        }
-
-        .avatar-img {
-            width: 90%;
-            height: 90%;
-            object-fit: cover;
-            opacity: 0.9;
-            filter: grayscale(20%) contrast(1.2);
-        }
-
-        /* Floating Code Snippets Decoration */
-        .code-float {
-            position: absolute;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid var(--glass-border);
-            padding: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: var(--primary);
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .cf-1 { top: 20%; left: -50px; animation: float 4s infinite ease-in-out; }
-        .cf-2 { bottom: 20%; right: -30px; animation: float 5s infinite ease-in-out reverse; color: var(--secondary); }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        /* --- STATS SECTION --- */
-        .stats-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 60px 150px;
-            border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-            background: rgba(5,5,5,0.5);
-        }
-        .stat-item h3 { font-size: 40px; font-weight: 700; color: #fff; }
-        .stat-item p { color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- SERVICES SECTION --- */
-        .services {
-            padding: 150px;
-            background: var(--bg-dark);
-        }
-
-        .section-header { margin-bottom: 80px; }
-        .section-header h2 { font-size: 50px; margin-bottom: 20px; }
-        .section-header .line { width: 60px; height: 4px; background: var(--primary); }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--bg-panel);
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-            group: hover;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .num {
-            font-size: 14px; color: var(--glass-border); font-weight: 700;
-            margin-bottom: 20px; display: block;
-        }
-
-        .service-card h3 {
-            font-size: 24px; margin-bottom: 15px;
-        }
-
-        .service-card p {
-            color: var(--text-muted); line-height: 1.6; font-size: 15px;
-        }
-
-        .hover-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(0, 242, 234, 0.05), transparent);
-            opacity: 0; transition: 0.4s;
-        }
-        .service-card:hover .hover-bg { opacity: 1; }
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 80px 150px;
-            border-top: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .socials a { color: #fff; margin-left: 20px; text-decoration: none; font-size: 14px; }
-        .socials a:hover { color: var(--primary); }
-
     </style>
 </head>
 <body>
-
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-outline" data-cursor-outline></div>
-
-    <div class="bg-mesh"></div>
-    <div class="grid-lines"></div>
-
-    <header>
-        <div class="logo">Dev<span>.Pro</span></div>
-        <nav>
-            <ul>
-                <li><a href="#">Work</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content reveal">
-            <div class="status-badge"><div class="status-dot"></div> Available for Projects</div>
-            
-            <h1>Building <br> Digital <br> <span>Perfection</span></h1>
-            
-            <p class="role-text">
-                Full-Stack Developer & UI Architect specializing in <br>
-                <span>Interactive 3D</span>, <span>High-Scale Apps</span> & <span>Automation</span>.
-            </p>
-
-            <a href="#" class="cta-btn">View My Projects</a>
-        </div>
-
-        <div class="hero-visual reveal">
-            <div class="frame">
-                <div class="code-float cf-1">&lt;Dev mode="ON" /&gt;</div>
-                <div class="code-float cf-2">const skills = ['React', 'Python'];</div>
-                
-                <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop" alt="Developer at PC" class="avatar-img">
-            </div>
-        </div>
-    </section>
-
-    <div class="stats-bar reveal">
-        <div class="stat-item">
-            <h3>5+</h3>
-            <p>Years Experience</p>
-        </div>
-        <div class="stat-item">
-            <h3>50+</h3>
-            <p>Projects Done</p>
-        </div>
-        <div class="stat-item">
-            <h3>20+</h3>
-            <p>Happy Clients</p>
-        </div>
+    <div class="background-motion"></div>
+    <div class="boy" id="boy">
+        <img src="https://images.unsplash.com/photo-1521679073555-92a067634d66?auto=format&fit=crop&w=300&q=80" alt="Boy on PC">
+    </div>
+    <div class="content">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Scroll up and down to see the boy on the PC move naturally with the scroll direction. The background has subtle motion graphics for an advanced feel.</p>
     </div>
 
-    <section class="services">
-        <div class="section-header reveal">
-            <h2>Technical <br> Mastery</h2>
-            <div class="line"></div>
-        </div>
-
-        <div class="services-grid">
-            <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">01</span>
-                <h3>High-End Web Dev</h3>
-                <p>Developing ultra-responsive, animated, and complex web applications using React, Three.js, and WebGL.</p>
-            </div>
-
-            <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">02</span>
-                <h3>Bot Automation</h3>
-                <p>Python-based automation scripts for Telegram, Discord, and Web Scraping to optimize workflows.</p>
-            </div>
-
-            <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">03</span>
-                <h3>Backend Architecture</h3>
-                <p>Scalable server-side solutions ensuring security, speed, and reliability for heavy-traffic systems.</p>
-            </div>
-
-            <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">04</span>
-                <h3>UI/UX Engineering</h3>
-                <p>Bridging the gap between design and code to create seamless, pixel-perfect user interfaces.</p>
-            </div>
-
-             <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">05</span>
-                <h3>Cyber Security</h3>
-                <p>Implementing advanced security protocols to protect digital assets and user data integrity.</p>
-            </div>
-
-             <div class="service-card reveal">
-                <div class="hover-bg"></div>
-                <span class="num">06</span>
-                <h3>API Development</h3>
-                <p>Building robust RESTful and GraphQL APIs for seamless integration across multiple platforms.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="reveal">
-        <div class="logo" style="font-size: 20px;">Dev<span>.Pro</span></div>
-        <div class="socials">
-            <a href="#">GITHUB</a>
-            <a href="#">LINKEDIN</a>
-            <a href="#">TWITTER</a>
-        </div>
-    </footer>
-
     <script>
-        // --- 1. CUSTOM CURSOR LOGIC ---
-        const cursorDot = document.querySelector('[data-cursor-dot]');
-        const cursorOutline = document.querySelector('[data-cursor-outline]');
+        const boy = document.getElementById('boy');
+        let lastScrollY = 0;
+        let animationFrameId;
 
-        window.addEventListener("mousemove", function(e) {
-            const posX = e.clientX;
-            const posY = e.clientY;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            const direction = currentScrollY > lastScrollY ? 1 : -1;
+            lastScrollY = currentScrollY;
 
-            // Dot follows instantly
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
+            // Move boy with scroll direction
+            boy.style.transform = `translate(-50%, -50%) scale(1.05) rotate(${currentScrollY * 0.01}deg)`;
 
-            // Outline follows with slight delay (animation in CSS)
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // --- 2. SCROLL REVEAL (Intersection Observer) ---
-        // Ye logic check karegi ki user ne scroll kiya ya nahi, 
-        // jaise hi element dikhega, wo slide hokar aayega.
-        
-        const revealElements = document.querySelectorAll('.reveal');
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting){
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.15 });
-
-        revealElements.forEach(element => {
-            revealObserver.observe(element);
-        });
-
-        // --- 3. HOVER EFFECTS FOR LINKS (Grow Cursor) ---
-        // Jab bhi link pe mouse jayega, cursor bada ho jayega
-        const links = document.querySelectorAll('a, .service-card');
-        
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursorOutline.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-            });
-            link.addEventListener('mouseleave', () => {
-                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursorOutline.style.backgroundColor = 'transparent';
+            // Add subtle bounce animation for realism
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(() => {
+                boy.style.transform = `translate(-50%, -50%) scale(1) rotate(0deg)`;
             });
         });
-
     </script>
 </body>
 </html>
-
