@@ -2,444 +2,556 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TeleTalk - v2</title>
+    <meta name="viewport" content="width=1280, initial-scale=0.1">
+    <title>Pro Developer Portfolio</title>
     <style>
+        /* --- GLOBAL STYLES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
         :root {
-            --primary: #0088cc;
-            --primary-glow: #0088ccaa;
-            --bg-dark: #121212;
-            --bg-card: #1e1e1e;
-            --bg-input: #2b2b2b;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --danger: #ff4d4d;
-            --success: #00cc66;
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --accent-color: #00d2ff; /* Cyan Neon */
+            --accent-secondary: #9708cc; /* Purple Neon */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            /* Force minimum width for desktop look on mobile */
+            min-width: 1280px; 
+            width: 100%;
+        }
+
+        /* Canvas for Particle Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 80px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-links ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
             height: 100vh;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 100px;
+            position: relative;
             overflow: hidden;
         }
 
-        /* --- Animations --- */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 136, 204, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0); }
+        .hero-left {
+            width: 50%;
+            z-index: 2;
         }
 
-        /* --- Views --- */
-        .view { display: none; flex: 1; height: 100%; flex-direction: column; animation: fadeUp 0.3s ease-out; position: relative; }
-        .view.active { display: flex; }
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            color: var(--accent-color);
+            font-size: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+        }
 
-        /* --- Auth Screen --- */
-        #auth-view { justify-content: center; align-items: center; text-align: center; }
-        .logo-circle {
-            width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
-            animation: pulse 2s infinite;
+        .hero h1 {
+            font-size: 60px;
+            line-height: 1.1;
+            margin-bottom: 20px;
         }
-        .logo-icon { font-size: 2.5rem; color: var(--primary); }
-        .auth-card { background: var(--bg-card); padding: 2rem; border-radius: 15px; width: 90%; max-width: 400px; }
-        input {
-            width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid #444;
-            border-radius: 8px; color: white; margin-bottom: 15px; outline: none;
+
+        .hero h1 span {
+            color: var(--accent-secondary);
         }
-        input:focus { border-color: var(--primary); }
+
+        .typing-text {
+            font-size: 24px;
+            color: #ccc;
+            margin-bottom: 40px;
+            min-height: 36px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--accent-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+        }
+
         .btn {
-            width: 100%; padding: 12px; background: var(--primary); border: none;
-            border-radius: 8px; color: white; font-weight: bold; cursor: pointer;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        /* --- Main App Layout --- */
-        .app-header {
-            padding: 15px; background: var(--bg-card); display: flex; 
-            justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
-            height: 60px;
-        }
-        .header-title { font-size: 1.2rem; font-weight: 600; }
-        .settings-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
-
-        /* --- Bottom Nav --- */
-        .nav-bar {
-            display: flex; justify-content: space-around; background: var(--bg-card);
-            padding: 10px 0; border-top: 1px solid #333; height: 65px;
-        }
-        .nav-item {
-            color: var(--text-muted); display: flex; flex-direction: column;
-            align-items: center; font-size: 0.8rem; cursor: pointer; flex: 1;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
-
-        /* --- Chat Tab --- */
-        .search-container { padding: 10px 15px; background: var(--bg-card); }
-        .search-bar {
-            width: 100%; padding: 10px; border-radius: 20px; border: none;
-            background: #111; color: white; text-align: center; font-size: 0.9rem;
-        }
-        .chat-list { flex: 1; overflow-y: auto; padding: 10px; }
-        .chat-item {
-            display: flex; align-items: center; padding: 10px; border-radius: 10px;
-            margin-bottom: 5px; cursor: pointer; transition: background 0.2s;
-        }
-        .chat-item:hover { background: #252525; }
-        .avatar-small {
-            width: 45px; height: 45px; border-radius: 50%; background: #333;
-            margin-right: 12px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
-        }
-        .avatar-img { width: 100%; height: 100%; object-fit: cover; }
-        .chat-info h4 { font-size: 1rem; margin-bottom: 3px; }
-        .chat-info p { font-size: 0.8rem; color: var(--text-muted); }
-
-        /* --- Profile Tab --- */
-        .profile-container { padding: 20px; overflow-y: auto; text-align: center; }
-        
-        .avatar-upload-wrapper {
-            position: relative; width: 110px; height: 110px; margin: 10px auto 20px;
-        }
-        .profile-avatar-large {
-            width: 100%; height: 100%; border-radius: 50%; background: #333;
-            border: 3px solid var(--primary); overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .camera-icon {
-            position: absolute; bottom: 0; right: 0; background: var(--primary);
-            width: 35px; height: 35px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; cursor: pointer;
-            border: 3px solid var(--bg-dark);
-        }
-        
-        .form-group { text-align: left; margin-bottom: 15px; }
-        .form-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
-        textarea.bio-input {
-            width: 100%; background: var(--bg-input); border: 1px solid #444; color: white;
-            border-radius: 8px; padding: 10px; resize: none; height: 80px;
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
         }
 
-        /* --- Settings Overlay --- */
-        #settings-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000;
-            display: none; justify-content: center; align-items: center;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 210, 255, 0.5);
         }
-        #settings-overlay.open { display: flex; animation: fadeUp 0.2s; }
-        .settings-card {
-            background: var(--bg-card); width: 85%; max-width: 350px;
-            border-radius: 15px; padding: 20px;
-        }
-        .setting-row {
-            padding: 15px 0; border-bottom: 1px solid #333;
-            display: flex; justify-content: space-between;
-        }
-        .setting-row:last-child { border-bottom: none; }
-        .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; }
 
-        /* Utilities */
-        .hidden { display: none !important; }
-        input[type="file"] { display: none; }
+        .btn-secondary {
+            border: 2px solid var(--glass-border);
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #fff;
+        }
+
+        /* --- HERO RIGHT (AVATAR) --- */
+        .hero-right {
+            width: 45%;
+            height: 600px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Realistic Avatar Placeholder styling */
+        .avatar-container {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,210,255,0.2) 0%, rgba(0,0,0,0) 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Replace this URL with your realistic animated gif/png */
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Placeholder styling */
+            filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.6));
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Tech Circle Animation behind avatar */
+        .tech-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px dashed var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .c1 { width: 450px; height: 450px; animation: spin 20s linear infinite; }
+        .c2 { width: 500px; height: 500px; border: 1px solid var(--accent-secondary); animation: spin-rev 25s linear infinite; opacity: 0.3; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes spin-rev { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+
+        /* --- SERVICES SECTION --- */
+        .services {
+            padding: 100px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 80px;
+        }
+
+        .section-title span {
+            color: var(--accent-color);
+            border-bottom: 3px solid var(--accent-secondary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            transition: transform 0.1s, box-shadow 0.3s; /* Fast transform for 3D JS */
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            transform: translateZ(20px); /* 3D effect */
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+            transform: translateZ(20px);
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+            transform: translateZ(20px);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 50px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(10,10,10,0.9);
+        }
+
+        /* --- PLACEHOLDER IMAGE URL --- */
+        /* NOTE: Maine yahan ek free illustrative image use kiya hai. 
+           Aap yahan apna "Realistic Boy on PC" wala GIF/PNG ka URL daalna */
     </style>
 </head>
 <body>
 
-    <div id="auth-view" class="view active">
-        <div class="logo-circle"><span class="logo-icon">✈</span></div>
-        <h1 style="margin-bottom: 30px;">TeleTalk</h1>
-        
-        <div id="step-login" class="auth-card">
-            <button class="btn" style="background:#54a9eb" onclick="app.mockTelegramAuth()">Log in with Telegram</button>
-        </div>
+    <canvas id="canvas-bg"></canvas>
 
-        <div id="step-register" class="auth-card hidden">
-            <h3>Complete Profile</h3>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px">Set up your identity</p>
-            <input type="text" id="reg-username" placeholder="@username">
-            <input type="text" id="reg-name" placeholder="Display Name (e.g. John Doe)">
-            <button class="btn" onclick="app.registerUser()">Start Messaging</button>
+    <nav>
+        <div class="logo">Dev<span style="color:white">Portfolio</span>.</div>
+        <div class="nav-links">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </div>
-    </div>
+        <a href="#contact" class="btn btn-primary" style="padding: 10px 25px;">Hire Me</a>
+    </nav>
 
-    <div id="main-app" class="view">
-        
-        <div class="app-header">
-            <span class="header-title" id="page-title">Chats</span>
-            <div id="header-settings-btn" class="settings-icon hidden" onclick="app.toggleSettings(true)">⚙️</div>
-        </div>
-
-        <div style="flex:1; overflow:hidden; position:relative">
+    <section class="hero" id="home">
+        <div class="hero-left">
+            <div class="hero-badge">Welcome to my world</div>
+            <h1>Hi, I'm <span id="name">Alex</span><br>Creative Developer</h1>
             
-            <div id="tab-chat" class="view active">
-                <div class="search-container">
-                    <input type="text" class="search-bar" id="user-search" placeholder="🔍 Search users..." onkeyup="app.filterUsers()">
-                </div>
-                <div class="chat-list" id="chat-list">
-                    </div>
+            <div class="typing-text">
+                I build <span id="typewriter"></span><span class="cursor"></span>
             </div>
 
-            <div id="tab-profile" class="view">
-                <div class="profile-container">
-                    
-                    <div class="avatar-upload-wrapper" onclick="document.getElementById('file-input').click()">
-                        <div class="profile-avatar-large">
-                            <img id="profile-img-preview" src="" class="avatar-img hidden">
-                            <span id="profile-initial" style="font-size:2.5rem; font-weight:bold">?</span>
-                        </div>
-                        <div class="camera-icon">📷</div>
-                    </div>
-                    <input type="file" id="file-input" accept="image/*" onchange="app.handleImageUpload(this)">
+            <p style="color: #aaa; margin-bottom: 40px; max-width: 500px; line-height: 1.6;">
+                Specialized in crafting realistic, high-performance, and animated web experiences using cutting-edge technologies. Let's turn your vision into code.
+            </p>
 
-                    <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" id="profile-name">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Username</label>
-                        <input type="text" id="profile-username" readonly style="opacity:0.6">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Bio</label>
-                        <textarea id="profile-bio" class="bio-input" placeholder="Add a few words about yourself..."></textarea>
-                    </div>
-
-                    <button class="btn" onclick="app.saveProfile()">Save Changes</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="nav-bar">
-            <div class="nav-item active" onclick="app.navTo('chat', this)">
-                <span class="nav-icon">💬</span>
-                <span>Chats</span>
-            </div>
-            <div class="nav-item" onclick="app.navTo('profile', this)">
-                <span class="nav-icon">👤</span>
-                <span>Profile</span>
+            <div class="btn-group">
+                <a href="#contact" class="btn btn-primary">Start Project</a>
+                <a href="#projects" class="btn btn-secondary">View Work</a>
             </div>
         </div>
-    </div>
 
-    <div id="settings-overlay" onclick="if(event.target === this) app.toggleSettings(false)">
-        <div class="settings-card">
-            <h3 style="margin-bottom:15px">Settings</h3>
+        <div class="hero-right">
+            <div class="tech-circle c1"></div>
+            <div class="tech-circle c2"></div>
             
-            <div class="setting-row">
-                <span>Notifications</span>
-                <span style="color:var(--primary)">ON</span>
+            <div class="avatar-container">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-developer-illustration-download-in-svg-png-gif-file-formats--programmer-coding-software-technology-pack-business-illustrations-4221801.png?f=webp" alt="Developer Avatar" class="avatar-img">
             </div>
-            <div class="setting-row">
-                <span>Dark Mode</span>
-                <span style="color:var(--primary)">ON</span>
-            </div>
-            <div class="setting-row">
-                <span>Privacy</span>
-                <span>Everyone</span>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-title">
+            <h2>My <span>Services</span></h2>
+        </div>
+
+        <div class="services-grid">
+            <div class="card" data-tilt>
+                <div class="card-icon">💻</div>
+                <h3>Web Development</h3>
+                <p>Building high-performance, responsive, and animated websites using HTML5, CSS3, JavaScript, and React.</p>
             </div>
 
-            <button class="btn btn-logout" onclick="app.logout()">Logout</button>
-            <button class="btn" style="background:#333; margin-top:10px" onclick="app.toggleSettings(false)">Close</button>
+            <div class="card" data-tilt>
+                <div class="card-icon">🎨</div>
+                <h3>UI/UX Design</h3>
+                <p>Creating realistic prototypes and intuitive interfaces tailored to user experience and modern trends.</p>
+            </div>
+
+            <div class="card" data-tilt>
+                <div class="card-icon">📱</div>
+                <h3>App Development</h3>
+                <p>Developing cross-platform mobile applications with seamless animations and native performance.</p>
+            </div>
+
+             <div class="card" data-tilt>
+                <div class="card-icon">🚀</div>
+                <h3>SEO Optimization</h3>
+                <p>Optimizing content to rank higher on search engines and reach a wider targeted audience effectively.</p>
+            </div>
+
+            <div class="card" data-tilt>
+                <div class="card-icon">🔒</div>
+                <h3>Cyber Security</h3>
+                <p>Ensuring your web assets are secure with modern encryption standards and security practices.</p>
+            </div>
+
+            <div class="card" data-tilt>
+                <div class="card-icon">🤖</div>
+                <h3>Automation</h3>
+                <p>Creating bots and scripts to automate boring tasks, making your workflow faster and smarter.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Developer Portfolio. All Rights Reserved.</p>
+    </footer>
 
     <script>
-        const app = {
-            currentUser: null,
-            // Mock DB of other users
-            mockUsers: [
-                { id: 1, name: "Alice Wonderland", msg: "See you tomorrow!", time: "10:30 AM", color: "#e91e63" },
-                { id: 2, name: "Bob Builder", msg: "Can we fix it?", time: "Yesterday", color: "#ff9800" },
-                { id: 3, name: "Charlie Dev", msg: "Code is merged.", time: "Mon", color: "#4caf50" },
-                { id: 4, name: "Telegram Support", msg: "Welcome to TeleTalk", time: "Now", color: "#0088cc" }
-            ],
+        // --- 1. PARTICLE BACKGROUND SCRIPT ---
+        const canvas = document.getElementById("canvas-bg");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            init: function() {
-                const stored = localStorage.getItem('teletalk_v2_user');
-                if (stored) {
-                    this.currentUser = JSON.parse(stored);
-                    this.loadApp();
-                } else {
-                    document.getElementById('auth-view').classList.add('active');
-                }
-            },
+        let particlesArray;
 
-            /* --- Auth Logic --- */
-            mockTelegramAuth: function() {
-                // Simulate extracting ID
-                document.getElementById('step-login').classList.add('hidden');
-                document.getElementById('step-register').classList.remove('hidden');
-            },
-
-            registerUser: function() {
-                const username = document.getElementById('reg-username').value.trim();
-                const name = document.getElementById('reg-name').value.trim();
-                
-                if(username.length < 2 || name.length < 2) return alert("Fields too short!");
-
-                this.currentUser = {
-                    id: Math.floor(Math.random() * 1000000),
-                    username: username,
-                    name: name,
-                    bio: "",
-                    avatar: null // Will store Base64 string
-                };
-                
-                this.saveToDisk();
-                this.loadApp();
-            },
-
-            logout: function() {
-                if(confirm("Log out?")) {
-                    localStorage.removeItem('teletalk_v2_user');
-                    location.reload();
-                }
-            },
-
-            /* --- Navigation Logic --- */
-            loadApp: function() {
-                document.getElementById('auth-view').classList.remove('active');
-                document.getElementById('main-app').classList.add('active');
-                this.navTo('chat', document.querySelector('.nav-item')); // Default to chat
-                this.renderChatList();
-            },
-
-            navTo: function(tab, navEl) {
-                // Update Nav UI
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                if(navEl) navEl.classList.add('active');
-
-                // Update Tab View
-                document.getElementById('tab-chat').classList.remove('active');
-                document.getElementById('tab-profile').classList.remove('active');
-                document.getElementById('tab-' + tab).classList.add('active');
-
-                // Update Header
-                const title = document.getElementById('page-title');
-                const settingsBtn = document.getElementById('header-settings-btn');
-                
-                if (tab === 'chat') {
-                    title.innerText = "Chats";
-                    settingsBtn.classList.add('hidden');
-                } else {
-                    title.innerText = "My Profile";
-                    settingsBtn.classList.remove('hidden');
-                    this.loadProfileData(); // Refresh profile inputs
-                }
-            },
-
-            toggleSettings: function(show) {
-                const el = document.getElementById('settings-overlay');
-                if(show) el.classList.add('open');
-                else el.classList.remove('open');
-            },
-
-            /* --- Chat & Search Logic --- */
-            renderChatList: function(filterText = "") {
-                const list = document.getElementById('chat-list');
-                list.innerHTML = "";
-                
-                const filtered = this.mockUsers.filter(u => 
-                    u.name.toLowerCase().includes(filterText.toLowerCase())
-                );
-
-                if(filtered.length === 0) {
-                    list.innerHTML = `<div style="text-align:center; color:#555; margin-top:20px">No users found</div>`;
-                    return;
-                }
-
-                filtered.forEach(u => {
-                    // Generate a colored circle placeholder
-                    const html = `
-                        <div class="chat-item" onclick="alert('Chat with ${u.name} coming soon!')">
-                            <div class="avatar-small" style="background:${u.color}">
-                                <span style="font-weight:bold; font-size:1.1rem">${u.name.charAt(0)}</span>
-                            </div>
-                            <div class="chat-info">
-                                <h4>${u.name}</h4>
-                                <p>${u.msg} • ${u.time}</p>
-                            </div>
-                        </div>
-                    `;
-                    list.innerHTML += html;
-                });
-            },
-
-            filterUsers: function() {
-                const text = document.getElementById('user-search').value;
-                this.renderChatList(text);
-            },
-
-            /* --- Profile Logic --- */
-            loadProfileData: function() {
-                document.getElementById('profile-name').value = this.currentUser.name;
-                document.getElementById('profile-username').value = this.currentUser.username;
-                document.getElementById('profile-bio').value = this.currentUser.bio || "";
-                
-                // Load Avatar
-                this.updateAvatarUI();
-            },
-
-            handleImageUpload: function(input) {
-                const file = input.files[0];
-                if (!file) return;
-
-                // Limit size (approx 1MB) to prevent LocalStorage crash
-                if (file.size > 1024 * 1024) {
-                    alert("Image too large! Please choose an image under 1MB.");
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.currentUser.avatar = e.target.result; // Base64 string
-                    this.updateAvatarUI();
-                };
-                reader.readAsDataURL(file);
-            },
-
-            updateAvatarUI: function() {
-                const imgEl = document.getElementById('profile-img-preview');
-                const initialEl = document.getElementById('profile-initial');
-
-                if (this.currentUser.avatar) {
-                    imgEl.src = this.currentUser.avatar;
-                    imgEl.classList.remove('hidden');
-                    initialEl.classList.add('hidden');
-                } else {
-                    initialEl.innerText = this.currentUser.name.charAt(0).toUpperCase();
-                    imgEl.classList.add('hidden');
-                    initialEl.classList.remove('hidden');
-                }
-            },
-
-            saveProfile: function() {
-                this.currentUser.name = document.getElementById('profile-name').value;
-                this.currentUser.bio = document.getElementById('profile-bio').value;
-                
-                this.saveToDisk();
-                alert("Profile saved successfully!");
-            },
-
-            saveToDisk: function() {
-                localStorage.setItem('teletalk_v2_user', JSON.stringify(this.currentUser));
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
             }
-        };
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
 
-        // Start
-        app.init();
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1;
+                let directionY = (Math.random() * 2) - 1;
+                let color = '#00d2ff';
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        function connect() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                        + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        ctx.strokeStyle = 'rgba(0, 210, 255, 0.05)';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('resize', function(){
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            init();
+        });
+
+        init();
+        animate();
+
+        // --- 2. TYPING EFFECT SCRIPT ---
+        const textElement = document.getElementById("typewriter");
+        const texts = ["Modern Websites", "Animated Portfolios", "Mobile Apps", "Automation Scripts"];
+        let count = 0;
+        let index = 0;
+        let currentText = "";
+        let letter = "";
+
+        (function type() {
+            if (count === texts.length) {
+                count = 0;
+            }
+            currentText = texts[count];
+            letter = currentText.slice(0, ++index);
+            
+            textElement.textContent = letter;
+            if (letter.length === currentText.length) {
+                setTimeout(() => {
+                    // Erase effect logic can be added here or just clear
+                    count++;
+                    index = 0;
+                }, 2000); // Wait 2s before next word
+            }
+            setTimeout(type, 150); // Typing speed
+        }());
+
+        // --- 3. 3D TILT EFFECT FOR CARDS (Vanilla JS) ---
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            });
+        });
     </script>
 </body>
 </html>
