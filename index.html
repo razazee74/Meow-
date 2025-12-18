@@ -1,14 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Skate Scroll Demo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Avatar Demo</title>
 
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- Lottie -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
 <style>
 * {
@@ -23,18 +25,6 @@ body {
   color: #fff;
 }
 
-/* FIXED SKATER */
-.skater {
-  position: fixed;
-  width: 120px;
-  height: 120px;
-  top: 35%;
-  right: 10%;
-  z-index: 10;
-  background: url("https://i.imgur.com/9QZ6R5G.png") center/contain no-repeat;
-}
-
-/* SECTIONS */
 section {
   min-height: 100vh;
   display: flex;
@@ -54,14 +44,19 @@ section {
   width: 45%;
 }
 
+/* FIXED AVATAR */
+#avatar {
+  position: fixed;
+  width: 180px;
+  height: 180px;
+  top: 35%;
+  right: 10%;
+  z-index: 20;
+}
+
 h1 {
   font-size: 48px;
   margin-bottom: 20px;
-}
-
-p {
-  opacity: 0.7;
-  line-height: 1.6;
 }
 
 .card {
@@ -75,12 +70,13 @@ p {
 
 <body>
 
-<div class="skater"></div>
+<!-- LOTTIE AVATAR -->
+<div id="avatar"></div>
 
 <section class="hero">
   <div class="left">
     <h1>PUSH<br>BOUNDARIES</h1>
-    <p>Senior Frontend Developer focused on motion and interaction.</p>
+    <p>Motion-driven frontend & interactive storytelling.</p>
   </div>
   <div class="right"></div>
 </section>
@@ -90,18 +86,26 @@ p {
   <div class="right">
     <div class="card">Web Development</div>
     <div class="card">UI Animation</div>
-    <div class="card">GSAP Storytelling</div>
+    <div class="card">Scroll Storytelling</div>
   </div>
 </section>
 
 <script>
+/* LOAD LOTTIE AVATAR */
+lottie.loadAnimation({
+  container: document.getElementById("avatar"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "https://assets7.lottiefiles.com/packages/lf20_jtbfg2nb.json"
+});
+
+/* GSAP SCROLL MOVEMENT */
 gsap.registerPlugin(ScrollTrigger);
 
-/* SKATER MOVEMENT */
-gsap.to(".skater", {
-  x: -250,
+gsap.to("#avatar", {
+  x: -300,
   y: 350,
-  ease: "none",
   scrollTrigger: {
     trigger: ".services",
     start: "top center",
