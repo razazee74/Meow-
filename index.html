@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scroll Avatar Demo</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GSAP Scroll Skating Proof</title>
 
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -13,70 +13,53 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  background: #000;
-  color: #fff;
-}
+* { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+body { background:#000; color:#fff; }
 
 section {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 60px;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:80px;
 }
 
-.hero {
-  justify-content: space-between;
-}
+.hero { justify-content:space-between; }
+.services { justify-content:space-between; background:#050505; }
+.about { justify-content:flex-start; background:#0a0a0a; }
 
-.services {
-  justify-content: space-between;
-}
+.left, .right { width:45%; }
 
-.left, .right {
-  width: 45%;
+h1 { font-size:52px; margin-bottom:20px; }
+p { opacity:.7; line-height:1.6; }
+
+.card {
+  background:#111;
+  padding:20px;
+  margin-bottom:15px;
+  border-left:3px solid #00ff7f;
 }
 
 /* FIXED AVATAR */
-#avatar {
-  position: fixed;
-  width: 180px;
-  height: 180px;
-  top: 35%;
-  right: 10%;
-  z-index: 20;
-}
-
-h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.card {
-  background: #111;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-left: 3px solid #00ff7f;
+#skater {
+  position:fixed;
+  width:180px;
+  height:180px;
+  top:40%;
+  right:10%;
+  z-index:50;
+  pointer-events:none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOTTIE AVATAR -->
-<div id="avatar"></div>
+<div id="skater"></div>
 
 <section class="hero">
   <div class="left">
     <h1>PUSH<br>BOUNDARIES</h1>
-    <p>Motion-driven frontend & interactive storytelling.</p>
+    <p>Scroll-driven motion storytelling with character choreography.</p>
   </div>
   <div class="right"></div>
 </section>
@@ -85,33 +68,55 @@ h1 {
   <div class="left"></div>
   <div class="right">
     <div class="card">Web Development</div>
-    <div class="card">UI Animation</div>
-    <div class="card">Scroll Storytelling</div>
+    <div class="card">Motion Design</div>
+    <div class="card">GSAP Storytelling</div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="left">
+    <h1>ABOUT</h1>
+    <p>The character does not jump. It travels with intent.</p>
   </div>
 </section>
 
 <script>
-/* LOAD LOTTIE AVATAR */
+/* LOAD ANIMATED AVATAR */
 lottie.loadAnimation({
-  container: document.getElementById("avatar"),
+  container: document.getElementById("skater"),
   renderer: "svg",
   loop: true,
   autoplay: true,
   path: "https://assets7.lottiefiles.com/packages/lf20_jtbfg2nb.json"
 });
 
-/* GSAP SCROLL MOVEMENT */
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.to("#avatar", {
-  x: -300,
-  y: 350,
+/* MASTER TIMELINE */
+const skateTL = gsap.timeline({
   scrollTrigger: {
-    trigger: ".services",
-    start: "top center",
-    end: "bottom center",
+    trigger: "body",
+    start: "top top",
+    end: "bottom bottom",
     scrub: true
   }
+});
+
+/* HERO → SERVICES (diagonal skate) */
+skateTL.to("#skater", {
+  x: -280,
+  y: 300,
+  rotation: -10,
+  ease: "none"
+});
+
+/* SERVICES → ABOUT (direction change) */
+skateTL.to("#skater", {
+  x: 120,
+  y: 550,
+  rotation: 8,
+  scale: 0.9,
+  ease: "none"
 });
 </script>
 
