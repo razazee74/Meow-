@@ -3,215 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skater Portfolio | Motion Experience</title>
+    <title>Skate Flow | Scroll Experience</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
     <style>
         :root {
-            --bg-color: #f4f4f4;
-            --text-color: #1a1a1a;
-            --accent-color: #ff3e00;
-            --card-bg: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
+            --primary: #00ff88;
+            --bg: #0a0a0a;
+            --text: #ffffff;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Character Container */
-        #skater-container {
+        /* The "Actor" - Fixed to viewport */
+        .skater-wrapper {
             position: fixed;
             top: 20%;
             right: 10%;
-            width: 300px;
-            height: 300px;
-            z-index: 100;
-            pointer-events: none; /* Allows clicking items behind it */
+            width: 250px;
+            z-index: 1000;
+            pointer-events: none;
             will-change: transform;
         }
 
-        /* Layout Grid */
+        .skater-wrapper img {
+            width: 100%;
+            height: auto;
+            /* Using a high-quality placeholder skater */
+            filter: drop-shadow(0 10px 20px rgba(0,255,136,0.3));
+        }
+
+        /* Layout Sections */
         section {
-            min-height: 100vh;
+            height: 100vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
             align-items: center;
-            padding: 0 10%;
+            padding: 0 8%;
             position: relative;
         }
 
-        /* Section 1: Hero */
-        .hero-content {
-            max-width: 500px;
+        .hero-left {
+            max-width: 600px;
         }
 
-        .hero-content h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1rem;
+        h1 { font-size: 5rem; line-height: 0.9; margin-bottom: 20px; text-transform: uppercase; }
+        p { font-size: 1.2rem; opacity: 0.7; margin-bottom: 30px; }
+
+        .services-right {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-
-        .cta-btn {
-            padding: 1rem 2.5rem;
-            background: var(--text-color);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        /* Section 2: Services */
-        .services-content {
-            grid-column: 2; /* Move text to right col */
-        }
-
-        .service-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            transform: translateY(50px);
+        .card {
+            background: #151515;
+            padding: 30px;
+            border-left: 4px solid var(--primary);
+            transform: translateX(100px);
             opacity: 0;
         }
 
-        .service-card h3 {
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
         }
 
-        /* Helper for scroll spacing */
-        .spacer { height: 20vh; }
-
-        @media (max-width: 768px) {
-            section { grid-template-columns: 1fr; text-align: center; }
-            #skater-container { width: 150px; height: 150px; top: 10%; right: 50%; transform: translateX(50%); }
-            .services-content { grid-column: 1; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-10px) translateX(-50%);}
         }
     </style>
 </head>
 <body>
 
-    <div id="skater-container"></div>
+    <div class="skater-wrapper" id="skater">
+        <img src="https://png.pngtree.com/png-vector/20240201/ourmid/pngtree-skateboarding-boy-png-image_11528659.png" alt="Skater">
+    </div>
 
-    <main>
-        <section class="hero" id="hero">
-            <div class="hero-content">
-                <h1 class="reveal">Alex Rivera</h1>
-                <p class="reveal">Senior Motion Designer & Frontend Developer. Moving pixels with purpose.</p>
-                <button class="cta-btn reveal">View Projects</button>
+    <section id="hero">
+        <div class="hero-left">
+            <h1 class="split-text">Push<br>Boundaries</h1>
+            <p>Senior Frontend Developer specializing in high-performance motion design and interactive storytelling.</p>
+            <button style="padding: 15px 40px; background: var(--primary); border: none; font-weight: bold;">LET'S ROLL</button>
+        </div>
+        <div class="scroll-indicator">Scroll to Skate</div>
+    </section>
+
+    <section id="services">
+        <div class="services-right">
+            <div class="card">
+                <h2>01. Interactive Motion</h2>
+                <p>Advanced GSAP orchestrations for web apps.</p>
             </div>
-            </section>
-
-        <section class="services" id="services">
-            <div class="services-content">
-                <h2 style="font-size: 3rem; margin-bottom: 2rem;">Expertise</h2>
-                <div class="service-card">
-                    <h3>Web Development</h3>
-                    <p>Building high-performance interfaces with GSAP and React.</p>
-                </div>
-                <div class="service-card">
-                    <h3>UI Design</h3>
-                    <p>Creating clean, user-centric digital experiences.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Automation</h3>
-                    <p>Streamlining workflows with custom JS tools.</p>
-                </div>
+            <div class="card">
+                <h2>02. UI/UX Design</h2>
+                <p>Clean, brutalist, and modern aesthetics.</p>
             </div>
-        </section>
-    </main>
+            <div class="card">
+                <h2>03. Performance</h2>
+                <p>60FPS animations optimized for mobile.</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="spacer"></div>
-
-    <script>
-        // 1. Initialize Lottie Animation
-        const skaterAnimation = lottie.loadAnimation({
-            container: document.getElementById('skater-container'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            // Replace this with your actual Skater JSON path
-            path: 'https://assets2.lottiefiles.com/packages/lf20_m6cu9zoc.json' 
-        });
-
-        // 2. GSAP ScrollTrigger Logic
+    <div style="height: 50vh;"></div> <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // Timeline for Character Movement
-        const mainTl = gsap.timeline({
+        // 1. MASTER CHARACTER TIMELINE
+        // This moves the fixed skater from top-right to bottom-left
+        const skateTl = gsap.timeline({
             scrollTrigger: {
-                trigger: "#services",
-                start: "top bottom", // Start when top of services enters bottom of viewport
-                end: "top center",   // End when top of services reaches center
-                scrub: 1.5,          // Smooth "catch up" effect
-                markers: false       // Set to true to debug
+                trigger: "#services", // Animation starts when services enters view
+                start: "top bottom",  // When top of section hits bottom of screen
+                end: "top center",    // Complete when top of section hits center
+                scrub: 1.2,           // Smoothly links scroll position to animation progress
+                markers: false
             }
         });
 
-        // Move character from Right Column (Hero) to Left Column (Services)
-        // This creates the diagonal "traveling" effect
-        mainTl.to("#skater-container", {
-            x: "-60vw",       // Move horizontally to the left side
-            y: "40vh",        // Move slightly downward
-            scale: 0.8,       // Add a sense of depth/perspective
-            rotation: -10,    // Tilt for "leaning" into the turn
-            duration: 1
+        skateTl.to("#skater", {
+            // Diagonal Movement
+            x: "-65vw",      // Move across screen to the left column
+            y: "40vh",       // Move down to align with cards
+            
+            // Dynamic Physics Illusions
+            rotation: -15,   // Lean into the movement
+            scale: 0.8,      // Perspective: look further away
+            ease: "power1.inOut"
         });
 
-        // 3. Staggered Content Reveal
-        gsap.from(".reveal", {
+        // 2. TEXT REVEAL LOGIC
+        // Simple entrance for hero text
+        gsap.from(".hero-left > *", {
+            y: 50,
             opacity: 0,
-            y: 30,
             duration: 1,
             stagger: 0.2,
-            ease: "power3.out"
+            ease: "power4.out"
         });
 
-        // Animate Service Cards as they appear
-        gsap.to(".service-card", {
+        // 3. SERVICE CARDS STAGGER
+        // Cards slide in from the right as the skater arrives
+        gsap.to(".card", {
             scrollTrigger: {
-                trigger: ".services-content",
-                start: "top 80%",
+                trigger: ".services-right",
+                start: "top 70%",
             },
+            x: 0,
             opacity: 1,
-            y: 0,
             duration: 0.8,
-            stagger: 0.3,
-            ease: "power2.out"
+            stagger: 0.2,
+            ease: "back.out(1.7)"
         });
 
-        // 4. Interaction: Increase skater speed on scroll
+        // 4. MOMENTUM EFFECT
+        // When user stops scrolling, the skater "levels out"
+        let scrollTimeout;
         window.addEventListener('scroll', () => {
-            skaterAnimation.setSpeed(2); // Speed up while moving
+            // While scrolling, keep the tilt
+            clearTimeout(scrollTimeout);
             
-            // Set timeout to return to normal speed after scroll stops
-            clearTimeout(window.scrollFinished);
-            window.scrollFinished = setTimeout(() => {
-                skaterAnimation.setSpeed(1);
-            }, 150);
+            scrollTimeout = setTimeout(() => {
+                // When scrolling stops, reset rotation smoothly
+                gsap.to("#skater", { rotation: 0, duration: 0.5 });
+            }, 100);
         });
-
     </script>
 </body>
 </html>
