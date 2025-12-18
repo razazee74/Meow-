@@ -2,132 +2,215 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200"> 
-    <title>Neon Blue Robot Portfolio</title>
+    <meta name="viewport" content="width=1200">
+    <title>Neon Blue 3D Interface</title>
     <style>
         :root {
-            --neon-blue: #00f3ff;
-            --neon-pink: #ff00ff;
-            --dark-bg: #0a0a0c;
+            --neon: #00f3ff;
+            --deep-blue: #0044ff;
+            --glass: rgba(0, 243, 255, 0.1);
+            --bg: #02040a;
         }
 
         body {
             margin: 0;
-            padding: 0;
-            background-color: var(--dark-bg);
+            background: var(--bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Left Side Panel */
+        /* Ambient Background Glows */
+        .bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Main Sidebar */
         .sidebar {
-            width: 450px;
-            background: rgba(255, 255, 255, 0.03);
-            border-right: 2px solid var(--neon-blue);
+            width: 500px;
+            z-index: 2;
+            padding: 60px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 40px;
-            box-shadow: 10px 0 50px rgba(0, 243, 255, 0.1);
-            animation: slideIn 1.5s ease-out;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            border-right: 1px solid rgba(0, 243, 255, 0.2);
+            animation: slideIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* The Robot SVG Styling */
-        .robot-container {
-            width: 300px;
-            filter: drop-shadow(0 0 15px var(--neon-blue));
-            margin-bottom: 30px;
+        /* 3D-Look Robot Construction */
+        .robot-box {
+            position: relative;
+            width: 320px;
+            height: 350px;
+            margin-bottom: 40px;
+            perspective: 1000px;
         }
 
-        .info-text {
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 2s forwards 1s;
+        .robot-head {
+            position: absolute;
+            width: 140px;
+            height: 130px;
+            background: linear-gradient(145deg, #0066ff, #002266);
+            border-radius: 50% 50% 40% 40%;
+            left: 90px;
+            top: 20px;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5), 0 0 30px rgba(0,100,255,0.4);
+            animation: float 4s ease-in-out infinite;
         }
 
+        .visor {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            background: #050505;
+            border-radius: 20px;
+            top: 40px;
+            left: 20px;
+            border: 2px solid var(--neon);
+            overflow: hidden;
+            box-shadow: 0 0 15px var(--neon);
+        }
+
+        .eyes {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+        }
+
+        .eye {
+            width: 15px;
+            height: 15px;
+            background: var(--neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon), 0 0 20px var(--neon);
+            animation: blink 3s infinite;
+        }
+
+        .headphones {
+            position: absolute;
+            width: 170px;
+            height: 80px;
+            border: 12px solid #1a1a1a;
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+            top: 5px;
+            left: 75px;
+        }
+
+        .ear-cup {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background: #ff00ff; /* Neon Pink highlight */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255,0,255,0.5);
+        }
+
+        .laptop {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            width: 180px;
+            height: 10px;
+            background: #333;
+            transform: rotateX(60deg);
+            border-radius: 2px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+        }
+
+        .laptop-screen {
+            position: absolute;
+            bottom: 70px;
+            left: 80px;
+            width: 140px;
+            height: 90px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transform: rotateY(-10deg);
+            border-radius: 5px;
+        }
+
+        /* Typography */
         h1 {
-            color: var(--neon-blue);
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px var(--neon-blue);
-            margin: 10px 0;
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff, var(--neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 5px;
         }
 
-        p {
-            color: #888;
-            font-size: 1.1rem;
-            line-height: 1.5;
+        .role {
+            color: var(--neon);
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            font-weight: 300;
         }
 
         /* Animations */
-        @keyframes slideIn {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Floating Animation for Robot */
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
+
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
     </style>
 </head>
 <body>
 
+    <div class="bg-glow" style="top: -10%; left: -10%;"></div>
+
     <div class="sidebar">
-        <div class="robot-container floating">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="100" cy="150" rx="60" ry="30" fill="#2a1b3d" />
-                <path d="M40 140 Q40 180 100 180 Q160 180 160 140" fill="#3d2b56" />
-                
-                <rect x="75" y="100" width="50" height="60" rx="20" fill="#0055ff" />
-                <circle cx="100" cy="120" r="10" fill="none" stroke="#00f3ff" stroke-width="2" />
-                
-                <rect x="55" y="110" width="20" height="10" rx="5" fill="#0044cc" />
-                <rect x="125" y="110" width="20" height="10" rx="5" fill="#0044cc" />
-                
-                <circle cx="100" cy="70" r="45" fill="#0066ff" /> <rect x="65" y="60" width="70" height="40" rx="15" fill="#0a0a0c" /> <circle cx="85" cy="80" r="8" fill="#00f3ff" /> <circle cx="115" cy="80" r="8" fill="#00f3ff" /> <path d="M55 75 Q55 25 100 25 Q145 25 145 75" fill="none" stroke="#333" stroke-width="8" />
-                <rect x="45" y="65" width="15" height="30" rx="5" fill="#ff00ff" />
-                <rect x="140" y="65" width="15" height="30" rx="5" fill="#ff00ff" />
-                
-                <path d="M70 140 L130 140 L140 120 L60 120 Z" fill="#ccc" />
-                <rect x="75" y="105" width="50" height="35" rx="2" fill="#e0e0e0" transform="rotate(-10 100 120)"/>
-                <circle cx="95" cy="120" r="3" fill="#666" transform="rotate(-10 100 120)"/>
-            </svg>
+        <div class="robot-box">
+            <div class="headphones">
+                <div class="ear-cup" style="left: -20px; top: 40px;"></div>
+                <div class="ear-cup" style="right: -20px; top: 40px;"></div>
+            </div>
+            <div class="robot-head">
+                <div class="visor">
+                    <div class="eyes">
+                        <div class="eye"></div>
+                        <div class="eye"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="laptop-screen"></div>
+            <div class="laptop"></div>
         </div>
 
-        <div class="info-text">
-            <h1>ALEXA AI</h1>
-            <p>Full Stack Developer & UI Designer</p>
-            <p style="font-size: 0.9rem; margin-top: 20px; border-top: 1px solid #333; pt-20">
-                Custom built with Neon Blue Aesthetic.<br>
-                Forced Desktop Mode Active.
-            </p>
-        </div>
+        <h1>ALEXA</h1>
+        <div class="role">GENESIS INTELLIGENCE</div>
+        <p style="color: #666; line-height: 1.8; margin-top: 30px;">
+            SYSTEM STATUS: <span style="color: var(--neon)">ACTIVE</span><br>
+            CORE: NEURAL ENGINE v4.0<br>
+            INTERFACE: DESKTOP OPTIMIZED
+        </p>
     </div>
 
-    <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
-        <h2 style="color: #222; font-size: 5rem;">CONTENT AREA</h2>
+    <div style="flex-grow: 1; position: relative; display: flex; align-items: center; justify-content: center;">
+        <div style="font-size: 10rem; color: rgba(255,255,255,0.02); font-weight: 900; position: absolute;">CYBER</div>
     </div>
 
-    <script>
-        // Smooth transition check
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Neon Desktop Site Loaded Successfully");
-        });
-    </script>
 </body>
 </html>
-</body>
-</html>
+
