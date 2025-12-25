@@ -3,123 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1280">
-    <title>Personal Desktop Home</title>
+    <title>3D Realistic Lotus Desktop</title>
     <style>
-        /* Base Styles */
         body, html {
             margin: 0;
             padding: 0;
-            width: 1280px; /* Fixed width for desktop feel */
+            width: 1280px; /* Force Desktop Width */
             height: 100vh;
+            background: #00040a; /* Ultra Dark Blue */
             overflow: hidden;
-            background-color: #000814; /* Deep Dark Blue */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* 3D Canvas Container */
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
             z-index: 1;
         }
 
-        /* Lotus Animation using SVG and CSS 3D */
-        .lotus-container {
+        .overlay {
             position: relative;
-            perspective: 1000px;
-        }
-
-        .lotus {
-            width: 400px;
-            height: 400px;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotateLotus 20s linear infinite;
-        }
-
-        /* Kamal ki pankhudiyaan (Petals) */
-        .petal {
-            position: absolute;
-            width: 100px;
-            height: 200px;
-            background: linear-gradient(to top, #003566, #000814);
-            border: 2px solid #0056b3;
-            border-radius: 50% 50% 10% 10%;
-            left: 150px;
-            top: 50px;
-            transform-origin: bottom center;
-            opacity: 0.8;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
-            animation: bloom 8s ease-in-out infinite alternate;
-        }
-
-        /* Bloom Animation */
-        @keyframes bloom {
-            0% { transform: rotateX(-80deg) scale(0.5); opacity: 0.3; }
-            100% { transform: rotateX(20deg) scale(1.1); opacity: 0.9; }
-        }
-
-        @keyframes rotateLotus {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
-        }
-
-        /* Creating Petal Ring */
-        .p1 { transform: rotateY(0deg) translateZ(20px); }
-        .p2 { transform: rotateY(45deg) translateZ(20px); }
-        .p3 { transform: rotateY(90deg) translateZ(20px); }
-        .p4 { transform: rotateY(135deg) translateZ(20px); }
-        .p5 { transform: rotateY(180deg) translateZ(20px); }
-        .p6 { transform: rotateY(225deg) translateZ(20px); }
-        .p7 { transform: rotateY(270deg) translateZ(20px); }
-        .p8 { transform: rotateY(315deg) translateZ(20px); }
-
-        /* Overlay to keep it empty for now */
-        .content-overlay {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            color: white;
-            padding-top: 50px;
+            z-index: 10;
+            pointer-events: none; /* Mouse movements pass through to 3D */
         }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container">
-        <div class="lotus-container">
-            <div class="lotus" id="lotus-3d">
-                <div class="petal p1"></div>
-                <div class="petal p2"></div>
-                <div class="petal p3"></div>
-                <div class="petal p4"></div>
-                <div class="petal p5"></div>
-                <div class="petal p6"></div>
-                <div class="petal p7"></div>
-                <div class="petal p8"></div>
-            </div>
+    <div id="canvas-container"></div>
+    <div class="overlay">
         </div>
-    </div>
 
-    <div class="content-overlay">
-        </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
-        // JS for extra 3D movement effects (Optional)
-        document.addEventListener('mousemove', (e) => {
-            const lotus = document.getElementById('lotus-3d');
-            const x = (window.innerWidth / 2 - e.pageX) / 20;
-            const y = (window.innerHeight / 2 - e.pageY) / 20;
-            lotus.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        let scene, camera, renderer, lotusGroup;
+        let petals = [];
+
+        function init() {
+            // Scene Setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x00040a);
+            
+            camera = new THREE.PerspectiveCamera(75, 1280 / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(1280, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Lighting (Asali look ke liye)
+            const ambientLight = new THREE.AmbientLight(0x001133, 1);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0x0077ff, 2);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            const centerLight = new THREE.PointLight(0x00ffff, 1);
+            centerLight.position.set(0, 0, 1);
+            scene.add(centerLight);
+
+            // Creating the Lotus Group
+            lotusGroup = new THREE.Group();
+            createLotus();
+            scene.add(lotusGroup);
+
+            animate();
+        }
+
+        function createLotus() {
+            const petalCount = 12;
+            const layers = 3;
+
+            for (let j = 0; j < layers; j++) {
+                for (let i = 0; i < petalCount; i++) {
+                    // Realistic Petal Shape using Lathe or Custom Geometry
+                    const petalShape = new THREE.Shape();
+                    petalShape.moveTo(0, 0);
+                    petalShape.quadraticCurveTo(0.5, 0.5, 0.5, 1.5);
+                    petalShape.quadraticCurveTo(0, 2.5, -0.5, 1.5);
+                    petalShape.quadraticCurveTo(-0.5, 0.5, 0, 0);
+
+                    const geometry = new THREE.ShapeGeometry(petalShape);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0x003366,
+                        side: THREE.DoubleSide,
+                        shininess: 80,
+                        transparent: true,
+                        opacity: 0.8,
+                        emissive: 0x001122
+                    });
+
+                    const petal = new THREE.Mesh(geometry, material);
+                    
+                    // Positioning petals in a circle
+                    const angle = (i / petalCount) * Math.PI * 2;
+                    const layerScale = 1 - (j * 0.2);
+                    petal.scale.set(layerScale, layerScale, layerScale);
+                    
+                    petal.rotation.y = angle;
+                    petal.rotation.x = -Math.PI / 3 - (j * 0.3); // Initial tilt
+
+                    petals.push({
+                        mesh: petal,
+                        originalRotation: petal.rotation.x,
+                        delay: j * 0.5
+                    });
+
+                    lotusGroup.add(petal);
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.001;
+
+            // Bloom Animation Logic
+            petals.forEach((p, index) => {
+                const bloomEffect = Math.sin(time + p.delay) * 0.3;
+                p.mesh.rotation.x = p.originalRotation + bloomEffect;
+            });
+
+            // Gentle rotation of the whole lotus
+            lotusGroup.rotation.y += 0.005;
+            lotusGroup.rotation.z = Math.sin(time * 0.5) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle Mouse Movement for 3D depth effect
+        window.addEventListener('mousemove', (e) => {
+            const mouseX = (e.clientX / 1280) * 2 - 1;
+            const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            lotusGroup.rotation.x = mouseY * 0.2;
+            lotusGroup.rotation.y += mouseX * 0.05;
         });
 
-        console.log("Lotus Home Page Loaded in Desktop Mode.");
+        init();
     </script>
 </body>
 </html>
