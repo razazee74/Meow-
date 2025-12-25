@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1280">
-    <title>Professional 3D Developer Workspace</title>
+    <title>Premium Personal Site</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            width: 1280px;
+            width: 1280px; /* Locked Desktop Width */
             height: 100vh;
-            background-color: #000205; /* Deep Black Blue */
+            background-color: #000205;
             overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        #canvas-container {
+        #bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -24,168 +24,74 @@
             z-index: 1;
         }
 
-        /* Overlay for interactive feel */
-        .ui-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Overlay for that "Setup" look */
+        .content-overlay {
+            position: relative;
+            z-index: 10;
             width: 100%;
             height: 100%;
-            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(0,10,30,0.2) 0%, rgba(0,2,5,0.9) 100%);
             pointer-events: none;
-            border: 20px solid rgba(0, 100, 255, 0.05);
-            box-sizing: border-box;
         }
 
-        .corner-text {
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            color: #0077ff;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-weight: bold;
-            opacity: 0.6;
+        .hero-text {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .hero-text h1 {
+            font-size: 60px;
+            letter-spacing: 15px;
+            margin: 0;
+            text-shadow: 0 0 30px rgba(0, 119, 255, 0.5);
+        }
+
+        /* Desktop Mode Warning for Mobile */
+        @media (max-width: 1279px) {
+            body {
+                zoom: 0.5; /* Forces desktop scale on small screens */
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
-    <div class="ui-overlay">
-        <div class="corner-text">System Active // 2025</div>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="content-overlay">
+        <div class="hero-text">
+            <h1>ENTER SPACE</h1>
+            <p style="letter-spacing: 5px; color: #0077ff;">PREMIUM DESKTOP EXPERIENCE</p>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
 
     <script>
-        let scene, camera, renderer, workspaceGroup;
+        // Initializing a high-quality Fluid Wave Effect
+        VANTA.WAVES({
+          el: "#bg-canvas",
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          color: 0x000815, // Ultra dark blue
+          shininess: 35.00,
+          waveHeight: 15.00,
+          waveSpeed: 0.80,
+          zoom: 0.90
+        });
 
-        function init() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000205);
-            scene.fog = new THREE.Fog(0x000205, 2, 15);
-
-            camera = new THREE.PerspectiveCamera(50, 1280 / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 1.5, 6);
-
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(1280, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.shadowMap.enabled = true; // High quality shadows
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            workspaceGroup = new THREE.Group();
-            scene.add(workspaceGroup);
-
-            // --- LIGHTING SYSTEM ---
-            const ambient = new THREE.AmbientLight(0xffffff, 0.1);
-            scene.add(ambient);
-
-            // Main Monitor Glow (Blue)
-            const monitorLight = new THREE.RectAreaLight || new THREE.PointLight(0x0077ff, 5, 6);
-            monitorLight.position.set(0, 1, 0);
-            workspaceGroup.add(monitorLight);
-
-            // CPU Neon Glow (Pink/Cyan)
-            const cpuLight = new THREE.PointLight(0xff00ff, 2, 4);
-            cpuLight.position.set(3, 1, 0);
-            workspaceGroup.add(cpuLight);
-
-            // --- THE TABLE ---
-            const tableGeo = new THREE.BoxGeometry(10, 0.15, 5);
-            const tableMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.2 });
-            const table = new THREE.Mesh(tableGeo, tableMat);
-            table.position.y = -1;
-            table.receiveShadow = true;
-            workspaceGroup.add(table);
-
-            // --- ULTRA-WIDE MONITOR ---
-            const frameGeo = new THREE.BoxGeometry(4.2, 2.2, 0.1);
-            const frameMat = new THREE.MeshStandardMaterial({ color: 0x010101 });
-            const monitorFrame = new THREE.Mesh(frameGeo, frameMat);
-            monitorFrame.position.set(0, 0.8, -1.5);
-            workspaceGroup.add(monitorFrame);
-
-            // Screen Content (Glow Effect)
-            const screenGeo = new THREE.PlaneGeometry(4, 2);
-            const screenMat = new THREE.MeshBasicMaterial({ color: 0x001133 });
-            const screen = new THREE.Mesh(screenGeo, screenMat);
-            screen.position.set(0, 0.8, -1.44);
-            workspaceGroup.add(screen);
-
-            // Monitor Stand
-            const standGeo = new THREE.CylinderGeometry(0.1, 0.3, 1.5, 32);
-            const stand = new THREE.Mesh(standGeo, frameMat);
-            stand.position.set(0, -0.1, -1.6);
-            workspaceGroup.add(stand);
-
-            // --- GAMING CPU (Detailed) ---
-            const caseGeo = new THREE.BoxGeometry(1.2, 2.4, 2.2);
-            const caseMat = new THREE.MeshStandardMaterial({ color: 0x050505, transparent: true, opacity: 0.9 });
-            const cpuCase = new THREE.Mesh(caseGeo, caseMat);
-            cpuCase.position.set(3.5, 0.2, -1);
-            workspaceGroup.add(cpuCase);
-
-            // Internal RGB Fans (3 Fans)
-            for(let i=0; i<3; i++) {
-                const fanGeo = new THREE.TorusGeometry(0.3, 0.05, 16, 100);
-                const fanMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
-                const fan = new THREE.Mesh(fanGeo, fanMat);
-                fan.position.set(2.95, 0.8 - (i*0.6), -0.5);
-                fan.rotation.y = Math.PI / 2;
-                workspaceGroup.add(fan);
-            }
-
-            // --- MECHANICAL KEYBOARD ---
-            const kbBaseGeo = new THREE.BoxGeometry(2.5, 0.1, 0.8);
-            const kbBase = new THREE.Mesh(kbBaseGeo, frameMat);
-            kbBase.position.set(0, -0.9, 0.5);
-            workspaceGroup.add(kbBase);
-
-            // RGB Line under keyboard
-            const rgbLineGeo = new THREE.BoxGeometry(2.5, 0.02, 0.02);
-            const rgbLineMat = new THREE.MeshBasicMaterial({ color: 0x0077ff });
-            const rgbLine = new THREE.Mesh(rgbLineGeo, rgbLineMat);
-            rgbLine.position.set(0, -0.95, 0.91);
-            workspaceGroup.add(rgbLine);
-
-            // --- MOUSE & PAD ---
-            const padGeo = new THREE.BoxGeometry(4, 0.02, 1.5);
-            const padMat = new THREE.MeshStandardMaterial({ color: 0x050505 });
-            const pad = new THREE.Mesh(padGeo, padMat);
-            pad.position.set(0.5, -0.92, 0.5);
-            workspaceGroup.add(pad);
-
-            const mouseGeo = new THREE.SphereGeometry(0.15, 32, 32);
-            mouseGeo.scale(1, 0.6, 1.5);
-            const mouse = new THREE.Mesh(mouseGeo, frameMat);
-            mouse.position.set(1.8, -0.85, 0.6);
-            workspaceGroup.add(mouse);
-
-            animate();
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            const time = Date.now() * 0.001;
-
-            // Subtle Floating Animation
-            workspaceGroup.position.y = Math.sin(time * 0.5) * 0.05;
-            
-            // Mouse Parallax Effect
-            window.addEventListener('mousemove', (e) => {
-                const x = (e.clientX / 1280) - 0.5;
-                const y = (e.clientY / window.innerHeight) - 0.5;
-                workspaceGroup.rotation.y = x * 0.15;
-                workspaceGroup.rotation.x = y * 0.1;
-            });
-
-            renderer.render(scene, camera);
-        }
-
-        init();
+        // This ensures it always looks like a desktop site
+        window.scrollTo(0, 0);
     </script>
 </body>
 </html>
