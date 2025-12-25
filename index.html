@@ -3,152 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1280">
-    <title>3D Realistic Lotus Desktop</title>
+    <title>Premium Personal Home</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            width: 1280px; /* Force Desktop Width */
+            width: 1280px;
             height: 100vh;
-            background: #00040a; /* Ultra Dark Blue */
+            background-color: #00050a;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Arial', sans-serif;
         }
 
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-            position: absolute;
+        /* Full Screen 3D Background */
+        #vanta-canvas {
+            position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
         }
 
-        .overlay {
+        /* Overlay for Content */
+        .content-layer {
             position: relative;
             z-index: 10;
-            pointer-events: none; /* Mouse movements pass through to 3D */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(0,8,20,0) 0%, rgba(0,5,10,0.8) 100%);
+        }
+
+        .main-heading {
+            color: #ffffff;
+            font-size: 50px;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8);
+            opacity: 0.8;
+        }
+
+        /* Hide scrollbars but keep desktop size */
+        ::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
-    <div class="overlay">
-        </div>
+    <div id="vanta-canvas"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <div class="content-layer">
+        <h1 class="main-heading">WELCOME</h1>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 
     <script>
-        let scene, camera, renderer, lotusGroup;
-        let petals = [];
-
-        function init() {
-            // Scene Setup
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x00040a);
-            
-            camera = new THREE.PerspectiveCamera(75, 1280 / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(1280, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            // Lighting (Asali look ke liye)
-            const ambientLight = new THREE.AmbientLight(0x001133, 1);
-            scene.add(ambientLight);
-
-            const pointLight = new THREE.PointLight(0x0077ff, 2);
-            pointLight.position.set(5, 5, 5);
-            scene.add(pointLight);
-
-            const centerLight = new THREE.PointLight(0x00ffff, 1);
-            centerLight.position.set(0, 0, 1);
-            scene.add(centerLight);
-
-            // Creating the Lotus Group
-            lotusGroup = new THREE.Group();
-            createLotus();
-            scene.add(lotusGroup);
-
-            animate();
-        }
-
-        function createLotus() {
-            const petalCount = 12;
-            const layers = 3;
-
-            for (let j = 0; j < layers; j++) {
-                for (let i = 0; i < petalCount; i++) {
-                    // Realistic Petal Shape using Lathe or Custom Geometry
-                    const petalShape = new THREE.Shape();
-                    petalShape.moveTo(0, 0);
-                    petalShape.quadraticCurveTo(0.5, 0.5, 0.5, 1.5);
-                    petalShape.quadraticCurveTo(0, 2.5, -0.5, 1.5);
-                    petalShape.quadraticCurveTo(-0.5, 0.5, 0, 0);
-
-                    const geometry = new THREE.ShapeGeometry(petalShape);
-                    const material = new THREE.MeshPhongMaterial({
-                        color: 0x003366,
-                        side: THREE.DoubleSide,
-                        shininess: 80,
-                        transparent: true,
-                        opacity: 0.8,
-                        emissive: 0x001122
-                    });
-
-                    const petal = new THREE.Mesh(geometry, material);
-                    
-                    // Positioning petals in a circle
-                    const angle = (i / petalCount) * Math.PI * 2;
-                    const layerScale = 1 - (j * 0.2);
-                    petal.scale.set(layerScale, layerScale, layerScale);
-                    
-                    petal.rotation.y = angle;
-                    petal.rotation.x = -Math.PI / 3 - (j * 0.3); // Initial tilt
-
-                    petals.push({
-                        mesh: petal,
-                        originalRotation: petal.rotation.x,
-                        delay: j * 0.5
-                    });
-
-                    lotusGroup.add(petal);
-                }
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            const time = Date.now() * 0.001;
-
-            // Bloom Animation Logic
-            petals.forEach((p, index) => {
-                const bloomEffect = Math.sin(time + p.delay) * 0.3;
-                p.mesh.rotation.x = p.originalRotation + bloomEffect;
-            });
-
-            // Gentle rotation of the whole lotus
-            lotusGroup.rotation.y += 0.005;
-            lotusGroup.rotation.z = Math.sin(time * 0.5) * 0.1;
-
-            renderer.render(scene, camera);
-        }
-
-        // Handle Mouse Movement for 3D depth effect
-        window.addEventListener('mousemove', (e) => {
-            const mouseX = (e.clientX / 1280) * 2 - 1;
-            const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-            lotusGroup.rotation.x = mouseY * 0.2;
-            lotusGroup.rotation.y += mouseX * 0.05;
+        // Vanta Net Effect: Dark Blue 3D Moving Mesh
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x0077ff,
+            backgroundColor: 0x00050a,
+            points: 12.00,
+            maxDistance: 25.00,
+            spacing: 15.00
         });
 
-        init();
+        // Force desktop scale logic
+        window.onload = function() {
+            if (window.innerWidth < 1280) {
+                document.body.style.zoom = window.innerWidth / 1280;
+            }
+        };
     </script>
 </body>
 </html>
